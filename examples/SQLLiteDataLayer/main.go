@@ -16,6 +16,17 @@ func main() {
 
 	flag.Parse()
 
+	if _, err := os.Stat(*dbname); os.IsNotExist(err) {
+		panic("Database not found!")
+		return
+	}
+
+	if _, err := os.Stat("./output/"); os.IsNotExist(err) {
+		os.Mkdir("./output/", 0777)
+	}
+
+
+
 	slog := sl.NewApplicationLogger()
 
 	// lets open a flie log using the session
