@@ -34,14 +34,14 @@ func (table *Table) CreateConstant(col *Column)  *pangu.Constant {
 }
 
 
-func (table *Table) CreateStructDetails() *StructDetails {
+func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	stru := pangu.StructDetails { Name: strings.Title(table.Name+"DBStruct") }
 	stru.Comment = fmt.Sprintf("Built from: %s",table.Name) 
 
 	var props []*pangu.Property
 	var uprops []*pangu.Property
 
-	prop := &Property{}
+	prop := &pangu.Property{}
 	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",table.PKColumn.Name,table.PKColumn.CType) 
 	prop.Name = strings.Title(table.PKColumn.Name)
 	prop.Json = "`"+strings.ToLower(table.PKColumn.Name)+"`"
