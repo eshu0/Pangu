@@ -5,6 +5,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	SQLL "github.com/eshu0/persist/pkg/sqllite"	
 	per "github.com/eshu0/persist/pkg/interfaces"
+	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Data"
+
 )
 
 //
@@ -137,7 +139,7 @@ func (handler *TasksHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 		rows.Scan(&Id,&Displayname,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 
-		res := TasksDBStruct{}
+		res := data.TasksDBStruct{}
 		
 		res.Id = Id
 		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
