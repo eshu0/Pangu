@@ -5,17 +5,17 @@ import (
 	"strings"
 	"text/template"
 	sl "github.com/eshu0/simplelogger"
-
+	pangu "github.com/eshu0/pangu/pkg"
 )
 
 type CodeTemplate struct {
 	PackageName string
 	StorageHandlerName string
-	TableConstant *Constant
-	IdConstant *Constant
-	Constants []*Constant
+	TableConstant *pangu.Constant
+	IdConstant *pangu.Constant
+	Constants []*pangu.Constant
 	Table *Table
-	StructDetails *StructDetails
+	StructDetails *pangu.StructDetails
 	InsertDBColumns string
 	UpdateDBColumns string
 	InsertGo string

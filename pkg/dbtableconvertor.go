@@ -4,21 +4,19 @@ package pangu
 import (
 	"fmt"
 	"strings"
-	"text/template"
-	sl "github.com/eshu0/simplelogger"
-
+	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
-func (table *Table) CreateConstants() ([]*Constant, *Constant) {
+func (table *anl.Table) CreateConstants() ([]*Constant, *Constant) {
 	var cnsts []*Constant
 	//pk := &Constant{}
 	//pk.Name = strings.ToLower(table.Name) + strings.Title(table.PKColumn.Name + "CName")
 	//pk.Value = table.PKColumn.Name
-	pk := ct.CreateConstant(table, table.PKColumn)
+	pk := table.CreateConstant(table.PKColumn)
 	pk.Comment = fmt.Sprintf("Primay Key: %s",table.PKColumn.Name) 
 
 	for _, col := range table.Columns {
-		cnst := ct.CreateConstant(table,col)
+		cnst := table.CreateConstant(col)
 		cnsts = append(cnsts, cnst)	
 	}
 	
@@ -26,7 +24,7 @@ func (table *Table) CreateConstants() ([]*Constant, *Constant) {
 }
 
 
-func (table *Table) CreateConstant(col *Column)  *Constant {
+func (table *anl.Table) CreateConstant(col *anl.Column)  *Constant {
 
 	cnst := &Constant{}
 	cnst.Comment = fmt.Sprintf("%s",col.Name) 
@@ -37,7 +35,7 @@ func (table *Table) CreateConstant(col *Column)  *Constant {
 }
 
 
-func (table *Table) CreateStructDetails() *StructDetails {
+func (table *anl.Table) CreateStructDetails() *StructDetails {
 	stru := StructDetails { Name: strings.Title(table.Name+"DBStruct") }
 	stru.Comment = fmt.Sprintf("Built from: %s",table.Name) 
 
@@ -50,7 +48,7 @@ func (table *Table) CreateStructDetails() *StructDetails {
 	prop.Json = "`"+strings.ToLower(table.PKColumn.Name)+"`"
 	prop.GType = "int64"
 	prop.IsIdentifier = true
-	prop.Constant = ct.CreateConstant(table, table.PKColumn)
+	prop.Constant = table.CreateConstant(table.PKColumn)
 	stru.Id = prop
 	props = append(props, prop)	
 
@@ -60,7 +58,7 @@ func (table *Table) CreateStructDetails() *StructDetails {
 		prop.Name = strings.Title(col.Name)
 		prop.Json = "`"+strings.ToLower(col.Name)+"`"
 		prop.IsIdentifier = false
-		prop.Constant = ct.CreateConstant(table, col)
+		prop.Constant = table.CreateConstant(col)
 
 		switch col.CType {
 			case "INTEGER" :
