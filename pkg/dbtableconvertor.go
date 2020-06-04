@@ -1,14 +1,13 @@
-
 package pangu
 
 import (
 	"fmt"
 	"strings"
-	anl "github.com/eshu0/pangu/pkg/analysers"
+	pangu "github.com/eshu0/pangu/pkg"
 )
 
-func (table *anl.Table) CreateConstants() ([]*Constant, *Constant) {
-	var cnsts []*Constant
+func (table *Table) CreateConstants() ([]*pangu.Constant, *pangu.Constant) {
+	var cnsts []*pangu.Constant
 	//pk := &Constant{}
 	//pk.Name = strings.ToLower(table.Name) + strings.Title(table.PKColumn.Name + "CName")
 	//pk.Value = table.PKColumn.Name
@@ -24,9 +23,9 @@ func (table *anl.Table) CreateConstants() ([]*Constant, *Constant) {
 }
 
 
-func (table *anl.Table) CreateConstant(col *anl.Column)  *Constant {
+func (table *Table) CreateConstant(col *Column)  *pangu.Constant {
 
-	cnst := &Constant{}
+	cnst := &pangu.Constant{}
 	cnst.Comment = fmt.Sprintf("%s",col.Name) 
 	cnst.Name = strings.ToLower(table.Name) + strings.Title(col.Name + "CName")
 	cnst.Value = col.Name
@@ -35,12 +34,12 @@ func (table *anl.Table) CreateConstant(col *anl.Column)  *Constant {
 }
 
 
-func (table *anl.Table) CreateStructDetails() *StructDetails {
-	stru := StructDetails { Name: strings.Title(table.Name+"DBStruct") }
+func (table *Table) CreateStructDetails() *StructDetails {
+	stru := pangu.StructDetails { Name: strings.Title(table.Name+"DBStruct") }
 	stru.Comment = fmt.Sprintf("Built from: %s",table.Name) 
 
-	var props []*Property
-	var uprops []*Property
+	var props []*pangu.Property
+	var uprops []*pangu.Property
 
 	prop := &Property{}
 	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",table.PKColumn.Name,table.PKColumn.CType) 
@@ -53,7 +52,7 @@ func (table *anl.Table) CreateStructDetails() *StructDetails {
 	props = append(props, prop)	
 
 	for _, col := range table.Columns {
-		prop := &Property{}
+		prop := &pangu.Property{}
 		prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",col.Name,col.CType) 
 		prop.Name = strings.Title(col.Name)
 		prop.Json = "`"+strings.ToLower(col.Name)+"`"
