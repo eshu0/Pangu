@@ -7,6 +7,7 @@ import (
     "io/ioutil"
     "text/template"
 	sl "github.com/eshu0/simplelogger"
+	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
 func main() {
