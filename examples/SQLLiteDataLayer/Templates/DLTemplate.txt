@@ -1,0 +1,48 @@
+package main
+
+import (
+	sli "github.com/eshu0/simplelogger/interfaces"
+	SQLL "github.com/eshu0/persist/pkg/sqllite"
+	//per "github.com/eshu0/persist/pkg/interfaces"
+)
+
+
+type {{.Database.FilenameTrimmed}}Datastore struct {
+	Datastore *SQLL.SQLLiteDatastore
+
+	//{{range .Templates}}
+	//{{.StorageHandlerName}} *{{.StorageHandlerName}}
+	//{{end}}
+}
+
+func CreateDataStorage(log sli.ISimpleLogger,filename string) *{{.Database.FilenameTrimmed}}Datastore {
+	ds := SQLL.CreateOpenSQLLiteDatastore(log, filename)
+	
+	// tests the example
+	ds.SetStorageHander("Generic",SQLL.NewSQLLiteTableHandler(ds)) 
+	{{range .Templates}}
+	ds.SetStorageHander("{{.Table.Name}}",New{{.StorageHandlerName}}(ds))
+	{{end}}
+
+
+	ds.CreateStructures()
+
+	res := {{.Database.FilenameTrimmed}}Datastore{}
+	res.Datastore = ds
+	
+	return &res
+}
+
+{{range .Templates}}
+func (fds *{{.Database.FilenameTrimmed}}Datastore) Get{{.StorageHandlerName}}() *{{.StorageHandlerName}} {
+
+	data, ok := fds.Datastore.GetStorageHandler("{{.Table.Name}}")
+	if ok {
+	  res := data.(*{{.StorageHandlerName}})
+	  return res
+	}
+	return nil
+}
+{{end}}
+
+
