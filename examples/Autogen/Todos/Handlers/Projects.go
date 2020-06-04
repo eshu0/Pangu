@@ -64,7 +64,7 @@ func (handler *ProjectsHandler) SetPersistantStorage(persistant per.IPersistantS
 	//return handler
 }
 
-// This function creates the database table for ProjectsDBStruct 
+// This function creates the database table for Project 
 func (handler *ProjectsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)")
@@ -72,19 +72,19 @@ func (handler *ProjectsHandler) CreateStructures() per.IQueryResult {
 
 // End Istorage 
 
-// This function ProjectsDBStruct removes all data for the table
+// This function Project removes all data for the table
 func (handler *ProjectsHandler) Wipe() SQLL.SQLLiteQueryResult {
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("DELETE FROM " + projectsTName))
 }
 
-// This adds ProjectsDBStruct to the database 
+// This adds Project to the database 
 func (handler *ProjectsHandler) Create(Data per.IDataItem) SQLL.SQLLiteQueryResult {
-	data := Data.(ProjectsDBStruct)
+	data := Data.(data.Project)
 	return handler.ConvertResult(handler.Executor.ExecuteInsertQuery("INSERT INTO " + projectsTName + " ( "+ "["+projectsDisplaynameCName+"]" +  ",["+projectsDescriptionCName+"]" + ",["+projectsArchivedCName+"]" + ",["+projectsCompletedCName+"]" +" ) VALUES (?,?,?,?)", data.Displayname,data.Description,data.Archived,data.Completed))
 }
 
 func (handler *ProjectsHandler) Update(Data per.IDataItem) SQLL.SQLLiteQueryResult  {
-	data := Data.(ProjectsDBStruct)
+	data := Data.(data.Project)
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("UPDATE " + projectsTName + " SET "+ "["+projectsDisplaynameCName+"] = ? " +  ",["+projectsDescriptionCName+"] = ? " + ",["+projectsArchivedCName+"] = ? " + ",["+projectsCompletedCName+"] = ? " +"  WHERE [" + projectsIdCName + "] = ?",data.Displayname,data.Description,data.Archived,data.Completed,data.Id))
 }
 
@@ -143,13 +143,13 @@ func (handler *ProjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
 	var Completed int64
 	
-	results := []per.IDataItem{} //ProjectsDBStruct{}
+	results := []per.IDataItem{} //Project{}
 
 	for rows.Next() {
 		rows.Scan(&Id,&Displayname,&Description,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 
-		res := data.ProjectsDBStruct{}
+		res := data.Project{}
 		
 		res.Id = Id
 		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)

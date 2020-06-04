@@ -61,7 +61,7 @@ func (handler *TasksHandler) SetPersistantStorage(persistant per.IPersistantStor
 	//return handler
 }
 
-// This function creates the database table for TasksDBStruct 
+// This function creates the database table for Task 
 func (handler *TasksHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Tasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)")
@@ -69,19 +69,19 @@ func (handler *TasksHandler) CreateStructures() per.IQueryResult {
 
 // End Istorage 
 
-// This function TasksDBStruct removes all data for the table
+// This function Task removes all data for the table
 func (handler *TasksHandler) Wipe() SQLL.SQLLiteQueryResult {
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("DELETE FROM " + tasksTName))
 }
 
-// This adds TasksDBStruct to the database 
+// This adds Task to the database 
 func (handler *TasksHandler) Create(Data per.IDataItem) SQLL.SQLLiteQueryResult {
-	data := Data.(TasksDBStruct)
+	data := Data.(data.Task)
 	return handler.ConvertResult(handler.Executor.ExecuteInsertQuery("INSERT INTO " + tasksTName + " ( "+ "["+tasksDisplaynameCName+"]" +  ",["+tasksArchivedCName+"]" + ",["+tasksCompletedCName+"]" +" ) VALUES (?,?,?)", data.Displayname,data.Archived,data.Completed))
 }
 
 func (handler *TasksHandler) Update(Data per.IDataItem) SQLL.SQLLiteQueryResult  {
-	data := Data.(TasksDBStruct)
+	data := Data.(data.Task)
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("UPDATE " + tasksTName + " SET "+ "["+tasksDisplaynameCName+"] = ? " +  ",["+tasksArchivedCName+"] = ? " + ",["+tasksCompletedCName+"] = ? " +"  WHERE [" + tasksIdCName + "] = ?",data.Displayname,data.Archived,data.Completed,data.Id))
 }
 
@@ -133,13 +133,13 @@ func (handler *TasksHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
 	var Completed int64
 	
-	results := []per.IDataItem{} //TasksDBStruct{}
+	results := []per.IDataItem{} //Task{}
 
 	for rows.Next() {
 		rows.Scan(&Id,&Displayname,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 
-		res := data.TasksDBStruct{}
+		res := data.Task{}
 		
 		res.Id = Id
 		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)

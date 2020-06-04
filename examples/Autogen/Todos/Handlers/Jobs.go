@@ -63,7 +63,7 @@ func (handler *JobsHandler) SetPersistantStorage(persistant per.IPersistantStora
 	//return handler
 }
 
-// This function creates the database table for JobsDBStruct 
+// This function creates the database table for Job
 func (handler *JobsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)")
@@ -71,19 +71,19 @@ func (handler *JobsHandler) CreateStructures() per.IQueryResult {
 
 // End Istorage 
 
-// This function JobsDBStruct removes all data for the table
+// This function Job removes all data for the table
 func (handler *JobsHandler) Wipe() SQLL.SQLLiteQueryResult {
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("DELETE FROM " + jobsTName))
 }
 
-// This adds JobsDBStruct to the database 
+// This adds Job to the database 
 func (handler *JobsHandler) Create(Data per.IDataItem) SQLL.SQLLiteQueryResult {
-	data := Data.(JobsDBStruct)
+	data := Data.(data.Job)
 	return handler.ConvertResult(handler.Executor.ExecuteInsertQuery("INSERT INTO " + jobsTName + " ( "+ "["+jobsDisplaynameCName+"]" +  ",["+jobsDescriptionCName+"]" + ",["+jobsArchivedCName+"]" + ",["+jobsCompletedCName+"]" +" ) VALUES (?,?,?,?)", data.Displayname,data.Description,data.Archived,data.Completed))
 }
 
 func (handler *JobsHandler) Update(Data per.IDataItem) SQLL.SQLLiteQueryResult  {
-	data := Data.(JobsDBStruct)
+	data := Data.(data.Job)
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("UPDATE " + jobsTName + " SET "+ "["+jobsDisplaynameCName+"] = ? " +  ",["+jobsDescriptionCName+"] = ? " + ",["+jobsArchivedCName+"] = ? " + ",["+jobsCompletedCName+"] = ? " +"  WHERE [" + jobsIdCName + "] = ?",data.Displayname,data.Description,data.Archived,data.Completed,data.Id))
 }
 
@@ -142,13 +142,13 @@ func (handler *JobsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
 	var Completed int64
 	
-	results := []per.IDataItem{} //JobsDBStruct{}
+	results := []per.IDataItem{} //Job{}
 
 	for rows.Next() {
 		rows.Scan(&Id,&Displayname,&Description,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 
-		res := data.JobsDBStruct{}
+		res := data.Job{}
 		
 		res.Id = Id
 		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)

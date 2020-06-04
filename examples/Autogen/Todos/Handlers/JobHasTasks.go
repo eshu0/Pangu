@@ -58,7 +58,7 @@ func (handler *JobHasTasksHandler) SetPersistantStorage(persistant per.IPersista
 	//return handler
 }
 
-// This function creates the database table for JobHasTasksDBStruct 
+// This function creates the database table for JobHasTask 
 func (handler *JobHasTasksHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS JobHasTasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL, taskid INTEGER REFERENCES Tasks (id) NOT NULL)")
@@ -66,19 +66,19 @@ func (handler *JobHasTasksHandler) CreateStructures() per.IQueryResult {
 
 // End Istorage 
 
-// This function JobHasTasksDBStruct removes all data for the table
+// This function JobHasTask removes all data for the table
 func (handler *JobHasTasksHandler) Wipe() SQLL.SQLLiteQueryResult {
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("DELETE FROM " + jobhastasksTName))
 }
 
-// This adds JobHasTasksDBStruct to the database 
+// This adds JobHasTask to the database 
 func (handler *JobHasTasksHandler) Create(Data per.IDataItem) SQLL.SQLLiteQueryResult {
-	data := Data.(JobHasTasksDBStruct)
+	data := Data.(data.JobHasTask)
 	return handler.ConvertResult(handler.Executor.ExecuteInsertQuery("INSERT INTO " + jobhastasksTName + " ( "+ "["+jobhastasksJobidCName+"]" +  ",["+jobhastasksTaskidCName+"]" +" ) VALUES (?,?)", data.Jobid,data.Taskid))
 }
 
 func (handler *JobHasTasksHandler) Update(Data per.IDataItem) SQLL.SQLLiteQueryResult  {
-	data := Data.(JobHasTasksDBStruct)
+	data := Data.(data.JobHasTask)
 	return handler.ConvertResult(handler.Executor.ExecuteQuery("UPDATE " + jobhastasksTName + " SET "+ "["+jobhastasksJobidCName+"] = ? " +  ",["+jobhastasksTaskidCName+"] = ? " +"  WHERE [" + jobhastasksIdCName + "] = ?",data.Jobid,data.Taskid,data.Id))
 }
 
@@ -123,13 +123,13 @@ func (handler *JobHasTasksHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
 	var Taskid int64
 	
-	results := []per.IDataItem{} //JobHasTasksDBStruct{}
+	results := []per.IDataItem{} //JobHasTask{}
 
 	for rows.Next() {
 		rows.Scan(&Id,&Jobid,&Taskid)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
 
-		res := data.JobHasTasksDBStruct{}
+		res := data.JobHasTask{}
 		
 		res.Id = Id
 		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
