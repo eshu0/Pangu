@@ -31,15 +31,15 @@ func CreateDataStorage(log sli.ISimpleLogger,filename string) *TodosDatastore {
 	// tests the example
 	ds.SetStorageHander("Generic",SQLL.NewSQLLiteTableHandler(ds)) 
 	
-	ds.SetStorageHander("Projects",NewProjectsHandler(ds))
+	ds.SetStorageHander("Projects",hndlr.NewProjectsHandler(ds))
 	
-	ds.SetStorageHander("Jobs",NewJobsHandler(ds))
+	ds.SetStorageHander("Jobs",hndlr.NewJobsHandler(ds))
 	
-	ds.SetStorageHander("Tasks",NewTasksHandler(ds))
+	ds.SetStorageHander("Tasks",hndlr.NewTasksHandler(ds))
 	
-	ds.SetStorageHander("JobHasTasks",NewJobHasTasksHandler(ds))
+	ds.SetStorageHander("JobHasTasks",hndlr.NewJobHasTasksHandler(ds))
 	
-	ds.SetStorageHander("ProjectHasJobs",NewProjectHasJobsHandler(ds))
+	ds.SetStorageHander("ProjectHasJobs",hndlr.NewProjectHasJobsHandler(ds))
 	
 
 
