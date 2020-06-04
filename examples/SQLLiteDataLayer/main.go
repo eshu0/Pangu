@@ -20,7 +20,7 @@ func main() {
 	// lets open a flie log using the session
 	slog.OpenAllChannels()
 
-	fds := &DatabaseAnalyser{}
+	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = *dbname
 	fds.Create(slog)
 
