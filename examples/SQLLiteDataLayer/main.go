@@ -27,12 +27,13 @@ func main() {
 
 	dbstruct := fds.GetDatabaseStructure()
 
-	t := CreateTemplate("./CodeTemplate.txt","code")
+	t := CreateTemplate("./Templates/CodeTemplate.txt","code")
+	tz := CreateTemplate("./Templates/DataTemplate.txt", "data")
+	t1 := CreateTemplate("./Templates/DLTemplate.txt", "dl")
+	t2 := CreateTemplate("./Templates/MainTemplate.txt", "main")
 
 	// Execute the template for each recipient.
 	ctemplates := GenerateFile(t,dbstruct,slog)
-
-	tz := CreateTemplate("./DataTemplate.txt", "data")
 
 	for _, cs := range ctemplates {	
 
@@ -63,15 +64,6 @@ func main() {
 		}
 	}	
 
-	b1, err := ioutil.ReadFile("./DLTemplate.txt") // just pass the file name
-    if err != nil {
-		fmt.Print(err)
-		return
-    }
-    str := string(b1) // convert content to a 'string'
-
-	// Create a new template and parse the letter into it.
-	t1 := template.Must(template.New("main").Parse(str))
 	dl := Datats{Database: ctemplates[0].Database, Templates:ctemplates}
 
 	file1, err := os.Create("./output/"+dl.Database.FilenameTrimmed+"Datastore.go")
@@ -86,16 +78,6 @@ func main() {
 
 	defer file1.Close()
 
-
-	b2, err := ioutil.ReadFile("./MainTemplate.txt") // just pass the file name
-    if err != nil {
-		fmt.Print(err)
-		return
-    }
-    str = string(b2) // convert content to a 'string'
-
-	// Create a new template and parse the letter into it.
-	t2 := template.Must(template.New("main").Parse(str))
 
 	file2, err := os.Create("./output/main.go")
 	if err != nil {
