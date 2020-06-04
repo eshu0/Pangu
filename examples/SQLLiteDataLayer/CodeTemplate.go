@@ -6,15 +6,23 @@ import (
 	"text/template"
 	sl "github.com/eshu0/simplelogger"
 	pangu "github.com/eshu0/pangu/pkg"
+	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
+// solution to having data changes
+type Datats struct {
+	Templates []*CodeTemplate
+	Database *anl.Database
+}
+
+// Confsing name -> should rename
 type CodeTemplate struct {
 	PackageName string
 	StorageHandlerName string
 	TableConstant *pangu.Constant
 	IdConstant *pangu.Constant
 	Constants []*pangu.Constant
-	Table *Table
+	Table *anl.Table
 	StructDetails *pangu.StructDetails
 	InsertDBColumns string
 	UpdateDBColumns string
@@ -24,11 +32,11 @@ type CodeTemplate struct {
 	ParametersColumns string
 	CreateTableSQL string
 	ScanRow string
-	Database *Database
+	Database *anl.Database
 }
 
 
-func GenerateFile(t *template.Template, dbstruct *DatabaseStructure, slog *sl.SimpleLogger) []*CodeTemplate {
+func GenerateFile(t *template.Template, dbstruct *anl.DatabaseStructure, slog *sl.SimpleLogger) []*CodeTemplate {
 	
 	var temps []*CodeTemplate
 
@@ -42,7 +50,7 @@ func GenerateFile(t *template.Template, dbstruct *DatabaseStructure, slog *sl.Si
 		cs.IdConstant = idconst
 		cs.CreateTableSQL = strings.Replace(tbl.Sql, "CREATE TABLE", "CREATE TABLE IF NOT EXISTS", -1) 
 		
-		cnst := &Constant{}
+		cnst := &pangu.Constant{}
 		cnst.Comment = fmt.Sprintf("%s",tbl.Name) 
 		cnst.Name = strings.ToLower(tbl.Name) + strings.Title("TName")
 		cnst.Value = tbl.TableName

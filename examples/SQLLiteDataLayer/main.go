@@ -9,19 +9,13 @@ import (
 	sl "github.com/eshu0/simplelogger"
 )
 
-type Datats struct {
-	Templates []*CodeTemplate
-	Database *Database
-}
 func main() {
 
-	filename := flag.String("logfile", "yaft.log", "Filename out - defaults to yaft.log")
-	session := flag.String("sessionid", "123", "Session - defaults to 123")
-	dbname := flag.String("db", "./todos.db", "Database defaults to ./todos.db")
+	dbname := flag.String("db", "./some.db", "Database defaults to ./some.db")
 
 	flag.Parse()
 
-	slog := sl.NewSimpleLogger(*filename, *session)
+	slog := sl.NewApplicationLogger()
 
 	// lets open a flie log using the session
 	slog.OpenAllChannels()
@@ -116,8 +110,6 @@ func main() {
 	defer file2.Close()
 
 }
-
-//
 
 func CreateTemplate(filepath string, name string) *template.Template {
 	b1, err1 := ioutil.ReadFile(filepath) // just pass the file name
