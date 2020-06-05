@@ -1,4 +1,4 @@
-package pgudata
+package pgumodel
 
 import (
 	"fmt"
