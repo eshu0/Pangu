@@ -1,9 +1,10 @@
-package main
+package pgudatastore
 
 import (
 	sli "github.com/eshu0/simplelogger/interfaces"
 	SQLL "github.com/eshu0/persist/pkg/sqllite"
 	//per "github.com/eshu0/persist/pkg/interfaces"
+	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 )
 
 
@@ -21,7 +22,7 @@ func CreateDataStorage(log sli.ISimpleLogger,filename string) *{{.Database.Filen
 	// tests the example
 	ds.SetStorageHander("Generic",SQLL.NewSQLLiteTableHandler(ds)) 
 	{{range .Templates}}
-	ds.SetStorageHander("{{.Table.Name}}",New{{.StorageHandlerName}}(ds))
+	ds.SetStorageHander("{{.Table.Name}}",hndlr.New{{.StorageHandlerName}}(ds))
 	{{end}}
 
 
@@ -34,11 +35,11 @@ func CreateDataStorage(log sli.ISimpleLogger,filename string) *{{.Database.Filen
 }
 
 {{range .Templates}}
-func (fds *{{.Database.FilenameTrimmed}}Datastore) Get{{.StorageHandlerName}}() *{{.StorageHandlerName}} {
+func (fds *{{.Database.FilenameTrimmed}}Datastore) Get{{.StorageHandlerName}}() *hndlr.{{.StorageHandlerName}} {
 
 	data, ok := fds.Datastore.GetStorageHandler("{{.Table.Name}}")
 	if ok {
-	  res := data.(*{{.StorageHandlerName}})
+	  res := data.(*hndlr.{{.StorageHandlerName}})
 	  return res
 	}
 	return nil
