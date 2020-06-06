@@ -35,6 +35,18 @@ type CodeTemplate struct {
 	Database *anl.Database
 }
 
+func (cs *CodeTemplate) GetHandlersName() string {
+ return strings.Title(cs.Table.Name)
+}
+
+func (cs *CodeTemplate) GetDataName() string {
+	name :=  strings.Title(cs.Table.Name)
+	if last := len(name) - 1; last >= 0 && name[last] == 's' {
+        name = s1[:last]
+	}
+	
+	return name
+}
 
 func GenerateFile(t *template.Template, dbstruct *anl.DatabaseStructure, slog *sl.SimpleLogger) []*CodeTemplate {
 	
