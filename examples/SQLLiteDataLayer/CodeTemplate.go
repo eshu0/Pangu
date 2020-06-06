@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
-	"text/template"
-	sl "github.com/eshu0/simplelogger"
+	sli "github.com/eshu0/simplelogger/interfaces"
 	pangu "github.com/eshu0/pangu/pkg"
 	anl "github.com/eshu0/pangu/pkg/analysers"
 )
@@ -48,7 +47,7 @@ func (cs *CodeTemplate) GetDataName() string {
 	return name
 }
 
-func GenerateFile(t *template.Template, dbstruct *anl.DatabaseStructure, slog *sl.SimpleLogger) []*CodeTemplate {
+func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger) []*CodeTemplate {
 	
 	var temps []*CodeTemplate
 
