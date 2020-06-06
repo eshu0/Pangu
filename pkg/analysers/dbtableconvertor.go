@@ -35,7 +35,7 @@ func (table *Table) CreateConstant(col *Column)  *pangu.Constant {
 
 
 func (table *Table) CreateStructDetails() *pangu.StructDetails {
-	stru := pangu.StructDetails { Name: strings.Title(table.Name+"DBStruct") }
+	stru := pangu.StructDetails { Name: strings.Title(table.Name) }
 	stru.Comment = fmt.Sprintf("Built from: %s",table.Name) 
 
 	var props []*pangu.Property
