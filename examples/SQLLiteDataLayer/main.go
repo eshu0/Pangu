@@ -11,19 +11,16 @@ import (
 	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
-const outputdir = "./output/"
-
-const datastoredir = outputdir + "/Datastore/"
-
-const handlerdir = outputdir + "/Handlers/"
-
-const modelsdir = outputdir + "/Models/"
-
-
 func main() {
 
 	dbname := flag.String("db", "", "Database defaults to ./some.db")
+	outdir := flag.String("out", "", "")
 	flag.Parse()
+	outputdir := "../Autogen/"
+
+	if outdir != nil && *outdir != "" {
+		outputdir = *outdir
+	}
 
 	if dbname == nil || (dbname != nil && *dbname == "") {
 		filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
@@ -33,19 +30,30 @@ func main() {
 			}
 			if !info.IsDir() && filepath.Ext(path) == ".db" {
 				fmt.Printf("Parsing database: %+v \n", info.Name())
-				Parse(path)
+				Parse(path, outputdir)
 				return nil
 			}
 			fmt.Printf("visited file or dir: %q\n", path)
 			return nil
 		})
 	}else{
-		Parse(*dbname)
+		Parse(*dbname, outputdir)
 	}
 }
 
-func Parse(dbname string){
+func Parse(dbname string, odir string){
 
+	outputdir := odir + "Todos"
+	if _, err := os.Stat(dbname); os.IsNotExist(err) {
+		panic("Database not found!")
+		return
+	}
+
+	datastoredir := outputdir + "/Datastore/"
+	handlerdir := outputdir + "/Handlers/"
+	modelsdir := outputdir + "/Models/"
+
+	
 	if _, err := os.Stat(dbname); os.IsNotExist(err) {
 		panic("Database not found!")
 		return
