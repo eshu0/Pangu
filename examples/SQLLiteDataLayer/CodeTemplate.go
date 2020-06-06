@@ -42,7 +42,7 @@ func GenerateFile(t *template.Template, dbstruct *anl.DatabaseStructure, slog *s
 
 	for _, tbl := range dbstruct.Tables {
 
-		cs := CodeTemplate { PackageName: "main", Table: tbl , StorageHandlerName: strings.Title(tbl.Name+"Handler"), Database : dbstruct.Database }
+		cs := CodeTemplate { PackageName: "pguhandlers", Table: tbl , StorageHandlerName: strings.Title(tbl.Name+"Handler"), Database : dbstruct.Database }
 		cs.StructDetails = tbl.CreateStructDetails()
 		consts, idconst := tbl.CreateConstants()
 
