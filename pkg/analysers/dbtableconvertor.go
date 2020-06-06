@@ -37,7 +37,7 @@ func (table *Table) CreateConstant(col *Column)  *pangu.Constant {
 func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	name :=  strings.Title(table.Name)
 	if last := len(name) - 1; last >= 0 && name[last] == 's' {
-        name = s1[:last]
+        name = name[:last]
     }
 	stru := pangu.StructDetails { Name: name }
 	stru.Comment = fmt.Sprintf("Built from: %s",table.Name) 
