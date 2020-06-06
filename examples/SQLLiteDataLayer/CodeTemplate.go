@@ -42,7 +42,7 @@ func (cs *CodeTemplate) GetHandlersName() string {
 func (cs *CodeTemplate) GetDataName() string {
 	name :=  strings.Title(cs.Table.Name)
 	if last := len(name) - 1; last >= 0 && name[last] == 's' {
-        name = s1[:last]
+        name = name[:last]
 	}
 	
 	return name
