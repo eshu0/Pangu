@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	sl "github.com/eshu0/simplelogger"
+	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
+	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
 )
 
 func main() {
@@ -17,7 +19,7 @@ func main() {
 	// lets open a flie log using the session
 	slog.OpenAllChannels()
 
-	fds := CreateDataStorage(slog, *dbname)
+	fds := ds.CreateDataStorage(slog, *dbname)
 
 	
 	ProjectsHandler := fds.GetProjectsHandler()
@@ -35,7 +37,7 @@ func main() {
 	fmt.Println("Create")
 	fmt.Println("----")
 	
-	newProject  := Project{}
+	newProject  := data.Project{}
 	fmt.Println(newProject)
 
 	insProject := ProjectsHandler.Create(newProject)
@@ -58,7 +60,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			
-			res :=Project{}
+			res :=data.Project{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			
@@ -76,7 +78,7 @@ func main() {
 	}
 	
 	
-	newJob  := Job{}
+	newJob  := data.Job{}
 	fmt.Println(newJob)
 
 	insJob := JobsHandler.Create(newJob)
@@ -99,7 +101,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			
-			res :=Job{}
+			res :=data.Job{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			
@@ -117,7 +119,7 @@ func main() {
 	}
 	
 	
-	newTask  := Task{}
+	newTask  := data.Task{}
 	fmt.Println(newTask)
 
 	insTask := TasksHandler.Create(newTask)
@@ -140,7 +142,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			
-			res :=Task{}
+			res :=data.Task{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			
@@ -156,7 +158,7 @@ func main() {
 	}
 	
 	
-	newJobHasTask  := JobHasTask{}
+	newJobHasTask  := data.JobHasTask{}
 	fmt.Println(newJobHasTask)
 
 	insJobHasTask := JobHasTasksHandler.Create(newJobHasTask)
@@ -179,7 +181,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			
-			res :=JobHasTask{}
+			res :=data.JobHasTask{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			
@@ -193,7 +195,7 @@ func main() {
 	}
 	
 	
-	newProjectHasJob  := ProjectHasJob{}
+	newProjectHasJob  := data.ProjectHasJob{}
 	fmt.Println(newProjectHasJob)
 
 	insProjectHasJob := ProjectHasJobsHandler.Create(newProjectHasJob)
@@ -216,7 +218,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			
-			res :=ProjectHasJob{}
+			res :=data.ProjectHasJob{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			

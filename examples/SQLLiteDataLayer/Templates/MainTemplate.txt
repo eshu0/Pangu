@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	sl "github.com/eshu0/simplelogger"
+	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
+	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
 )
 
 func main() {
@@ -17,7 +19,7 @@ func main() {
 	// lets open a flie log using the session
 	slog.OpenAllChannels()
 
-	fds := CreateDataStorage(slog, *dbname)
+	fds := ds.CreateDataStorage(slog, *dbname)
 
 	{{range .}}
 	{{.StorageHandlerName}} := fds.Get{{.StorageHandlerName}}()
@@ -27,7 +29,7 @@ func main() {
 	fmt.Println("Create")
 	fmt.Println("----")
 	{{range .}}
-	new{{.StructDetails.Name}}  := {{.StructDetails.Name}}{}
+	new{{.StructDetails.Name}}  := data.{{.StructDetails.Name}}{}
 	fmt.Println(new{{.StructDetails.Name}})
 
 	ins{{.StructDetails.Name}} := {{.StorageHandlerName}}.Create(new{{.StructDetails.Name}})
@@ -50,7 +52,7 @@ func main() {
 			fmt.Println("Update")
 			fmt.Println("----")
 			{{$structname := .StructDetails.Name }}
-			res :={{.StructDetails.Name}}{}
+			res :=data.{{.StructDetails.Name}}{}
 			res = res.ConvertFromIDataItem(res1)
 			fmt.Println(res)
 			{{range .StructDetails.UpdateProperties}}
