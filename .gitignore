@@ -15,3 +15,5 @@
 # vendor/
 .DS_Store
 examples/SQLLiteDataLayer/SQLLiteDataLayer
+examples/SQLLiteDataLayer/SQLLiteDataLayer.log
+examples/SQLLiteDataLayer/some.db

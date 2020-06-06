@@ -10,6 +10,15 @@ import (
 	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
+const outputdir = "./output/"
+
+const datastoredir = outputdir + "/Datastore/"
+
+const handlerdir = outputdir + "/Handlers/"
+
+const modelsdir = outputdir + "/Models/"
+
+
 func main() {
 
 	dbname := flag.String("db", "./some.db", "Database defaults to ./some.db")
@@ -21,9 +30,22 @@ func main() {
 		return
 	}
 
-	if _, err := os.Stat("./output/"); os.IsNotExist(err) {
-		os.Mkdir("./output/", 0777)
+	if _, err := os.Stat(outputdir); os.IsNotExist(err) {
+		os.Mkdir(outputdir, 0777)
 	}
+
+	if _, err := os.Stat(datastoredir); os.IsNotExist(err) {
+		os.Mkdir(datastoredir, 0777)
+	}
+
+	if _, err := os.Stat(handlerdir); os.IsNotExist(err) {
+		os.Mkdir(handlerdir, 0777)
+	}
+
+	if _, err := os.Stat(modelsdir); os.IsNotExist(err) {
+		os.Mkdir(modelsdir, 0777)
+	}
+
 
 
 
@@ -48,7 +70,7 @@ func main() {
 
 	for _, cs := range ctemplates {	
 
-		file, err := os.Create("./output/"+cs.Table.Name + ".go")
+		file, err := os.Create(handlerdir+cs.Table.Name + ".go")
 		if err != nil {
 			slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 			return
@@ -61,7 +83,7 @@ func main() {
 			fmt.Println("executing template:", err)
 		}
 
-		file, err = os.Create("./output/"+cs.Table.Name + "Data.go")
+		file, err = os.Create(modelsdir+cs.Table.Name + ".go")
 		if err != nil {
 			slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 			return
@@ -77,7 +99,7 @@ func main() {
 
 	dl := Datats{Database: ctemplates[0].Database, Templates:ctemplates}
 
-	file1, err := os.Create("./output/"+dl.Database.FilenameTrimmed+"Datastore.go")
+	file1, err := os.Create(datastoredir+dl.Database.FilenameTrimmed+".go")
 	if err != nil {
 		slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 		return
