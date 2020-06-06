@@ -63,7 +63,7 @@ func (handler *JobsHandler) SetPersistantStorage(persistant per.IPersistantStora
 	//return handler
 }
 
-// This function creates the database table for Job
+// This function creates the database table for Job 
 func (handler *JobsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)")

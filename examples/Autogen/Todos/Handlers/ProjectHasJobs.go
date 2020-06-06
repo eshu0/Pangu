@@ -6,7 +6,6 @@ import (
 	SQLL "github.com/eshu0/persist/pkg/sqllite"	
 	per "github.com/eshu0/persist/pkg/interfaces"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
-
 )
 
 //
@@ -58,7 +57,7 @@ func (handler *ProjectHasJobsHandler) SetPersistantStorage(persistant per.IPersi
 	//return handler
 }
 
-// This function creates the database table for ProjectHasJob
+// This function creates the database table for ProjectHasJob 
 func (handler *ProjectHasJobsHandler) CreateStructures() per.IQueryResult {
 	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
 	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)")
@@ -123,7 +122,7 @@ func (handler *ProjectHasJobsHandler) ParseRows(rows *sql.Rows) per.IQueryResult
 	
 	var Jobid int64
 	
-	results := []per.IDataItem{} //ProjectHasJobs{}
+	results := []per.IDataItem{} //ProjectHasJob{}
 
 	for rows.Next() {
 		rows.Scan(&Id,&Projectid,&Jobid)

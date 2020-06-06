@@ -5,7 +5,6 @@ import (
 	SQLL "github.com/eshu0/persist/pkg/sqllite"
 	//per "github.com/eshu0/persist/pkg/interfaces"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
-
 )
 
 
