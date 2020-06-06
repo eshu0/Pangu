@@ -1,10 +1,9 @@
-package pgumodel 
+package pgumodel
 
 import (
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	per "github.com/eshu0/persist/pkg/interfaces"
-	
 )
 
 //
