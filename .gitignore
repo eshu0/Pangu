@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+*.db
 
 # Test binary, built with `go test -c`
 *.test
@@ -16,4 +17,3 @@
 .DS_Store
 examples/SQLLiteDataLayer/SQLLiteDataLayer
 examples/SQLLiteDataLayer/SQLLiteDataLayer.log
-examples/SQLLiteDataLayer/some.db

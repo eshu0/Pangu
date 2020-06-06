@@ -4,7 +4,8 @@ import (
 	"os"
 	"flag"
 	"fmt"
-    "io/ioutil"
+	"io/ioutil"
+	"path/filepath"	
     "text/template"
 	sl "github.com/eshu0/simplelogger"
 	anl "github.com/eshu0/pangu/pkg/analysers"
@@ -21,11 +22,31 @@ const modelsdir = outputdir + "/Models/"
 
 func main() {
 
-	dbname := flag.String("db", "./some.db", "Database defaults to ./some.db")
-
+	dbname := flag.String("db", "", "Database defaults to ./some.db")
 	flag.Parse()
 
-	if _, err := os.Stat(*dbname); os.IsNotExist(err) {
+	if dbname == nil || (dbname != nil && *dbname == "") {
+		filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", path, err)
+				return err
+			}
+			if !info.IsDir() && filepath.Ext(path) == ".db" {
+				fmt.Printf("Parsing database: %+v \n", info.Name())
+				Parse(path)
+				return nil
+			}
+			fmt.Printf("visited file or dir: %q\n", path)
+			return nil
+		})
+	}else{
+		Parse(*dbname)
+	}
+}
+
+func Parse(dbname string){
+
+	if _, err := os.Stat(dbname); os.IsNotExist(err) {
 		panic("Database not found!")
 		return
 	}
@@ -55,7 +76,7 @@ func main() {
 	slog.OpenAllChannels()
 
 	fds := &anl.DatabaseAnalyser{}
-	fds.Filename = *dbname
+	fds.Filename = dbname
 	fds.Create(slog)
 
 	dbstruct := fds.GetDatabaseStructure()
@@ -70,7 +91,7 @@ func main() {
 
 	for _, cs := range ctemplates {	
 
-		file, err := os.Create(handlerdir+cs.Table.Name + ".go")
+		file, err := os.Create(handlerdir+cs.GetHandlersName()+ ".go")
 		if err != nil {
 			slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 			return
@@ -83,7 +104,7 @@ func main() {
 			fmt.Println("executing template:", err)
 		}
 
-		file, err = os.Create(modelsdir+cs.Table.Name + ".go")
+		file, err = os.Create(modelsdir+cs.GetDataName() + ".go")
 		if err != nil {
 			slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 			return
@@ -126,7 +147,6 @@ func main() {
 	defer file2.Close()
 
 }
-
 func CreateTemplate(filepath string, name string) *template.Template {
 	b1, err1 := ioutil.ReadFile(filepath) // just pass the file name
     if err1 != nil {
