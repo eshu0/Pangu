@@ -6,16 +6,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"	
-    "text/template"
+	"text/template"
+	"strings"
 	sl "github.com/eshu0/simplelogger"
 	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
 func main() {
 
-	dbname := flag.String("db", "", "Database defaults to ./some.db")
-	outdir := flag.String("out", "", "")
+	dbname := flag.String("db", "", "Database defaults to searching the current working directoyr for .db files")
+	outdir := flag.String("out", "", "output is ../Autogen/<Database>")
 	flag.Parse()
+
 	outputdir := "../Autogen/"
 
 	if outdir != nil && *outdir != "" {
@@ -43,15 +45,16 @@ func main() {
 
 func Parse(dbname string, odir string){
 
-	outputdir := odir + "Todos"
-	if _, err := os.Stat(dbname); os.IsNotExist(err) {
-		panic("Database not found!")
-		return
-	}
+	dbfolder := strings.Replace(filepath.Base(dbname),filepath.Ext(dbname),"",-1)
+
+
+	outputdir := odir + strings.Title(dbfolder)
+	fmt.Println("Outputting to: "+outputdir)
 
 	datastoredir := outputdir + "/Datastore/"
 	handlerdir := outputdir + "/Handlers/"
 	modelsdir := outputdir + "/Models/"
+	appdir := outputdir + "/TestApp/"
 
 	
 	if _, err := os.Stat(dbname); os.IsNotExist(err) {
@@ -59,24 +62,47 @@ func Parse(dbname string, odir string){
 		return
 	}
 
+	if _, err := os.Stat(odir); os.IsNotExist(err) {
+		os.Mkdir(odir, 0777)
+	}else{
+		fmt.Println("Exists: "+odir)	
+	}
+
+
 	if _, err := os.Stat(outputdir); os.IsNotExist(err) {
 		os.Mkdir(outputdir, 0777)
+	}else{
+		fmt.Println("Exists: "+outputdir)	
 	}
+
 
 	if _, err := os.Stat(datastoredir); os.IsNotExist(err) {
 		os.Mkdir(datastoredir, 0777)
+	}else{
+		fmt.Println("Exists: "+datastoredir)	
 	}
+
 
 	if _, err := os.Stat(handlerdir); os.IsNotExist(err) {
 		os.Mkdir(handlerdir, 0777)
+	}else{
+		fmt.Println("Exists: "+handlerdir)	
 	}
 
 	if _, err := os.Stat(modelsdir); os.IsNotExist(err) {
 		os.Mkdir(modelsdir, 0777)
+	}else{
+		fmt.Println("Exists: "+modelsdir)	
+	}
+
+	if _, err := os.Stat(appdir); os.IsNotExist(err) {
+		os.Mkdir(appdir, 0777)
+	}else{
+		fmt.Println("Exists: "+appdir)	
 	}
 
 
-
+	
 
 	slog := sl.NewApplicationLogger()
 
@@ -141,7 +167,7 @@ func Parse(dbname string, odir string){
 	defer file1.Close()
 
 
-	file2, err := os.Create("./output/main.go")
+	file2, err := os.Create(appdir+"main.go")
 	if err != nil {
 		slog.LogError("CreateCSV", fmt.Sprintf("Cannot create file%s", err.Error()))
 		return
