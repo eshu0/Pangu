@@ -2,22 +2,24 @@ package pgucontrollers
 
 import (
 	Request "github.com/eshu0/RESTServer/pkg/request"
+	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
+	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
 )
 
 // Controller
 
 type JobHasTasksController struct {
-	JobHasTasksHandler *JobHasTasksHandler // Storage handler
+	JobHasTasksHandler *hndlr.JobHasTasksHandler // Storage handler
 }
 
-func NewJobHasTasksController(handler *JobHasTasksHandler) *JobHasTasksController {
+func NewJobHasTasksController(handler *hndlr.JobHasTasksHandler) *JobHasTasksController {
 	ds := JobHasTasksController{}
 	ds.JobHasTasksHandler = handler
 	return &ds
 }
 
 
-func (controller *JobHasTasksController) HandleCreateRequest(request Request.ServerRequest) JobHasTask {
+func (controller *JobHasTasksController) HandleCreateRequest(request Request.ServerRequest) models.JobHasTask {
 	result := controller.JobHasTasksHandler.Create(request.Payload)
 	fmt.Println("----")
 	fmt.Println("Result")
