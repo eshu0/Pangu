@@ -1,0 +1,32 @@
+package pgucontrollers
+
+import (
+	"database/sql"
+	_ "github.com/mattn/go-sqlite3"
+	SQLL "github.com/eshu0/persist/pkg/sqllite"	
+	per "github.com/eshu0/persist/pkg/interfaces"
+	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+)
+
+// Controller
+
+type {{.StorageControllerName}} struct {
+	{{.StorageHandlerName}} *{{.StorageHandlerName}} // Storage handler
+}
+
+func New{{.StorageControllerName}}(handler *{{.StorageHandlerName}}) *{{.StorageControllerName}} {
+	ds := {{.StorageControllerName}}{}
+	ds.{{.StorageHandlerName}} = handler
+	return &ds
+}
+
+func (controller *{{.StorageControllerName}}) HandleCreateRequest(DataIn {{.StructDetails.Name}}) {{.StructDetails.Name}} {
+	result := controller.{{.StorageHandlerName}}.Create(DataIn)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
