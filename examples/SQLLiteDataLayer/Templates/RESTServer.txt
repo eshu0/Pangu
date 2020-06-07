@@ -53,6 +53,7 @@ func main() {
 	new{{.StructDetails.Name}}  := data.{{.StructDetails.Name}}{}
 	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create/","HandleCreateRequest","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
 	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create1/","HandleCreateRequest1","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create2/","HandleCreateRequest2","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
 
 	{{end}}
 
