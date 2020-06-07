@@ -23,9 +23,41 @@ func NewTasksController(handler *hndlr.TasksHandler) *TasksController {
 
 
 func (controller *TasksController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Task {
-	data := request.Payload.(*models.Task)
+	data := request.Payload.(models.Task)
 
-	result := controller.TasksHandler.Create(*data)
+	result := controller.TasksHandler.Create(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *TasksController) HandleUpdateRequest(request Request.ServerRequest) per.IQueryResult {  //.Task {
+	data := request.Payload.(models.Task)
+
+	result := controller.TasksHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
+func (controller *TasksController) HandleFindByIdRequest(request Request.ServerRequest) per.IQueryResult { 
+	data := request.Payload.(models.Task)
+
+	result := controller.TasksHandler.FindById(data.Id)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *TasksController) HandleReadAllRequest(request Request.ServerRequest) per.IQueryResult { 
+	result := controller.TasksHandler.ReadAll()
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

@@ -23,9 +23,41 @@ func NewJobsController(handler *hndlr.JobsHandler) *JobsController {
 
 
 func (controller *JobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
-	data := request.Payload.(*models.Job)
+	data := request.Payload.(models.Job)
 
-	result := controller.JobsHandler.Create(*data)
+	result := controller.JobsHandler.Create(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *JobsController) HandleUpdateRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
+	data := request.Payload.(models.Job)
+
+	result := controller.JobsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
+func (controller *JobsController) HandleFindByIdRequest(request Request.ServerRequest) per.IQueryResult { 
+	data := request.Payload.(models.Job)
+
+	result := controller.JobsHandler.FindById(data.Id)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *JobsController) HandleReadAllRequest(request Request.ServerRequest) per.IQueryResult { 
+	result := controller.JobsHandler.ReadAll()
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

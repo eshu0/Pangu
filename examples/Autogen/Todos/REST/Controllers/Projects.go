@@ -23,9 +23,41 @@ func NewProjectsController(handler *hndlr.ProjectsHandler) *ProjectsController {
 
 
 func (controller *ProjectsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
-	data := request.Payload.(*models.Project)
+	data := request.Payload.(models.Project)
 
-	result := controller.ProjectsHandler.Create(*data)
+	result := controller.ProjectsHandler.Create(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *ProjectsController) HandleUpdateRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
+	data := request.Payload.(models.Project)
+
+	result := controller.ProjectsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
+func (controller *ProjectsController) HandleFindByIdRequest(request Request.ServerRequest) per.IQueryResult { 
+	data := request.Payload.(models.Project)
+
+	result := controller.ProjectsHandler.FindById(data.Id)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *ProjectsController) HandleReadAllRequest(request Request.ServerRequest) per.IQueryResult { 
+	result := controller.ProjectsHandler.ReadAll()
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

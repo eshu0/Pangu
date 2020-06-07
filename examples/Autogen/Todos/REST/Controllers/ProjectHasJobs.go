@@ -23,9 +23,41 @@ func NewProjectHasJobsController(handler *hndlr.ProjectHasJobsHandler) *ProjectH
 
 
 func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
-	data := request.Payload.(*models.ProjectHasJob)
+	data := request.Payload.(models.ProjectHasJob)
 
-	result := controller.ProjectHasJobsHandler.Create(*data)
+	result := controller.ProjectHasJobsHandler.Create(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *ProjectHasJobsController) HandleUpdateRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
+	data := request.Payload.(models.ProjectHasJob)
+
+	result := controller.ProjectHasJobsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
+func (controller *ProjectHasJobsController) HandleFindByIdRequest(request Request.ServerRequest) per.IQueryResult { 
+	data := request.Payload.(models.ProjectHasJob)
+
+	result := controller.ProjectHasJobsHandler.FindById(data.Id)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+func (controller *ProjectHasJobsController) HandleReadAllRequest(request Request.ServerRequest) per.IQueryResult { 
+	result := controller.ProjectHasJobsHandler.ReadAll()
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")
