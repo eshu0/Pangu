@@ -54,6 +54,9 @@ func main() {
 
 	new{{.StructDetails.Name}}  := data.{{.StructDetails.Name}}{}
 	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create/","HandleCreateRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Update/","HandleUpdateRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/","HandleReadAllRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Find/","HandleFindByIdRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
 
 	{{end}}
 

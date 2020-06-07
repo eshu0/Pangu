@@ -2,6 +2,10 @@ package main
 
 import (
 	"flag"
+	"strings"
+	"encoding/json"
+	"fmt"
+	"reflect"
 
 	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
@@ -74,9 +78,17 @@ func main() {
 
 	
 
+
+
 	
 
 	newProject  := data.Project{}
+	res := TestJSON(newProject)
+	fmt.Printf("res: %+v\n", res) 
+	rest := res.(data.Project)
+	fmt.Printf("Id: %+v\n", rest.Id) 
+
+	//return
 	server.AddJSONFunctionHandler("/Project/Create/","HandleCreateRequest","POST","ProjectsController",newProject)
 
 	
@@ -108,4 +120,59 @@ func main() {
 
 }
 
+	
+func TestJSON(Data interface{}) interface{} {
+	
+
+	jsonstr := `{"id" : -1,"displayname" : "Hello","description" : "Something","archived" : 0,"completed" : 0}`
+	
+	//
+	d := map[string]interface{}{}
+	json.Unmarshal([]byte(jsonstr), &d)
+	
+	//
+	//obj := data.Project{}
+	firstArg := reflect.TypeOf(Data)
+	s := reflect.New(firstArg).Elem()
+
+	structPtr := reflect.New(firstArg).Elem()
+	//instance := structPtr.Interface()
+
+	//s := reflect.ValueOf(&Data).Elem()
+	typeOfT := s.Type()
+	//
+	for i := 0; i < s.NumField(); i++ {
+		for j, f := range d {
+			fmt.Printf("j :%+v\n", j) 
+			fmt.Printf("%v - %v - %v - %v\n",typeOfT,typeOfT.Field(i),typeOfT.Field(i).Tag,typeOfT.Field(i).Tag.Get("json"))
+			fmt.Printf("%v - %v - %v - %v\n",typeOfT,typeOfT.Field(i),typeOfT.Field(i).Tag,typeOfT.Field(i).Tag.Get("json"))
+
+			withoutomit:= typeOfT.Field(i).Tag.Get("json")
+			withoutomit = strings.Replace(withoutomit,",omitempty","",-1)
+			if withoutomit == j {
+				fmt.Printf("Name :%+v\n", typeOfT.Field(i).Name) 
+
+				fl := structPtr.FieldByName(typeOfT.Field(i).Name)
+				fmt.Printf("Kind :%+v\n", fl.Kind()) 
+
+				switch fl.Kind() {
+					case reflect.Bool:
+						fl.SetBool(f.(bool))
+					case reflect.Int, reflect.Int64:
+						c, _ := f.(float64)
+						fmt.Printf("c :%+v\n",c) 
+
+						fl.SetInt(int64(c))
+					case reflect.String:
+						fmt.Printf("f :%+v\n",f) 
+						fl.SetString(f.(string))
+				}
+			}
+		}
+	}
+	fmt.Printf("%+v\n", structPtr) 
+
+	return structPtr.Interface()
+
+}
 
