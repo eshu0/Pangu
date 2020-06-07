@@ -48,7 +48,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	prop := &pangu.Property{}
 	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",table.PKColumn.Name,table.PKColumn.CType) 
 	prop.Name = strings.Title(table.PKColumn.Name)
-	prop.Json = "`json:"+strings.ToLower(table.PKColumn.Name)+"`"
+	prop.Json = "`json:\""+strings.ToLower(table.PKColumn.Name)+"\"`"
 	prop.GType = "int64"
 	prop.IsIdentifier = true
 	prop.Constant = table.CreateConstant(table.PKColumn)
@@ -59,7 +59,11 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 		prop := &pangu.Property{}
 		prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",col.Name,col.CType) 
 		prop.Name = strings.Title(col.Name)
-		prop.Json = "`json:"+strings.ToLower(col.Name)+"`"
+		if col.NotNull == 0{
+			prop.Json = "`json:\""+strings.ToLower(col.Name)+"\"`"
+		}else{
+			prop.Json = "`json:\""+strings.ToLower(col.Name)+",omitempty\"`"
+		}
 		prop.IsIdentifier = false
 		prop.Constant = table.CreateConstant(col)
 
