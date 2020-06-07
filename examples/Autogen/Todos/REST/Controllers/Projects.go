@@ -20,6 +20,15 @@ func NewProjectsController(handler *ProjectsHandler) *ProjectsController {
 	return &ds
 }
 
+func (controller *ProjectsController) HandleCreateRequest2(DataIn *Project) Project {
+	result := controller.ProjectsHandler.Create(DataIn)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 func (controller *ProjectsController) HandleCreateRequest1(DataIn interface{}) Project {
 
 	item := DataIn.(Project)
