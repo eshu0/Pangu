@@ -23,7 +23,7 @@ func NewProjectsController(handler *hndlr.ProjectsHandler) *ProjectsController {
 
 
 func (controller *ProjectsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
-	data := request.Payload.(models.*Project)
+	data := request.Payload.(*models.Project)
 
 	result := controller.ProjectsHandler.Create(data)
 	fmt.Println("----")
