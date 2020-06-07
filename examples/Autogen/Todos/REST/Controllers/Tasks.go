@@ -1,6 +1,7 @@
 package pgucontrollers
 
 import (
+	"fmt"
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
@@ -20,7 +21,9 @@ func NewTasksController(handler *hndlr.TasksHandler) *TasksController {
 
 
 func (controller *TasksController) HandleCreateRequest(request Request.ServerRequest) models.Task {
-	result := controller.TasksHandler.Create(request.Payload)
+	data := request.Payload.(models.Task)
+
+	result := controller.TasksHandler.Create(data)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

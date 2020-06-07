@@ -1,6 +1,7 @@
 package pgucontrollers
 
 import (
+	"fmt"
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
@@ -20,7 +21,9 @@ func NewProjectsController(handler *hndlr.ProjectsHandler) *ProjectsController {
 
 
 func (controller *ProjectsController) HandleCreateRequest(request Request.ServerRequest) models.Project {
-	result := controller.ProjectsHandler.Create(request.Payload)
+	data := request.Payload.(models.Project)
+
+	result := controller.ProjectsHandler.Create(data)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")
