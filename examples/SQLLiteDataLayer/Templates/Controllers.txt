@@ -20,6 +20,19 @@ func New{{.StorageControllerName}}(handler *{{.StorageHandlerName}}) *{{.Storage
 	return &ds
 }
 
+func (controller *{{.StorageControllerName}}) HandleCreateRequest1(DataIn interface{}) {{.StructDetails.Name}} {
+
+	item := DataIn.({{.StructDetails.Name}})
+
+	result := controller.{{.StorageHandlerName}}.Create(item)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
 func (controller *{{.StorageControllerName}}) HandleCreateRequest(DataIn {{.StructDetails.Name}}) {{.StructDetails.Name}} {
 	result := controller.{{.StorageHandlerName}}.Create(DataIn)
 	fmt.Println("----")

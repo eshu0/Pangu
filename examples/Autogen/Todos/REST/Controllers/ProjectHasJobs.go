@@ -20,6 +20,19 @@ func NewProjectHasJobsController(handler *ProjectHasJobsHandler) *ProjectHasJobs
 	return &ds
 }
 
+func (controller *ProjectHasJobsController) HandleCreateRequest1(DataIn interface{}) ProjectHasJob {
+
+	item := DataIn.(ProjectHasJob)
+
+	result := controller.ProjectHasJobsHandler.Create(item)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
 func (controller *ProjectHasJobsController) HandleCreateRequest(DataIn ProjectHasJob) ProjectHasJob {
 	result := controller.ProjectHasJobsHandler.Create(DataIn)
 	fmt.Println("----")

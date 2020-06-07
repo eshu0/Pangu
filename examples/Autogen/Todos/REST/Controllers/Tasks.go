@@ -20,6 +20,19 @@ func NewTasksController(handler *TasksHandler) *TasksController {
 	return &ds
 }
 
+func (controller *TasksController) HandleCreateRequest1(DataIn interface{}) Task {
+
+	item := DataIn.(Task)
+
+	result := controller.TasksHandler.Create(item)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
 func (controller *TasksController) HandleCreateRequest(DataIn Task) Task {
 	result := controller.TasksHandler.Create(DataIn)
 	fmt.Println("----")

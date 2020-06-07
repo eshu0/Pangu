@@ -20,6 +20,19 @@ func NewJobsController(handler *JobsHandler) *JobsController {
 	return &ds
 }
 
+func (controller *JobsController) HandleCreateRequest1(DataIn interface{}) Job {
+
+	item := DataIn.(Job)
+
+	result := controller.JobsHandler.Create(item)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
+
 func (controller *JobsController) HandleCreateRequest(DataIn Job) Job {
 	result := controller.JobsHandler.Create(DataIn)
 	fmt.Println("----")
