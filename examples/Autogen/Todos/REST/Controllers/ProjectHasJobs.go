@@ -25,7 +25,7 @@ func NewProjectHasJobsController(handler *hndlr.ProjectHasJobsHandler) *ProjectH
 func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
 	data := request.Payload.(*models.ProjectHasJob)
 
-	result := controller.ProjectHasJobsHandler.Create(data)
+	result := controller.ProjectHasJobsHandler.Create(*data)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")
