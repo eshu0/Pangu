@@ -46,31 +46,31 @@ func main() {
 
 	ProjectsHandler := fds.GetProjectsHandler()
 	ProjectsController := Controllers.NewProjectsController(ProjectsHandler)
-	server.Register("ProjectsController",&ProjectsController)
+	server.Register("ProjectsController",ProjectsController)
 
 	
 
 	JobsHandler := fds.GetJobsHandler()
 	JobsController := Controllers.NewJobsController(JobsHandler)
-	server.Register("JobsController",&JobsController)
+	server.Register("JobsController",JobsController)
 
 	
 
 	TasksHandler := fds.GetTasksHandler()
 	TasksController := Controllers.NewTasksController(TasksHandler)
-	server.Register("TasksController",&TasksController)
+	server.Register("TasksController",TasksController)
 
 	
 
 	JobHasTasksHandler := fds.GetJobHasTasksHandler()
 	JobHasTasksController := Controllers.NewJobHasTasksController(JobHasTasksHandler)
-	server.Register("JobHasTasksController",&JobHasTasksController)
+	server.Register("JobHasTasksController",JobHasTasksController)
 
 	
 
 	ProjectHasJobsHandler := fds.GetProjectHasJobsHandler()
 	ProjectHasJobsController := Controllers.NewProjectHasJobsController(ProjectHasJobsHandler)
-	server.Register("ProjectHasJobsController",&ProjectHasJobsController)
+	server.Register("ProjectHasJobsController",ProjectHasJobsController)
 
 	
 

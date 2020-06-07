@@ -46,7 +46,7 @@ func main() {
 
 	{{.StorageHandlerName}} := fds.Get{{.StorageHandlerName}}()
 	{{.StorageControllerName}} := Controllers.New{{.StorageControllerName}}({{.StorageHandlerName}})
-	server.Register("{{.StorageControllerName}}",&{{.StorageControllerName}})
+	server.Register("{{.StorageControllerName}}",{{.StorageControllerName}})
 
 	{{end}}
 
