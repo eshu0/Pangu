@@ -5,6 +5,8 @@ import (
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	per "github.com/eshu0/persist/pkg/interfaces"
+
 )
 
 // Controller
@@ -20,7 +22,7 @@ func New{{.StorageControllerName}}(handler *hndlr.{{.StorageHandlerName}}) *{{.S
 }
 
 
-func (controller *{{.StorageControllerName}}) HandleCreateRequest(request Request.ServerRequest) models.{{.StructDetails.Name}} {
+func (controller *{{.StorageControllerName}}) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult  //.{{.StructDetails.Name}} {
 	data := request.Payload.(models.{{.StructDetails.Name}})
 
 	result := controller.{{.StorageHandlerName}}.Create(data)
