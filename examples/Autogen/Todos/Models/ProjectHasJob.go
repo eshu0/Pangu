@@ -20,7 +20,7 @@ type ProjectHasJob struct {
 
 
 	// id (SQL TYPE: INTEGER)
-	Id int64 `id`
+	Id int64 `json:id`
 
 	// projectid (SQL TYPE: INTEGER)
 	Projectid int64 `projectid`

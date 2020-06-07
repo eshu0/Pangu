@@ -20,7 +20,7 @@ type JobHasTask struct {
 
 
 	// id (SQL TYPE: INTEGER)
-	Id int64 `id`
+	Id int64 `json:id`
 
 	// jobid (SQL TYPE: INTEGER)
 	Jobid int64 `jobid`
