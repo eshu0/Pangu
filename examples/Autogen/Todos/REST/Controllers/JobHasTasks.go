@@ -6,6 +6,8 @@ import (
 	SQLL "github.com/eshu0/persist/pkg/sqllite"	
 	per "github.com/eshu0/persist/pkg/interfaces"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	Request "github.com/eshu0/RESTServer/pkg/request"
+
 )
 
 // Controller
@@ -20,30 +22,9 @@ func NewJobHasTasksController(handler *JobHasTasksHandler) *JobHasTasksControlle
 	return &ds
 }
 
-func (controller *JobHasTasksController) HandleCreateRequest2(DataIn *JobHasTask) JobHasTask {
-	result := controller.JobHasTasksHandler.Create(DataIn)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
 
-func (controller *JobHasTasksController) HandleCreateRequest1(DataIn interface{}) JobHasTask {
-
-	item := DataIn.(JobHasTask)
-
-	result := controller.JobHasTasksHandler.Create(item)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-
-func (controller *JobHasTasksController) HandleCreateRequest(DataIn JobHasTask) JobHasTask {
-	result := controller.JobHasTasksHandler.Create(DataIn)
+func (controller *JobHasTasksController) HandleCreateRequest(request Request.ServerRequest) JobHasTask {
+	result := controller.JobHasTasksHandler.Create(request.Payload)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

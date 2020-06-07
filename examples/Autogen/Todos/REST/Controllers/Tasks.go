@@ -6,6 +6,8 @@ import (
 	SQLL "github.com/eshu0/persist/pkg/sqllite"	
 	per "github.com/eshu0/persist/pkg/interfaces"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	Request "github.com/eshu0/RESTServer/pkg/request"
+
 )
 
 // Controller
@@ -20,30 +22,9 @@ func NewTasksController(handler *TasksHandler) *TasksController {
 	return &ds
 }
 
-func (controller *TasksController) HandleCreateRequest2(DataIn *Task) Task {
-	result := controller.TasksHandler.Create(DataIn)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
 
-func (controller *TasksController) HandleCreateRequest1(DataIn interface{}) Task {
-
-	item := DataIn.(Task)
-
-	result := controller.TasksHandler.Create(item)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-
-func (controller *TasksController) HandleCreateRequest(DataIn Task) Task {
-	result := controller.TasksHandler.Create(DataIn)
+func (controller *TasksController) HandleCreateRequest(request Request.ServerRequest) Task {
+	result := controller.TasksHandler.Create(request.Payload)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")

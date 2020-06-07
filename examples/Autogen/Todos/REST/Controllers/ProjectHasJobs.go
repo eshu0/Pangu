@@ -6,6 +6,8 @@ import (
 	SQLL "github.com/eshu0/persist/pkg/sqllite"	
 	per "github.com/eshu0/persist/pkg/interfaces"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	Request "github.com/eshu0/RESTServer/pkg/request"
+
 )
 
 // Controller
@@ -20,30 +22,9 @@ func NewProjectHasJobsController(handler *ProjectHasJobsHandler) *ProjectHasJobs
 	return &ds
 }
 
-func (controller *ProjectHasJobsController) HandleCreateRequest2(DataIn *ProjectHasJob) ProjectHasJob {
-	result := controller.ProjectHasJobsHandler.Create(DataIn)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
 
-func (controller *ProjectHasJobsController) HandleCreateRequest1(DataIn interface{}) ProjectHasJob {
-
-	item := DataIn.(ProjectHasJob)
-
-	result := controller.ProjectHasJobsHandler.Create(item)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-
-func (controller *ProjectHasJobsController) HandleCreateRequest(DataIn ProjectHasJob) ProjectHasJob {
-	result := controller.ProjectHasJobsHandler.Create(DataIn)
+func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) ProjectHasJob {
+	result := controller.ProjectHasJobsHandler.Create(request.Payload)
 	fmt.Println("----")
 	fmt.Println("Result")
 	fmt.Println("----")
