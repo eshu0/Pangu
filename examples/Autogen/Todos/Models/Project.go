@@ -23,16 +23,16 @@ type Project struct {
 	Id int64 `json:id`
 
 	// displayname (SQL TYPE: TEXT)
-	Displayname string `displayname`
+	Displayname string `json:displayname`
 
 	// description (SQL TYPE: TEXT)
-	Description string `description`
+	Description string `json:description`
 
 	// archived (SQL TYPE: INTEGER)
-	Archived int64 `archived`
+	Archived int64 `json:archived`
 
 	// completed (SQL TYPE: INTEGER)
-	Completed int64 `completed`
+	Completed int64 `json:completed`
 
 }
 
