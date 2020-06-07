@@ -5,6 +5,8 @@ import (
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	per "github.com/eshu0/persist/pkg/interfaces"
+
 )
 
 // Controller
@@ -20,7 +22,7 @@ func NewProjectHasJobsController(handler *hndlr.ProjectHasJobsHandler) *ProjectH
 }
 
 
-func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) models.ProjectHasJob {
+func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
 	data := request.Payload.(models.ProjectHasJob)
 
 	result := controller.ProjectHasJobsHandler.Create(data)

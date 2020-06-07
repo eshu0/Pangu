@@ -5,6 +5,8 @@ import (
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	per "github.com/eshu0/persist/pkg/interfaces"
+
 )
 
 // Controller
@@ -20,7 +22,7 @@ func NewTasksController(handler *hndlr.TasksHandler) *TasksController {
 }
 
 
-func (controller *TasksController) HandleCreateRequest(request Request.ServerRequest) models.Task {
+func (controller *TasksController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Task {
 	data := request.Payload.(models.Task)
 
 	result := controller.TasksHandler.Create(data)
