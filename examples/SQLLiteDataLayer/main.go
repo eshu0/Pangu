@@ -62,6 +62,7 @@ func CheckCreatePath(slog sli.ISimpleLogger, path string, panicif bool){
 		fmt.Println("Exists: "+path)	
 	}
 }
+
 func CreateAndExecute(slog sli.ISimpleLogger, filename string, templ *template.Template, data interface{}){
 	file, err := os.Create(filename)
 	if err != nil {
@@ -89,6 +90,8 @@ func Parse(dbname string, odir string, slog sli.ISimpleLogger){
 	handlerdir := outputdir + "/Handlers/"
 	modelsdir := outputdir + "/Models/"
 	appdir := outputdir + "/TestApp/"
+	restdir := outputdir + "/REST/"
+	controllersdir := restdir + "/Controllers/"
 
 	
 	CheckCreatePath(slog, dbname, true)
@@ -98,6 +101,9 @@ func Parse(dbname string, odir string, slog sli.ISimpleLogger){
 	CheckCreatePath(slog, handlerdir, false)
 	CheckCreatePath(slog, modelsdir, false)
 	CheckCreatePath(slog, appdir, false)
+	CheckCreatePath(slog, controllersdir, false)
+	CheckCreatePath(slog, restdir, false)
+
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
@@ -109,12 +115,15 @@ func Parse(dbname string, odir string, slog sli.ISimpleLogger){
 	DataTemplate := CreateTemplate("./Templates/DataTemplate.txt", "data")
 	DLTemplate := CreateTemplate("./Templates/DLTemplate.txt", "dl")
 	MainTemplate := CreateTemplate("./Templates/MainTemplate.txt", "main")
+	ControllersTemplate := CreateTemplate("./Templates/Controllers.txt", "control")
+	RESTServerTemplate := CreateTemplate("./Templates/RESTServer.txt", "control")
 
 	// Execute the template for each recipient.
 	ctemplates := GenerateFile(dbstruct,slog)
 
 	for _, cs := range ctemplates {	
 		CreateAndExecute(slog, handlerdir+cs.GetHandlersName()+ ".go", CodeTemplate, cs)
+		CreateAndExecute(slog, controllersdir+cs.GetHandlersName()+ ".go", ControllersTemplate, cs)
 		CreateAndExecute(slog, modelsdir+cs.GetDataName() + ".go", DataTemplate, cs)
 	}	
 
@@ -122,6 +131,8 @@ func Parse(dbname string, odir string, slog sli.ISimpleLogger){
 	
 	CreateAndExecute(slog, datastoredir+dl.Database.FilenameTrimmed+".go",DLTemplate, dl)
 	CreateAndExecute(slog, appdir+"main.go",MainTemplate, ctemplates)
+	CreateAndExecute(slog, restdir+"main.go",RESTServerTemplate, ctemplates)
+
 }
 
 func CreateTemplate(filepath string, name string) *template.Template {

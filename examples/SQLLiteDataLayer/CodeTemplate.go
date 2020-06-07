@@ -18,6 +18,7 @@ type Datats struct {
 type CodeTemplate struct {
 	PackageName string
 	StorageHandlerName string
+	StorageControllerName string
 	TableConstant *pangu.Constant
 	IdConstant *pangu.Constant
 	Constants []*pangu.Constant
@@ -53,7 +54,7 @@ func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger) []*Co
 
 	for _, tbl := range dbstruct.Tables {
 
-		cs := CodeTemplate { PackageName: "pguhandlers", Table: tbl , StorageHandlerName: strings.Title(tbl.Name+"Handler"), Database : dbstruct.Database }
+		cs := CodeTemplate { PackageName: "pguhandlers", Table: tbl , StorageHandlerName: strings.Title(tbl.Name+"Handler"), StorageControllerName: strings.Title(tbl.Name+"Controller"), Database : dbstruct.Database }
 		cs.StructDetails = tbl.CreateStructDetails()
 		consts, idconst := tbl.CreateConstants()
 
