@@ -59,7 +59,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 		prop := &pangu.Property{}
 		prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)",col.Name,col.CType) 
 		prop.Name = strings.Title(col.Name)
-		if col.NotNull == 0{
+		if col.NotNull ==  1 {
 			prop.Json = "`json:\""+strings.ToLower(col.Name)+"\"`"
 		}else{
 			prop.Json = "`json:\""+strings.ToLower(col.Name)+",omitempty\"`"
