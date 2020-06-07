@@ -23,7 +23,7 @@ func NewJobHasTasksController(handler *hndlr.JobHasTasksHandler) *JobHasTasksCon
 
 
 func (controller *JobHasTasksController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {
-	data := request.Payload.(models.JobHasTask)
+	data := request.Payload.(models.*JobHasTask)
 
 	result := controller.JobHasTasksHandler.Create(data)
 	fmt.Println("----")

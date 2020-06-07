@@ -23,7 +23,7 @@ func New{{.StorageControllerName}}(handler *hndlr.{{.StorageHandlerName}}) *{{.S
 
 
 func (controller *{{.StorageControllerName}}) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
-	data := request.Payload.(models.{{.StructDetails.Name}})
+	data := request.Payload.(models.*{{.StructDetails.Name}})
 
 	result := controller.{{.StorageHandlerName}}.Create(data)
 	fmt.Println("----")
