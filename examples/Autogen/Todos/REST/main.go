@@ -5,6 +5,7 @@ import (
 
 	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
+	Controllers "github.com/eshu0/Pangu/examples/Autogen/Todos/REST/Controllers"	
 	
 	"github.com/eshu0/RESTServer/pkg/commands"	
 	RSConfig "github.com/eshu0/RESTServer/pkg/config"
@@ -44,64 +45,59 @@ func main() {
 	
 
 	ProjectsHandler := fds.GetProjectsHandler()
-	server.Register("ProjectsHandler",&ProjectsHandler)
+	ProjectsController := Controllers.NewProjectsController(ProjectsHandler)
+	server.Register("ProjectsController",&ProjectsController)
 
 	
 
 	JobsHandler := fds.GetJobsHandler()
-	server.Register("JobsHandler",&JobsHandler)
+	JobsController := Controllers.NewJobsController(JobsHandler)
+	server.Register("JobsController",&JobsController)
 
 	
 
 	TasksHandler := fds.GetTasksHandler()
-	server.Register("TasksHandler",&TasksHandler)
+	TasksController := Controllers.NewTasksController(TasksHandler)
+	server.Register("TasksController",&TasksController)
 
 	
 
 	JobHasTasksHandler := fds.GetJobHasTasksHandler()
-	server.Register("JobHasTasksHandler",&JobHasTasksHandler)
+	JobHasTasksController := Controllers.NewJobHasTasksController(JobHasTasksHandler)
+	server.Register("JobHasTasksController",&JobHasTasksController)
 
 	
 
 	ProjectHasJobsHandler := fds.GetProjectHasJobsHandler()
-	server.Register("ProjectHasJobsHandler",&ProjectHasJobsHandler)
+	ProjectHasJobsController := Controllers.NewProjectHasJobsController(ProjectHasJobsHandler)
+	server.Register("ProjectHasJobsController",&ProjectHasJobsController)
 
 	
 
 	
 
 	newProject  := data.Project{}
-	server.AddJSONFunctionHandler("/Project/Create/","HandleCreateRequest","POST","ProjectsHandler",newProject)
-	server.AddJSONFunctionHandler("/Project/Create1/","HandleCreateRequest1","POST","ProjectsHandler",newProject)
-	server.AddJSONFunctionHandler("/Project/Create2/","HandleCreateRequest2","POST","ProjectsHandler",newProject)
+	server.AddJSONFunctionHandler("/Project/Create/","HandleCreateRequest","POST","ProjectsController",newProject)
 
 	
 
 	newJob  := data.Job{}
-	server.AddJSONFunctionHandler("/Job/Create/","HandleCreateRequest","POST","JobsHandler",newJob)
-	server.AddJSONFunctionHandler("/Job/Create1/","HandleCreateRequest1","POST","JobsHandler",newJob)
-	server.AddJSONFunctionHandler("/Job/Create2/","HandleCreateRequest2","POST","JobsHandler",newJob)
+	server.AddJSONFunctionHandler("/Job/Create/","HandleCreateRequest","POST","JobsController",newJob)
 
 	
 
 	newTask  := data.Task{}
-	server.AddJSONFunctionHandler("/Task/Create/","HandleCreateRequest","POST","TasksHandler",newTask)
-	server.AddJSONFunctionHandler("/Task/Create1/","HandleCreateRequest1","POST","TasksHandler",newTask)
-	server.AddJSONFunctionHandler("/Task/Create2/","HandleCreateRequest2","POST","TasksHandler",newTask)
+	server.AddJSONFunctionHandler("/Task/Create/","HandleCreateRequest","POST","TasksController",newTask)
 
 	
 
 	newJobHasTask  := data.JobHasTask{}
-	server.AddJSONFunctionHandler("/JobHasTask/Create/","HandleCreateRequest","POST","JobHasTasksHandler",newJobHasTask)
-	server.AddJSONFunctionHandler("/JobHasTask/Create1/","HandleCreateRequest1","POST","JobHasTasksHandler",newJobHasTask)
-	server.AddJSONFunctionHandler("/JobHasTask/Create2/","HandleCreateRequest2","POST","JobHasTasksHandler",newJobHasTask)
+	server.AddJSONFunctionHandler("/JobHasTask/Create/","HandleCreateRequest","POST","JobHasTasksController",newJobHasTask)
 
 	
 
 	newProjectHasJob  := data.ProjectHasJob{}
-	server.AddJSONFunctionHandler("/ProjectHasJob/Create/","HandleCreateRequest","POST","ProjectHasJobsHandler",newProjectHasJob)
-	server.AddJSONFunctionHandler("/ProjectHasJob/Create1/","HandleCreateRequest1","POST","ProjectHasJobsHandler",newProjectHasJob)
-	server.AddJSONFunctionHandler("/ProjectHasJob/Create2/","HandleCreateRequest2","POST","ProjectHasJobsHandler",newProjectHasJob)
+	server.AddJSONFunctionHandler("/ProjectHasJob/Create/","HandleCreateRequest","POST","ProjectHasJobsController",newProjectHasJob)
 
 	
 

@@ -5,6 +5,7 @@ import (
 
 	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
+	Controllers "github.com/eshu0/Pangu/examples/Autogen/Todos/REST/Controllers"	
 	
 	"github.com/eshu0/RESTServer/pkg/commands"	
 	RSConfig "github.com/eshu0/RESTServer/pkg/config"
@@ -44,16 +45,15 @@ func main() {
 	{{range .}}
 
 	{{.StorageHandlerName}} := fds.Get{{.StorageHandlerName}}()
-	server.Register("{{.StorageHandlerName}}",&{{.StorageHandlerName}})
+	{{.StorageControllerName}} := Controllers.New{{.StorageControllerName}}({{.StorageHandlerName}})
+	server.Register("{{.StorageControllerName}}",&{{.StorageControllerName}})
 
 	{{end}}
 
 	{{range .}}
 
 	new{{.StructDetails.Name}}  := data.{{.StructDetails.Name}}{}
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create/","HandleCreateRequest","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create1/","HandleCreateRequest1","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create2/","HandleCreateRequest2","POST","{{.StorageHandlerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create/","HandleCreateRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
 
 	{{end}}
 
