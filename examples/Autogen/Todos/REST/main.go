@@ -77,7 +77,7 @@ func main() {
 	
 
 	newProject  := data.Project{}
-	server.AddJSONFunctionHandler("/Project/Id/","HandleRequest","GET","ProjectsController",newProject)
+	server.AddJSONFunctionHandler("/Project/{Id}/","HandleRequest","GET","ProjectsController",newProject)
 	server.AddJSONFunctionHandler("/Project/","HandleRequest","","ProjectsController",newProject)
 	server.AddJSONFunctionHandler("/Project/Create/","HandleCreateRequest","POST","ProjectsController",newProject)
 	server.AddJSONFunctionHandler("/Project/Update/","HandleUpdateRequest","PUT","ProjectsController",newProject)
@@ -88,7 +88,7 @@ func main() {
 	
 
 	newJob  := data.Job{}
-	server.AddJSONFunctionHandler("/Job/Id/","HandleRequest","GET","JobsController",newJob)
+	server.AddJSONFunctionHandler("/Job/{Id}/","HandleRequest","GET","JobsController",newJob)
 	server.AddJSONFunctionHandler("/Job/","HandleRequest","","JobsController",newJob)
 	server.AddJSONFunctionHandler("/Job/Create/","HandleCreateRequest","POST","JobsController",newJob)
 	server.AddJSONFunctionHandler("/Job/Update/","HandleUpdateRequest","PUT","JobsController",newJob)
@@ -99,7 +99,7 @@ func main() {
 	
 
 	newTask  := data.Task{}
-	server.AddJSONFunctionHandler("/Task/Id/","HandleRequest","GET","TasksController",newTask)
+	server.AddJSONFunctionHandler("/Task/{Id}/","HandleRequest","GET","TasksController",newTask)
 	server.AddJSONFunctionHandler("/Task/","HandleRequest","","TasksController",newTask)
 	server.AddJSONFunctionHandler("/Task/Create/","HandleCreateRequest","POST","TasksController",newTask)
 	server.AddJSONFunctionHandler("/Task/Update/","HandleUpdateRequest","PUT","TasksController",newTask)
@@ -110,7 +110,7 @@ func main() {
 	
 
 	newJobHasTask  := data.JobHasTask{}
-	server.AddJSONFunctionHandler("/JobHasTask/Id/","HandleRequest","GET","JobHasTasksController",newJobHasTask)
+	server.AddJSONFunctionHandler("/JobHasTask/{Id}/","HandleRequest","GET","JobHasTasksController",newJobHasTask)
 	server.AddJSONFunctionHandler("/JobHasTask/","HandleRequest","","JobHasTasksController",newJobHasTask)
 	server.AddJSONFunctionHandler("/JobHasTask/Create/","HandleCreateRequest","POST","JobHasTasksController",newJobHasTask)
 	server.AddJSONFunctionHandler("/JobHasTask/Update/","HandleUpdateRequest","PUT","JobHasTasksController",newJobHasTask)
@@ -121,7 +121,7 @@ func main() {
 	
 
 	newProjectHasJob  := data.ProjectHasJob{}
-	server.AddJSONFunctionHandler("/ProjectHasJob/Id/","HandleRequest","GET","ProjectHasJobsController",newProjectHasJob)
+	server.AddJSONFunctionHandler("/ProjectHasJob/{Id}/","HandleRequest","GET","ProjectHasJobsController",newProjectHasJob)
 	server.AddJSONFunctionHandler("/ProjectHasJob/","HandleRequest","","ProjectHasJobsController",newProjectHasJob)
 	server.AddJSONFunctionHandler("/ProjectHasJob/Create/","HandleCreateRequest","POST","ProjectHasJobsController",newProjectHasJob)
 	server.AddJSONFunctionHandler("/ProjectHasJob/Update/","HandleUpdateRequest","PUT","ProjectHasJobsController",newProjectHasJob)
