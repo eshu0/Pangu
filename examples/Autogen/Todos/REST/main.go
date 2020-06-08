@@ -77,42 +77,52 @@ func main() {
 	
 
 	newProject  := data.Project{}
+	server.AddJSONFunctionHandler("/Project/","HandleRequest","GET","ProjectsController",newProject)
 	server.AddJSONFunctionHandler("/Project/Create/","HandleCreateRequest","POST","ProjectsController",newProject)
-	server.AddJSONFunctionHandler("/Project/Update/","HandleUpdateRequest","POST","ProjectsController",newProject)
-	server.AddJSONFunctionHandler("/Project/","HandleReadAllRequest","GET","ProjectsController",newProject)
+	server.AddJSONFunctionHandler("/Project/Update/","HandleUpdateRequest","PUT","ProjectsController",newProject)
+	server.AddJSONFunctionHandler("/Projects/","HandleReadAllRequest","GET","ProjectsController",newProject)
 	server.AddJSONFunctionHandler("/Project/Find/","HandleFindByIdRequest","POST","ProjectsController",newProject)
+	server.AddJSONFunctionHandler("/Project/Remove/","HandleRemoveRequest","POST","ProjectsController",newProject)
 
 	
 
 	newJob  := data.Job{}
+	server.AddJSONFunctionHandler("/Job/","HandleRequest","GET","JobsController",newJob)
 	server.AddJSONFunctionHandler("/Job/Create/","HandleCreateRequest","POST","JobsController",newJob)
-	server.AddJSONFunctionHandler("/Job/Update/","HandleUpdateRequest","POST","JobsController",newJob)
-	server.AddJSONFunctionHandler("/Job/","HandleReadAllRequest","GET","JobsController",newJob)
+	server.AddJSONFunctionHandler("/Job/Update/","HandleUpdateRequest","PUT","JobsController",newJob)
+	server.AddJSONFunctionHandler("/Jobs/","HandleReadAllRequest","GET","JobsController",newJob)
 	server.AddJSONFunctionHandler("/Job/Find/","HandleFindByIdRequest","POST","JobsController",newJob)
+	server.AddJSONFunctionHandler("/Job/Remove/","HandleRemoveRequest","POST","JobsController",newJob)
 
 	
 
 	newTask  := data.Task{}
+	server.AddJSONFunctionHandler("/Task/","HandleRequest","GET","TasksController",newTask)
 	server.AddJSONFunctionHandler("/Task/Create/","HandleCreateRequest","POST","TasksController",newTask)
-	server.AddJSONFunctionHandler("/Task/Update/","HandleUpdateRequest","POST","TasksController",newTask)
-	server.AddJSONFunctionHandler("/Task/","HandleReadAllRequest","GET","TasksController",newTask)
+	server.AddJSONFunctionHandler("/Task/Update/","HandleUpdateRequest","PUT","TasksController",newTask)
+	server.AddJSONFunctionHandler("/Tasks/","HandleReadAllRequest","GET","TasksController",newTask)
 	server.AddJSONFunctionHandler("/Task/Find/","HandleFindByIdRequest","POST","TasksController",newTask)
+	server.AddJSONFunctionHandler("/Task/Remove/","HandleRemoveRequest","POST","TasksController",newTask)
 
 	
 
 	newJobHasTask  := data.JobHasTask{}
+	server.AddJSONFunctionHandler("/JobHasTask/","HandleRequest","GET","JobHasTasksController",newJobHasTask)
 	server.AddJSONFunctionHandler("/JobHasTask/Create/","HandleCreateRequest","POST","JobHasTasksController",newJobHasTask)
-	server.AddJSONFunctionHandler("/JobHasTask/Update/","HandleUpdateRequest","POST","JobHasTasksController",newJobHasTask)
-	server.AddJSONFunctionHandler("/JobHasTask/","HandleReadAllRequest","GET","JobHasTasksController",newJobHasTask)
+	server.AddJSONFunctionHandler("/JobHasTask/Update/","HandleUpdateRequest","PUT","JobHasTasksController",newJobHasTask)
+	server.AddJSONFunctionHandler("/JobHasTasks/","HandleReadAllRequest","GET","JobHasTasksController",newJobHasTask)
 	server.AddJSONFunctionHandler("/JobHasTask/Find/","HandleFindByIdRequest","POST","JobHasTasksController",newJobHasTask)
+	server.AddJSONFunctionHandler("/JobHasTask/Remove/","HandleRemoveRequest","POST","JobHasTasksController",newJobHasTask)
 
 	
 
 	newProjectHasJob  := data.ProjectHasJob{}
+	server.AddJSONFunctionHandler("/ProjectHasJob/","HandleRequest","GET","ProjectHasJobsController",newProjectHasJob)
 	server.AddJSONFunctionHandler("/ProjectHasJob/Create/","HandleCreateRequest","POST","ProjectHasJobsController",newProjectHasJob)
-	server.AddJSONFunctionHandler("/ProjectHasJob/Update/","HandleUpdateRequest","POST","ProjectHasJobsController",newProjectHasJob)
-	server.AddJSONFunctionHandler("/ProjectHasJob/","HandleReadAllRequest","GET","ProjectHasJobsController",newProjectHasJob)
+	server.AddJSONFunctionHandler("/ProjectHasJob/Update/","HandleUpdateRequest","PUT","ProjectHasJobsController",newProjectHasJob)
+	server.AddJSONFunctionHandler("/ProjectHasJobs/","HandleReadAllRequest","GET","ProjectHasJobsController",newProjectHasJob)
 	server.AddJSONFunctionHandler("/ProjectHasJob/Find/","HandleFindByIdRequest","POST","ProjectHasJobsController",newProjectHasJob)
+	server.AddJSONFunctionHandler("/ProjectHasJob/Remove/","HandleRemoveRequest","POST","ProjectHasJobsController",newProjectHasJob)
 
 	
 
