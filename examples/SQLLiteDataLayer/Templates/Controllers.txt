@@ -21,6 +21,34 @@ func New{{.StorageControllerName}}(handler *hndlr.{{.StorageHandlerName}}) *{{.S
 	return &ds
 }
 
+func (controller *{{.StorageControllerName}}) HandleRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
+	data := request.Payload.(models.{{.StructDetails.Name}})
+	
+	if request.Request.Method == "POST" {
+
+		data := request.Payload.(models.{{.StructDetails.Name}})
+
+		result := controller.{{.StorageHandlerName}}.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+	}
+
+}
+
+func (controller *{{.StorageControllerName}}) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
+	data := request.Payload.(models.{{.StructDetails.Name}})
+	data.Archived = 1
+	result := controller.{{.StorageHandlerName}}.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 
 func (controller *{{.StorageControllerName}}) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
 	data := request.Payload.(models.{{.StructDetails.Name}})
