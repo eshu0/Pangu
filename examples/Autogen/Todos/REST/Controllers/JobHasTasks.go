@@ -56,15 +56,17 @@ func (controller *JobHasTasksController) HandleRequest(request Request.ServerReq
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
-
-		result := controller.JobHasTasksHandler.FindById(int64(Id))
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
-		return result
+		if Id != nil {
+			result := controller.JobHasTasksHandler.FindById(int64(*Id))
+			fmt.Println("----")
+			fmt.Println("Result")
+			fmt.Println("----")
+			fmt.Println(result)
+			return result
+		}
 	}
 
+	return "Failed"
 }
 
 func (controller *JobHasTasksController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {

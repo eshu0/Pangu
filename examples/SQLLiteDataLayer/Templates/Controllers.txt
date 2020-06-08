@@ -56,15 +56,17 @@ func (controller *{{.StorageControllerName}}) HandleRequest(request Request.Serv
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"{{.StructDetails.Id.Name}}")
-
-		result := controller.{{.StorageHandlerName}}.FindById(int64(Id))
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
-		return result
+		if Id != nil {
+			result := controller.{{.StorageHandlerName}}.FindById(int64(*Id))
+			fmt.Println("----")
+			fmt.Println("Result")
+			fmt.Println("----")
+			fmt.Println(result)
+			return result
+		}
 	}
 
+	return "Failed"
 }
 
 func (controller *{{.StorageControllerName}}) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {

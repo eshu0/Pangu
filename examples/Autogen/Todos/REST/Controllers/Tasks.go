@@ -56,15 +56,17 @@ func (controller *TasksController) HandleRequest(request Request.ServerRequest) 
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
-
-		result := controller.TasksHandler.FindById(int64(Id))
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
-		return result
+		if Id != nil {
+			result := controller.TasksHandler.FindById(int64(*Id))
+			fmt.Println("----")
+			fmt.Println("Result")
+			fmt.Println("----")
+			fmt.Println(result)
+			return result
+		}
 	}
 
+	return "Failed"
 }
 
 func (controller *TasksController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Task {

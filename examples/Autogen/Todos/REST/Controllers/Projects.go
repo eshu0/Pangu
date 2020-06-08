@@ -56,15 +56,17 @@ func (controller *ProjectsController) HandleRequest(request Request.ServerReques
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
-
-		result := controller.ProjectsHandler.FindById(int64(Id))
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
-		return result
+		if Id != nil {
+			result := controller.ProjectsHandler.FindById(int64(*Id))
+			fmt.Println("----")
+			fmt.Println("Result")
+			fmt.Println("----")
+			fmt.Println(result)
+			return result
+		}
 	}
 
+	return "Failed"
 }
 
 func (controller *ProjectsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {

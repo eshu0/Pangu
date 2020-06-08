@@ -56,15 +56,17 @@ func (controller *JobsController) HandleRequest(request Request.ServerRequest) p
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
-
-		result := controller.JobsHandler.FindById(int64(Id))
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
-		return result
+		if Id != nil {
+			result := controller.JobsHandler.FindById(int64(*Id))
+			fmt.Println("----")
+			fmt.Println("Result")
+			fmt.Println("----")
+			fmt.Println(result)
+			return result
+		}
 	}
 
+	return "Failed"
 }
 
 func (controller *JobsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
