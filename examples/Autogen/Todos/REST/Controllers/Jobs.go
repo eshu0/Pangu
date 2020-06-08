@@ -6,7 +6,7 @@ import (
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
 	per "github.com/eshu0/persist/pkg/interfaces"
-
+	RSServer "github.com/eshu0/RESTServer/pkg/server"
 )
 
 // Controller
