@@ -21,6 +21,34 @@ func NewJobHasTasksController(handler *hndlr.JobHasTasksHandler) *JobHasTasksCon
 	return &ds
 }
 
+func (controller *JobHasTasksController) HandleRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {
+	data := request.Payload.(models.JobHasTask)
+	
+	if request.Request.Method == "POST" {
+
+		data := request.Payload.(models.JobHasTask)
+
+		result := controller.JobHasTasksHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+	}
+
+}
+
+func (controller *JobHasTasksController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {
+	data := request.Payload.(models.JobHasTask)
+	data.Archived = 1
+	result := controller.JobHasTasksHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 
 func (controller *JobHasTasksController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {
 	data := request.Payload.(models.JobHasTask)

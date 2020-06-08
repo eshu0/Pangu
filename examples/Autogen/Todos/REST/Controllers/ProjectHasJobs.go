@@ -21,6 +21,34 @@ func NewProjectHasJobsController(handler *hndlr.ProjectHasJobsHandler) *ProjectH
 	return &ds
 }
 
+func (controller *ProjectHasJobsController) HandleRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
+	data := request.Payload.(models.ProjectHasJob)
+	
+	if request.Request.Method == "POST" {
+
+		data := request.Payload.(models.ProjectHasJob)
+
+		result := controller.ProjectHasJobsHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+	}
+
+}
+
+func (controller *ProjectHasJobsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
+	data := request.Payload.(models.ProjectHasJob)
+	data.Archived = 1
+	result := controller.ProjectHasJobsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 
 func (controller *ProjectHasJobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.ProjectHasJob {
 	data := request.Payload.(models.ProjectHasJob)

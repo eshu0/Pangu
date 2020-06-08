@@ -21,6 +21,34 @@ func NewProjectsController(handler *hndlr.ProjectsHandler) *ProjectsController {
 	return &ds
 }
 
+func (controller *ProjectsController) HandleRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
+	data := request.Payload.(models.Project)
+	
+	if request.Request.Method == "POST" {
+
+		data := request.Payload.(models.Project)
+
+		result := controller.ProjectsHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+	}
+
+}
+
+func (controller *ProjectsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
+	data := request.Payload.(models.Project)
+	data.Archived = 1
+	result := controller.ProjectsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 
 func (controller *ProjectsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
 	data := request.Payload.(models.Project)

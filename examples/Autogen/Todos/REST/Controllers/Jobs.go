@@ -21,6 +21,34 @@ func NewJobsController(handler *hndlr.JobsHandler) *JobsController {
 	return &ds
 }
 
+func (controller *JobsController) HandleRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
+	data := request.Payload.(models.Job)
+	
+	if request.Request.Method == "POST" {
+
+		data := request.Payload.(models.Job)
+
+		result := controller.JobsHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+	}
+
+}
+
+func (controller *JobsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
+	data := request.Payload.(models.Job)
+	data.Archived = 1
+	result := controller.JobsHandler.Update(data)
+	fmt.Println("----")
+	fmt.Println("Result")
+	fmt.Println("----")
+	fmt.Println(result)
+	return result
+}
+
 
 func (controller *JobsController) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
 	data := request.Payload.(models.Job)
