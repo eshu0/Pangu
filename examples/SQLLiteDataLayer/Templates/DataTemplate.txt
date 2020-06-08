@@ -16,7 +16,7 @@ import (
 
 // {{.StructDetails.Comment}} 
 type {{.StructDetails.Name}} struct {
-	per.IDataItem `json:-`
+	per.IDataItem `json:"-"`
 
 {{range .StructDetails.Properties}}
 	// {{.Comment}}
