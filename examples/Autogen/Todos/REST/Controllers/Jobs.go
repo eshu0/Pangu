@@ -7,6 +7,8 @@ import (
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
 	per "github.com/eshu0/persist/pkg/interfaces"
 	RSServer "github.com/eshu0/RESTServer/pkg/server"
+	"github.com/eshu0/persist/pkg/sqllite"
+
 )
 
 // Controller
@@ -66,7 +68,7 @@ func (controller *JobsController) HandleRequest(request Request.ServerRequest) p
 		}
 	}
 
-	return "Failed"
+	return SQLL.NewEmptyFailedSQLLiteQueryResult()
 }
 
 func (controller *JobsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Job {
