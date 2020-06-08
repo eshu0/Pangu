@@ -53,13 +53,10 @@ func main() {
 	{{range .}}
 
 	new{{.StructDetails.Name}}  := data.{{.StructDetails.Name}}{}
+	
 	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/{{"{"}}{{.StructDetails.Id.Name}}{{"}"}}/","HandleRequest","GET","{{.StorageControllerName}}",new{{.StructDetails.Name}})
 	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/","HandleRequest","","{{.StorageControllerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Create/","HandleCreateRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Update/","HandleUpdateRequest","PUT","{{.StorageControllerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}s/","HandleReadAllRequest","GET","{{.StorageControllerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Find/","HandleFindByIdRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
-	server.AddJSONFunctionHandler("/{{.StructDetails.Name}}/Remove/","HandleRemoveRequest","POST","{{.StorageControllerName}}",new{{.StructDetails.Name}})
+	server.AddJSONFunctionHandler("/{{.Table.Name}}/","HandleReadAllRequest","GET","{{.StorageControllerName}}",new{{.StructDetails.Name}})
 
 	{{end}}
 

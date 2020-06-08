@@ -16,7 +16,7 @@ import (
 
 // Built from: Jobs 
 type Job struct {
-	per.IDataItem
+	per.IDataItem `json:-`
 
 
 	// id (SQL TYPE: INTEGER)

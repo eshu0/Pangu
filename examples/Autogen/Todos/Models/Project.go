@@ -16,7 +16,7 @@ import (
 
 // Built from: Projects 
 type Project struct {
-	per.IDataItem
+	per.IDataItem `json:-`
 
 
 	// id (SQL TYPE: INTEGER)

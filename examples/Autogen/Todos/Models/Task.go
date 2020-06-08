@@ -16,7 +16,7 @@ import (
 
 // Built from: Tasks 
 type Task struct {
-	per.IDataItem
+	per.IDataItem `json:-`
 
 
 	// id (SQL TYPE: INTEGER)

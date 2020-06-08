@@ -1,7 +1,6 @@
 package pgucontrollers
 
 import (
-	"fmt"
 	Request "github.com/eshu0/RESTServer/pkg/request"
 	hndlr "github.com/eshu0/Pangu/examples/Autogen/Todos/Handlers"
 	models "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
@@ -29,99 +28,45 @@ func (controller *{{.StorageControllerName}}) HandleRequest(request Request.Serv
 	data := request.Payload.(models.{{.StructDetails.Name}})
 	
 	if request.Request.Method == "POST" {
-
+		controller.Server.Log.LogDebug("HandleRequest", "Calling to insert a new {{.StructDetails.Name}}")
 		result := controller.{{.StorageHandlerName}}.Create(data)
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
 		return result
 
 	} else if request.Request.Method == "PUT" { 
 	
+		controller.Server.Log.LogDebug("HandleRequest", "Calling to update {{.StructDetails.Name}}")
 		result := controller.{{.StorageHandlerName}}.Update(data)
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
 		return result
 
 	} else if request.Request.Method == "DELETE" { 
 	
+		controller.Server.Log.LogDebug("HandleRequest", "Calling to update the (DELETE) {{.StructDetails.Name}}")
 		result := controller.{{.StorageHandlerName}}.Update(data)
-		fmt.Println("----")
-		fmt.Println("Result")
-		fmt.Println("----")
-		fmt.Println(result)
 		return result
 
 	} else {
 		
 		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"{{.StructDetails.Id.Name}}")
 		if Id != nil {
+			controller.Server.Log.LogDebugf("HandleRequest", "Id was not nil and have the following to lookup %d", *Id)
 			result := controller.{{.StorageHandlerName}}.FindById(int64(*Id))
 			fmt.Println("----")
 			fmt.Println("Result")
 			fmt.Println("----")
 			fmt.Println(result)
 			return result
+		} else {
+			controller.Server.Log.LogError("HandleRequest", "{{.StructDetails.Id.Name}} was nil")
 		}
 	}
-
+	
+	controller.Server.Log.LogError("HandleRequest", "Failed returning empty SQLLiteResult")
 	return SQLL.NewEmptyFailedSQLLiteQueryResult()
 }
 
-func (controller *{{.StorageControllerName}}) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
-	data := request.Payload.(models.{{.StructDetails.Name}})
-	result := controller.{{.StorageHandlerName}}.Update(data)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-
-func (controller *{{.StorageControllerName}}) HandleCreateRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
-	data := request.Payload.(models.{{.StructDetails.Name}})
-
-	result := controller.{{.StorageHandlerName}}.Create(data)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-func (controller *{{.StorageControllerName}}) HandleUpdateRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
-	data := request.Payload.(models.{{.StructDetails.Name}})
-
-	result := controller.{{.StorageHandlerName}}.Update(data)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
-
-func (controller *{{.StorageControllerName}}) HandleFindByIdRequest(request Request.ServerRequest) per.IQueryResult { 
-	data := request.Payload.(models.{{.StructDetails.Name}})
-
-	result := controller.{{.StorageHandlerName}}.FindById(data.Id)
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
-	return result
-}
-
 func (controller *{{.StorageControllerName}}) HandleReadAllRequest(request Request.ServerRequest) per.IQueryResult { 
+	controller.Server.Log.LogDebug("HandleRequest", "Calling to read all {{.StructDetails.Name}}")
 	result := controller.{{.StorageHandlerName}}.ReadAll()
-	fmt.Println("----")
-	fmt.Println("Result")
-	fmt.Println("----")
-	fmt.Println(result)
 	return result
 }
 
