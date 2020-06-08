@@ -26,9 +26,36 @@ func (controller *{{.StorageControllerName}}) HandleRequest(request Request.Serv
 	
 	if request.Request.Method == "POST" {
 
-		data := request.Payload.(models.{{.StructDetails.Name}})
-
 		result := controller.{{.StorageHandlerName}}.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "PUT" { 
+	
+		result := controller.{{.StorageHandlerName}}.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "DELETE" { 
+	
+		result := controller.{{.StorageHandlerName}}.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else {
+		
+		Id := je.Server.RequestHelper.GetRequestId(r,"{{.StructDetails.Id.Name}}")
+
+		result := controller.{{.StorageHandlerName}}.FindById(int64(Id))
 		fmt.Println("----")
 		fmt.Println("Result")
 		fmt.Println("----")
@@ -40,7 +67,6 @@ func (controller *{{.StorageControllerName}}) HandleRequest(request Request.Serv
 
 func (controller *{{.StorageControllerName}}) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.{{.StructDetails.Name}} {
 	data := request.Payload.(models.{{.StructDetails.Name}})
-	data.Archived = 1
 	result := controller.{{.StorageHandlerName}}.Update(data)
 	fmt.Println("----")
 	fmt.Println("Result")

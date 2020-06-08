@@ -26,9 +26,36 @@ func (controller *JobHasTasksController) HandleRequest(request Request.ServerReq
 	
 	if request.Request.Method == "POST" {
 
-		data := request.Payload.(models.JobHasTask)
-
 		result := controller.JobHasTasksHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "PUT" { 
+	
+		result := controller.JobHasTasksHandler.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "DELETE" { 
+	
+		result := controller.JobHasTasksHandler.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else {
+		
+		Id := je.Server.RequestHelper.GetRequestId(r,"Id")
+
+		result := controller.JobHasTasksHandler.FindById(int64(Id))
 		fmt.Println("----")
 		fmt.Println("Result")
 		fmt.Println("----")
@@ -40,7 +67,6 @@ func (controller *JobHasTasksController) HandleRequest(request Request.ServerReq
 
 func (controller *JobHasTasksController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.JobHasTask {
 	data := request.Payload.(models.JobHasTask)
-	data.Archived = 1
 	result := controller.JobHasTasksHandler.Update(data)
 	fmt.Println("----")
 	fmt.Println("Result")

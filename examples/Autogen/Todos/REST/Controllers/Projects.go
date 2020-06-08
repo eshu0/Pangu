@@ -26,9 +26,36 @@ func (controller *ProjectsController) HandleRequest(request Request.ServerReques
 	
 	if request.Request.Method == "POST" {
 
-		data := request.Payload.(models.Project)
-
 		result := controller.ProjectsHandler.Create(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "PUT" { 
+	
+		result := controller.ProjectsHandler.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else if request.Request.Method == "DELETE" { 
+	
+		result := controller.ProjectsHandler.Update(data)
+		fmt.Println("----")
+		fmt.Println("Result")
+		fmt.Println("----")
+		fmt.Println(result)
+		return result
+
+	} else {
+		
+		Id := je.Server.RequestHelper.GetRequestId(r,"Id")
+
+		result := controller.ProjectsHandler.FindById(int64(Id))
 		fmt.Println("----")
 		fmt.Println("Result")
 		fmt.Println("----")
@@ -40,7 +67,6 @@ func (controller *ProjectsController) HandleRequest(request Request.ServerReques
 
 func (controller *ProjectsController) HandleRemoveRequest(request Request.ServerRequest) per.IQueryResult {  //.Project {
 	data := request.Payload.(models.Project)
-	data.Archived = 1
 	result := controller.ProjectsHandler.Update(data)
 	fmt.Println("----")
 	fmt.Println("Result")
