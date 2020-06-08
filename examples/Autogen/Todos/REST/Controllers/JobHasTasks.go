@@ -50,10 +50,6 @@ func (controller *JobHasTasksController) HandleRequest(request Request.ServerReq
 		if Id != nil {
 			controller.Server.Log.LogDebugf("HandleRequest", "Id was not nil and have the following to lookup %d", *Id)
 			result := controller.JobHasTasksHandler.FindById(int64(*Id))
-			fmt.Println("----")
-			fmt.Println("Result")
-			fmt.Println("----")
-			fmt.Println(result)
 			return result
 		} else {
 			controller.Server.Log.LogError("HandleRequest", "Id was nil")
