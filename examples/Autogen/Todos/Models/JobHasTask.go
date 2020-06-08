@@ -16,7 +16,7 @@ import (
 
 // Built from: JobHasTasks 
 type JobHasTask struct {
-	per.IDataItem `json:-`
+	per.IDataItem `json:"-"`
 
 
 	// id (SQL TYPE: INTEGER)
