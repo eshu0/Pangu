@@ -13,11 +13,13 @@ import (
 
 type TasksController struct {
 	TasksHandler *hndlr.TasksHandler // Storage handler
+	Server *RSServer.RServer
 }
 
-func NewTasksController(handler *hndlr.TasksHandler) *TasksController {
+func NewTasksController(handler *hndlr.TasksHandler, Server *RSServer.RServer) *TasksController {
 	ds := TasksController{}
 	ds.TasksHandler = handler
+	ds.Server = Server
 	return &ds
 }
 
@@ -53,7 +55,7 @@ func (controller *TasksController) HandleRequest(request Request.ServerRequest) 
 
 	} else {
 		
-		Id := je.Server.RequestHelper.GetRequestId(r,"Id")
+		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
 
 		result := controller.TasksHandler.FindById(int64(Id))
 		fmt.Println("----")

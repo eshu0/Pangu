@@ -13,11 +13,13 @@ import (
 
 type {{.StorageControllerName}} struct {
 	{{.StorageHandlerName}} *hndlr.{{.StorageHandlerName}} // Storage handler
+	Server *RSServer.RServer
 }
 
-func New{{.StorageControllerName}}(handler *hndlr.{{.StorageHandlerName}}) *{{.StorageControllerName}} {
+func New{{.StorageControllerName}}(handler *hndlr.{{.StorageHandlerName}}, Server *RSServer.RServer) *{{.StorageControllerName}} {
 	ds := {{.StorageControllerName}}{}
 	ds.{{.StorageHandlerName}} = handler
+	ds.Server = Server
 	return &ds
 }
 
@@ -53,7 +55,7 @@ func (controller *{{.StorageControllerName}}) HandleRequest(request Request.Serv
 
 	} else {
 		
-		Id := je.Server.RequestHelper.GetRequestId(r,"{{.StructDetails.Id.Name}}")
+		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"{{.StructDetails.Id.Name}}")
 
 		result := controller.{{.StorageHandlerName}}.FindById(int64(Id))
 		fmt.Println("----")

@@ -13,11 +13,13 @@ import (
 
 type ProjectsController struct {
 	ProjectsHandler *hndlr.ProjectsHandler // Storage handler
+	Server *RSServer.RServer
 }
 
-func NewProjectsController(handler *hndlr.ProjectsHandler) *ProjectsController {
+func NewProjectsController(handler *hndlr.ProjectsHandler, Server *RSServer.RServer) *ProjectsController {
 	ds := ProjectsController{}
 	ds.ProjectsHandler = handler
+	ds.Server = Server
 	return &ds
 }
 
@@ -53,7 +55,7 @@ func (controller *ProjectsController) HandleRequest(request Request.ServerReques
 
 	} else {
 		
-		Id := je.Server.RequestHelper.GetRequestId(r,"Id")
+		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
 
 		result := controller.ProjectsHandler.FindById(int64(Id))
 		fmt.Println("----")

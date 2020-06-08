@@ -13,11 +13,13 @@ import (
 
 type JobHasTasksController struct {
 	JobHasTasksHandler *hndlr.JobHasTasksHandler // Storage handler
+	Server *RSServer.RServer
 }
 
-func NewJobHasTasksController(handler *hndlr.JobHasTasksHandler) *JobHasTasksController {
+func NewJobHasTasksController(handler *hndlr.JobHasTasksHandler, Server *RSServer.RServer) *JobHasTasksController {
 	ds := JobHasTasksController{}
 	ds.JobHasTasksHandler = handler
+	ds.Server = Server
 	return &ds
 }
 
@@ -53,7 +55,7 @@ func (controller *JobHasTasksController) HandleRequest(request Request.ServerReq
 
 	} else {
 		
-		Id := je.Server.RequestHelper.GetRequestId(r,"Id")
+		Id := controller.Server.RequestHelper.GetRequestId(request.Request,"Id")
 
 		result := controller.JobHasTasksHandler.FindById(int64(Id))
 		fmt.Println("----")
