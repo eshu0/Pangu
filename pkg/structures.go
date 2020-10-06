@@ -15,7 +15,7 @@ type StructDetails struct {
 	Comment string
 
 	// These indicate what properties can be updated 
-	// optimisation for my use cae might remove if not needed in general
+	// optimisation for my use case might - remove if not needed in general
 	UpdateProperties []*Property
 
 	// The property that is an Identifier for the struct
@@ -29,6 +29,12 @@ type Property struct {
 	GType string
 	Json string
 	Comment string
+	// Properties are written out like this
+	// <Name> <GType> <Json> <Comment>
+	// Examples:
+	// FirstName string 'json:fname' // the usersname
+	// Age int 
+
 	IsIdentifier bool
 
 	// This links the property to a constant
