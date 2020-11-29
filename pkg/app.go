@@ -83,7 +83,7 @@ func (pa *PanguApp) Parse(dbname string, odir string) {
 	RESTServerTemplate := pa.CreateTemplate("./Templates/RESTServer.txt", "control")
 
 	// Execute the template for each recipient.
-	ctemplates := GenerateFile(dbstruct)
+	ctemplates := GenerateFile(dbstruct, pa)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.GetHandlersName()+".go", CodeTemplate, cs)
