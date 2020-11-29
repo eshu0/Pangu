@@ -14,7 +14,7 @@ import (
 
 // solution to having data changes
 type Datats struct {
-	Templates []*CodeTemplate
+	Templates []*CodeGen
 	Database  *anl.Database
 }
 
