@@ -8,6 +8,7 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
+	pangudata "github.com/eshu0/pangu/pkg/structures"
 	sli "github.com/eshu0/simplelogger/pkg/interfaces"
 )
 
@@ -21,11 +22,11 @@ type CodeGen struct {
 	PackageName           string
 	StorageHandlerName    string
 	StorageControllerName string
-	TableConstant         *Constant
-	IdConstant            *Constant
-	Constants             []*Constant
+	TableConstant         *pangudata.Constant
+	IdConstant            *pangudata.Constant
+	Constants             []*pangudata.Constant
 	Table                 *anl.Table
-	StructDetails         *StructDetails
+	StructDetails         *pangudata.StructDetails
 	InsertDBColumns       string
 	UpdateDBColumns       string
 	InsertGo              string
@@ -64,7 +65,7 @@ func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger) []*Co
 		cs.IdConstant = idconst
 		cs.CreateTableSQL = strings.Replace(tbl.Sql, "CREATE TABLE", "CREATE TABLE IF NOT EXISTS", -1)
 
-		cnst := &Constant{}
+		cnst := &pangudata.Constant{}
 		cnst.Comment = fmt.Sprintf("%s", tbl.Name)
 		cnst.Name = strings.ToLower(tbl.Name) + strings.Title("TName")
 		cnst.Value = tbl.TableName
