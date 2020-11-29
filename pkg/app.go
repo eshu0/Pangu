@@ -8,7 +8,6 @@ import (
 	"strings"
 	"text/template"
 
-	anl "github.com/eshu0/pangu/pkg/analysers"
 	sl "github.com/eshu0/simplelogger/pkg"
 )
 
