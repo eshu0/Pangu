@@ -1,4 +1,4 @@
-package pangu
+package pangudata
 
 // Go lang Constant
 type Constant struct {
