@@ -71,7 +71,7 @@ func (pa *PanguApp) Parse(dbname string, odir string) {
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
-	fds.Create(pa)
+	fds.Create(pa.Log)
 
 	dbstruct := fds.GetDatabaseStructure()
 
@@ -83,7 +83,7 @@ func (pa *PanguApp) Parse(dbname string, odir string) {
 	RESTServerTemplate := pa.CreateTemplate("./Templates/RESTServer.txt", "control")
 
 	// Execute the template for each recipient.
-	ctemplates := GenerateFile(dbstruct, pa)
+	ctemplates := GenerateFile(dbstruct, pa.Log)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.GetHandlersName()+".go", CodeTemplate, cs)
