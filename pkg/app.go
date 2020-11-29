@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 
+	anl "github.com/eshu0/pangu/pkg/analysers"
 	sl "github.com/eshu0/simplelogger/pkg"
 )
 
@@ -82,7 +83,7 @@ func (pa *PanguApp) Parse(dbname string, odir string) {
 	RESTServerTemplate := pa.CreateTemplate("./Templates/RESTServer.txt", "control")
 
 	// Execute the template for each recipient.
-	ctemplates := pa.GenerateFile(dbstruct)
+	ctemplates := GenerateFile(dbstruct)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.GetHandlersName()+".go", CodeTemplate, cs)
