@@ -9,7 +9,6 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	sli "github.com/eshu0/simplelogger/interfaces"
 	sl "github.com/eshu0/simplelogger/pkg"
 )
 
@@ -46,7 +45,7 @@ func (pa *PanguApp) CreateAndExecute(filename string, templ *template.Template, 
 	file.Close()
 }
 
-func (pa *PanguApp) Parse(dbname string, odir string, slog sli.ISimpleLogger) {
+func (pa *PanguApp) Parse(dbname string, odir string) {
 
 	dbfolder := strings.Replace(filepath.Base(dbname), filepath.Ext(dbname), "", -1)
 
@@ -72,7 +71,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, slog sli.ISimpleLogger) {
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
-	fds.Create(slog)
+	fds.Create(pa)
 
 	dbstruct := fds.GetDatabaseStructure()
 
@@ -84,7 +83,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, slog sli.ISimpleLogger) {
 	RESTServerTemplate := pa.CreateTemplate("./Templates/RESTServer.txt", "control")
 
 	// Execute the template for each recipient.
-	ctemplates := pa.GenerateFile(dbstruct, slog)
+	ctemplates := pa.GenerateFile(dbstruct)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.GetHandlersName()+".go", CodeTemplate, cs)
