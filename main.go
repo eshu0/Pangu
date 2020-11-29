@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	anl "github.com/eshu0/pangu/pkg"
+	pangu "github.com/eshu0/pangu/pkg"
 )
 
 func main() {
@@ -15,7 +15,7 @@ func main() {
 	outdir := flag.String("out", "", "output is ../Autogen/<Database>")
 	flag.Parse()
 
-	App := anl.PanguApp{}
+	App := pangu.PanguApp{}
 	outputdir := "../Autogen/"
 
 	if outdir != nil && *outdir != "" {
