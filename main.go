@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	anl "github.com/eshu0/pangu/pkg/""	
+
+	anl "github.com/eshu0/pangu/pkg"
 )
 
 func main() {
