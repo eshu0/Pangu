@@ -1,56 +1,55 @@
-package sqllite 
+package sqllite
 
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
 	"path/filepath"
+	"strconv"
 	"strings"
-	_ "github.com/mattn/go-sqlite3"
-	sli "github.com/eshu0/simplelogger/interfaces"
 
+	sli "github.com/eshu0/simplelogger/pkg/interfaces"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type DatabaseAnalyser struct {
 	database *sql.DB
 	Filename string
-	Log sli.ISimpleLogger
+	Log      sli.ISimpleLogger
 }
 
 type Column struct {
 	PTableName string
-	Name string
-	CType string
-	NotNull int
-	Default string
+	Name       string
+	CType      string
+	NotNull    int
+	Default    string
 	PrimaryKey int
 }
 
-
 type Database struct {
-	Name string
-	Filename string
+	Name            string
+	Filename        string
 	FilenameTrimmed string
 }
 
 type Table struct {
-	Name string
+	Name      string
 	TableName string
-	Sql string
-	Columns []*Column
-	HasPK bool
-	PKColumn *Column
+	Sql       string
+	Columns   []*Column
+	HasPK     bool
+	PKColumn  *Column
 }
 
 type View struct {
-	Name string
+	Name      string
 	TableName string
-	Sql string
+	Sql       string
 }
 
 type DatabaseStructure struct {
-	Tables []*Table
-	Views []*View
+	Tables   []*Table
+	Views    []*View
 	Database *Database
 }
 
@@ -62,24 +61,24 @@ func (daa *DatabaseAnalyser) Create(log sli.ISimpleLogger) {
 func (daa *DatabaseAnalyser) GetDatabaseStructure() *DatabaseStructure {
 	statement, _ := daa.database.Prepare("SELECT name,type,tbl_name,sql FROM sqlite_master")
 	rows, _ := statement.Query()
-	dbs :=  daa.parseStructureRows(rows)
+	dbs := daa.parseStructureRows(rows)
 	for _, tbl := range dbs.Tables {
-		cols,pk := daa.GetColumns(tbl.TableName)
+		cols, pk := daa.GetColumns(tbl.TableName)
 		tbl.Columns = cols
 		tbl.PKColumn = pk
 	}
 
-	dbs.Database = daa.GetDatabase() 
+	dbs.Database = daa.GetDatabase()
 	return dbs
 }
 
 func (daa *DatabaseAnalyser) GetColumns(tablename string) ([]*Column, *Column) {
-	statement, _ := daa.database.Prepare("PRAGMA table_info("+tablename+")")
-	rows, _ := statement.Query()//(tablename)
+	statement, _ := daa.database.Prepare("PRAGMA table_info(" + tablename + ")")
+	rows, _ := statement.Query() //(tablename)
 	return daa.parseTableColumsRows(rows, tablename)
 }
 
-func (daa *DatabaseAnalyser) GetDatabase()  *Database {
+func (daa *DatabaseAnalyser) GetDatabase() *Database {
 	statement, _ := daa.database.Prepare("PRAGMA database_list")
 	rows, _ := statement.Query()
 	return daa.parseDBRows(rows)
@@ -97,7 +96,7 @@ func (daa *DatabaseAnalyser) parseDBRows(rows *sql.Rows) *Database {
 
 		rows.Scan(&cId, &name, &filename)
 
-		fmt.Println("READ: id: " + strconv.Itoa(cId) + "-  name: " + name  + " - filename: "+  filename )
+		fmt.Println("READ: id: " + strconv.Itoa(cId) + "-  name: " + name + " - filename: " + filename)
 
 		db.Name = name
 		db.Filename = strings.Title(filepath.Base(filename))
@@ -107,7 +106,6 @@ func (daa *DatabaseAnalyser) parseDBRows(rows *sql.Rows) *Database {
 	return &db
 
 }
-
 
 func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName string) ([]*Column, *Column) {
 
@@ -124,28 +122,27 @@ func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName str
 	for rows.Next() {
 
 		rows.Scan(&cId, &name, &cType, &notNull, &dftvalue, &primaryKey)
-		fmt.Println("READ: id: " + strconv.Itoa(cId) + "- type:"+  cType + "- notnull:" +  strconv.Itoa(notNull) + "- default: name: " + name + "- primaryKey: " + strconv.Itoa(primaryKey))
+		fmt.Println("READ: id: " + strconv.Itoa(cId) + "- type:" + cType + "- notnull:" + strconv.Itoa(notNull) + "- default: name: " + name + "- primaryKey: " + strconv.Itoa(primaryKey))
 
 		col := Column{}
 
-		// 
+		//
 		col.Name = name
 		col.CType = cType
 		col.NotNull = notNull
 		col.PrimaryKey = primaryKey
-		
+
 		//
 		col.PTableName = PTableName
-		if col.PrimaryKey  == 1 {
+		if col.PrimaryKey == 1 {
 			pk = &col
-		}else{
-			cols = append(cols, &col)	
+		} else {
+			cols = append(cols, &col)
 		}
 	}
 
-	return cols,pk
+	return cols, pk
 }
-
 
 func (daa *DatabaseAnalyser) parseStructureRows(rows *sql.Rows) *DatabaseStructure {
 
@@ -160,7 +157,7 @@ func (daa *DatabaseAnalyser) parseStructureRows(rows *sql.Rows) *DatabaseStructu
 
 	for rows.Next() {
 
-		rows.Scan(&name,&ttype, &tblname, &sql)
+		rows.Scan(&name, &ttype, &tblname, &sql)
 		if name != "sqlite_sequence" {
 
 			if ttype == "table" {
@@ -168,17 +165,17 @@ func (daa *DatabaseAnalyser) parseStructureRows(rows *sql.Rows) *DatabaseStructu
 				tbl.Name = name
 				tbl.TableName = tblname
 				tbl.Sql = sql
-				tables = append(tables, &tbl)	
-			}	
-	
+				tables = append(tables, &tbl)
+			}
+
 			if ttype == "view" {
 				viw := View{}
 				viw.Name = name
 				viw.TableName = tblname
 				viw.Sql = sql
-				views = append(views, &viw)	
-			}	
-		}	
+				views = append(views, &viw)
+			}
+		}
 
 	}
 
@@ -187,4 +184,3 @@ func (daa *DatabaseAnalyser) parseStructureRows(rows *sql.Rows) *DatabaseStructu
 
 	return dbs
 }
-
