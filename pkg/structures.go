@@ -2,19 +2,19 @@ package pangu
 
 // Go lang Constant
 type Constant struct {
-	Name string 
-	Gtype string
+	Name    string
+	Gtype   string
 	Comment string
-	Value string
+	Value   string
 }
 
 // Go Lang Struct
 type StructDetails struct {
-	Name string
+	Name       string
 	Properties []*Property
-	Comment string
+	Comment    string
 
-	// These indicate what properties can be updated 
+	// These indicate what properties can be updated
 	// optimisation for my use case might - remove if not needed in general
 	UpdateProperties []*Property
 
@@ -25,15 +25,15 @@ type StructDetails struct {
 
 // A Go lang struct property
 type Property struct {
-	Name string
-	GType string
-	Json string
+	Name    string
+	GType   string
+	Json    string
 	Comment string
 	// Properties are written out like this
 	// <Name> <GType> <Json> <Comment>
 	// Examples:
 	// FirstName string 'json:fname' // the usersname
-	// Age int 
+	// Age int
 
 	IsIdentifier bool
 
