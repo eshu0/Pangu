@@ -66,7 +66,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 		prop.IsIdentifier = false
 		prop.Constant = table.CreateConstant(col)
 
-		if strings.contains(col.CType, "VARCHAR") {
+		if strings.Contains(col.CType, "VARCHAR") {
 			prop.GType = "string"
 			props = append(props, prop)
 			uprops = append(uprops, prop)
