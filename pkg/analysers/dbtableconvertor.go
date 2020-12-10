@@ -66,22 +66,29 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 		prop.IsIdentifier = false
 		prop.Constant = table.CreateConstant(col)
 
-		switch col.CType {
-		case "INTEGER":
-			prop.GType = "int64"
-			props = append(props, prop)
-			break
-		case "TEXT":
+		if strings.contains(col.CType, "VARCHAR") {
 			prop.GType = "string"
 			props = append(props, prop)
 			uprops = append(uprops, prop)
-			break
-		case "VARCHAR":
-			prop.GType = "string"
-			props = append(props, prop)
-			uprops = append(uprops, prop)
-			break
+		} else {
+			switch col.CType {
+			case "INTEGER":
+				prop.GType = "int64"
+				props = append(props, prop)
+				break
+			case "TEXT":
+				prop.GType = "string"
+				props = append(props, prop)
+				uprops = append(uprops, prop)
+				break
+			case "VARCHAR":
+				prop.GType = "string"
+				props = append(props, prop)
+				uprops = append(uprops, prop)
+				break
+			}
 		}
+
 	}
 
 	stru.Properties = props
