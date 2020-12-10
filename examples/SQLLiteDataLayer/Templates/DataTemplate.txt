@@ -9,7 +9,9 @@ import (
 //
 // Built from:
 // {{.Database.Name}} - {{.Database.Filename}}
-// {{.Table.Sql}}
+/*
+ {{.Table.Sql}}
+*/
 //
 
 // Data storage IDataItem
