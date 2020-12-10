@@ -76,7 +76,6 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 			props = append(props, prop)
 			uprops = append(uprops, prop)
 			break
-		}
 		case "VARCHAR":
 			prop.GType = "string"
 			props = append(props, prop)
