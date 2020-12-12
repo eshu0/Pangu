@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	sl "github.com/eshu0/simplelogger"
+
 	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
-	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
+	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
+	sl "github.com/eshu0/simplelogger/pkg"
 )
 
 func main() {
