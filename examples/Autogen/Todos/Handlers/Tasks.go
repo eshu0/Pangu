@@ -11,7 +11,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE Tasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)
+/*
+ CREATE TABLE Tasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)
+ */
 //
 
 // Table fields
@@ -62,8 +64,8 @@ func (handler *TasksHandler) SetPersistantStorage(persistant per.IPersistantStor
 
 // This function creates the database table for Task 
 func (handler *TasksHandler) CreateStructures() per.IQueryResult {
-	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Tasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)")
+	handler.Parent.LogDebug("CreateStructures","Executing Query")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS Tasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)`)
 }
 
 // End Istorage 
@@ -124,36 +126,56 @@ func (handler *TasksHandler) ReadAll()  SQLL.SQLLiteQueryResult {
 
 func (handler *TasksHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
-	var Id int64
+	var Id *int64
 	
-	var Displayname string
+	var Displayname *string
 	
-	var Archived int64
+	var Archived *int64
 	
-	var Completed int64
+	var Completed *int64
 	
 	results := []per.IDataItem{} //Task{}
 
 	for rows.Next() {
-		rows.Scan(&Id,&Displayname,&Archived,&Completed)
+		err := rows.Scan(&Id,&Displayname,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
+			handler.Parent.LogErrorEf("ParseRows","Row Scan errr: %s ",err)
+		} else {
+			res := data.Task{}
+			
+				if Id != nil {
+					res.Id = *Id
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Id",*Id)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Displayname != nil {
+					res.Displayname = *Displayname
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Displayname",*Displayname)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Archived != nil {
+					res.Archived = *Archived
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Archived",*Archived)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Completed != nil {
+					res.Completed = *Completed
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Completed",*Completed)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
 
-		res := data.Task{}
-		
-		res.Id = Id
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
-		
-		res.Displayname = Displayname
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Displayname",Displayname)
-		
-		res.Archived = Archived
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Archived",Archived)
-		
-		res.Completed = Completed
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Completed",Completed)
-		
+			results = append(results, res)
+		}
 
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true,results)
 }

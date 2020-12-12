@@ -11,7 +11,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)
+/*
+ CREATE TABLE ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)
+ */
 //
 
 // Table fields
@@ -59,8 +61,8 @@ func (handler *ProjectHasJobsHandler) SetPersistantStorage(persistant per.IPersi
 
 // This function creates the database table for ProjectHasJob 
 func (handler *ProjectHasJobsHandler) CreateStructures() per.IQueryResult {
-	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)")
+	handler.Parent.LogDebug("CreateStructures","Executing Query")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)`)
 }
 
 // End Istorage 
@@ -116,31 +118,47 @@ func (handler *ProjectHasJobsHandler) ReadAll()  SQLL.SQLLiteQueryResult {
 
 func (handler *ProjectHasJobsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
-	var Id int64
+	var Id *int64
 	
-	var Projectid int64
+	var Projectid *int64
 	
-	var Jobid int64
+	var Jobid *int64
 	
 	results := []per.IDataItem{} //ProjectHasJob{}
 
 	for rows.Next() {
-		rows.Scan(&Id,&Projectid,&Jobid)
+		err := rows.Scan(&Id,&Projectid,&Jobid)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
+			handler.Parent.LogErrorEf("ParseRows","Row Scan errr: %s ",err)
+		} else {
+			res := data.ProjectHasJob{}
+			
+				if Id != nil {
+					res.Id = *Id
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Id",*Id)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Projectid != nil {
+					res.Projectid = *Projectid
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Projectid",*Projectid)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Jobid != nil {
+					res.Jobid = *Jobid
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Jobid",*Jobid)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
 
-		res := data.ProjectHasJob{}
-		
-		res.Id = Id
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
-		
-		res.Projectid = Projectid
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Projectid",Projectid)
-		
-		res.Jobid = Jobid
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Jobid",Jobid)
-		
+			results = append(results, res)
+		}
 
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true,results)
 }

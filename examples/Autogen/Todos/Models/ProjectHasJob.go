@@ -9,7 +9,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)
+/*
+ CREATE TABLE ProjectHasJobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, projectid INTEGER REFERENCES Projects (id) NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL)
+*/
 //
 
 // Data storage IDataItem

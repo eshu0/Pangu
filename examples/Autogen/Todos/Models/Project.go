@@ -9,7 +9,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)
+/*
+ CREATE TABLE Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)
+*/
 //
 
 // Data storage IDataItem

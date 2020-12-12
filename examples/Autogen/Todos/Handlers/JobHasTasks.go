@@ -11,7 +11,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE JobHasTasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL, taskid INTEGER REFERENCES Tasks (id) NOT NULL)
+/*
+ CREATE TABLE JobHasTasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL, taskid INTEGER REFERENCES Tasks (id) NOT NULL)
+ */
 //
 
 // Table fields
@@ -59,8 +61,8 @@ func (handler *JobHasTasksHandler) SetPersistantStorage(persistant per.IPersista
 
 // This function creates the database table for JobHasTask 
 func (handler *JobHasTasksHandler) CreateStructures() per.IQueryResult {
-	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS JobHasTasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL, taskid INTEGER REFERENCES Tasks (id) NOT NULL)")
+	handler.Parent.LogDebug("CreateStructures","Executing Query")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS JobHasTasks (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, jobid INTEGER REFERENCES Jobs (id) NOT NULL, taskid INTEGER REFERENCES Tasks (id) NOT NULL)`)
 }
 
 // End Istorage 
@@ -116,31 +118,47 @@ func (handler *JobHasTasksHandler) ReadAll()  SQLL.SQLLiteQueryResult {
 
 func (handler *JobHasTasksHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
-	var Id int64
+	var Id *int64
 	
-	var Jobid int64
+	var Jobid *int64
 	
-	var Taskid int64
+	var Taskid *int64
 	
 	results := []per.IDataItem{} //JobHasTask{}
 
 	for rows.Next() {
-		rows.Scan(&Id,&Jobid,&Taskid)
+		err := rows.Scan(&Id,&Jobid,&Taskid)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
+			handler.Parent.LogErrorEf("ParseRows","Row Scan errr: %s ",err)
+		} else {
+			res := data.JobHasTask{}
+			
+				if Id != nil {
+					res.Id = *Id
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Id",*Id)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Jobid != nil {
+					res.Jobid = *Jobid
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Jobid",*Jobid)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Taskid != nil {
+					res.Taskid = *Taskid
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Taskid",*Taskid)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
 
-		res := data.JobHasTask{}
-		
-		res.Id = Id
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
-		
-		res.Jobid = Jobid
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Jobid",Jobid)
-		
-		res.Taskid = Taskid
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Taskid",Taskid)
-		
+			results = append(results, res)
+		}
 
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true,results)
 }

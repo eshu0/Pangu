@@ -11,7 +11,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)
+/*
+ CREATE TABLE Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)
+ */
 //
 
 // Table fields
@@ -65,8 +67,8 @@ func (handler *ProjectsHandler) SetPersistantStorage(persistant per.IPersistantS
 
 // This function creates the database table for Project 
 func (handler *ProjectsHandler) CreateStructures() per.IQueryResult {
-	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
-	return handler.Executor.ExecuteQuery("CREATE TABLE IF NOT EXISTS Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)")
+	handler.Parent.LogDebug("CreateStructures","Executing Query")
+	return handler.Executor.ExecuteQuery(`CREATE TABLE IF NOT EXISTS Projects (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER NOT NULL DEFAULT (0), completed INTEGER DEFAULT (0) NOT NULL)`)
 }
 
 // End Istorage 
@@ -132,41 +134,65 @@ func (handler *ProjectsHandler) ReadAll()  SQLL.SQLLiteQueryResult {
 
 func (handler *ProjectsHandler) ParseRows(rows *sql.Rows) per.IQueryResult {
 	
-	var Id int64
+	var Id *int64
 	
-	var Displayname string
+	var Displayname *string
 	
-	var Description string
+	var Description *string
 	
-	var Archived int64
+	var Archived *int64
 	
-	var Completed int64
+	var Completed *int64
 	
 	results := []per.IDataItem{} //Project{}
 
 	for rows.Next() {
-		rows.Scan(&Id,&Displayname,&Description,&Archived,&Completed)
+		err := rows.Scan(&Id,&Displayname,&Description,&Archived,&Completed)
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
+			handler.Parent.LogErrorEf("ParseRows","Row Scan errr: %s ",err)
+		} else {
+			res := data.Project{}
+			
+				if Id != nil {
+					res.Id = *Id
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Id",*Id)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Displayname != nil {
+					res.Displayname = *Displayname
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Displayname",*Displayname)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Description != nil {
+					res.Description = *Description
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Description",*Description)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Archived != nil {
+					res.Archived = *Archived
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Archived",*Archived)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
+				if Completed != nil {
+					res.Completed = *Completed
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for Completed",*Completed)
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			
 
-		res := data.Project{}
-		
-		res.Id = Id
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Id",Id)
-		
-		res.Displayname = Displayname
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Displayname",Displayname)
-		
-		res.Description = Description
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Description",Description)
-		
-		res.Archived = Archived
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Archived",Archived)
-		
-		res.Completed = Completed
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for Completed",Completed)
-		
+			results = append(results, res)
+		}
 
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true,results)
 }

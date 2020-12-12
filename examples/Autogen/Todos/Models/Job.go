@@ -9,7 +9,9 @@ import (
 //
 // Built from:
 // main - Todos.Db
-// CREATE TABLE Jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)
+/*
+ CREATE TABLE Jobs (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayname TEXT NOT NULL, description TEXT, archived INTEGER DEFAULT (0) NOT NULL, completed INTEGER DEFAULT (0) NOT NULL)
+*/
 //
 
 // Data storage IDataItem
