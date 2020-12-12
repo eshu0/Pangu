@@ -18,4 +18,4 @@
 examples/SQLLiteDataLayer/SQLLiteDataLayer
 examples/SQLLiteDataLayer/SQLLiteDataLayer.log
 *.log
-examples/Autogen/Todos/REST/REST
+examples/Autogen/*
