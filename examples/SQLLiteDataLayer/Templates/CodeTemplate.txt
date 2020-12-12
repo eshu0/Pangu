@@ -11,7 +11,9 @@ import (
 //
 // Built from:
 // {{.Database.Name}} - {{.Database.Filename}}
-// {{.Table.Sql}}
+/*
+ {{.Table.Sql}}
+ */
 //
 
 // Table fields
@@ -56,8 +58,8 @@ func (handler *{{.StorageHandlerName}}) SetPersistantStorage(persistant per.IPer
 
 // This function creates the database table for {{.StructDetails.Name}} 
 func (handler *{{.StorageHandlerName}}) CreateStructures() per.IQueryResult {
-	handler.Parent.GetLog().LogDebug("CreateStructures","Executing Query")
-	return handler.Executor.ExecuteQuery("{{.CreateTableSQL}}")
+	handler.Parent.LogDebug("CreateStructures","Executing Query")
+	return handler.Executor.ExecuteQuery(`{{.CreateTableSQL}}`)
 }
 
 // End Istorage 
@@ -103,21 +105,29 @@ func (handler *{{.StorageHandlerName}}) ReadAll()  SQLL.SQLLiteQueryResult {
 
 func (handler *{{.StorageHandlerName}}) ParseRows(rows *sql.Rows) per.IQueryResult {
 	{{range .StructDetails.Properties}}
-	var {{.Name}} {{.GType}}
+	var {{.Name}} *{{.GType}}
 	{{end}}
 	results := []per.IDataItem{} //{{.StructDetails.Name}}{}
 
 	for rows.Next() {
-		rows.Scan({{.ScanRow}})
+		err := rows.Scan({{.ScanRow}})
 		//fmt.Println("READ: id: " + string(id) + "- Displayname:"+  displayname + "- Description:" + description)
+		if err != nil {
+			handler.Parent.LogErrorEf("ParseRows","Row Scan errr: %s ",err)
+		} else {
+			res := data.{{.StructDetails.Name}}{}
+			{{range .StructDetails.Properties}}
+				if {{.Name}} != nil {
+					res.{{.Name}} = *{{.Name}}
+					handler.Parent.LogDebugf("ParseRows","Set '%v' for {{.Name}}",*{{.Name}})
+				} else {
+					handler.Parent.LogDebugf("ParseRows","{.Name}} was NULL")
+				}
+			{{end}}
 
-		res := data.{{.StructDetails.Name}}{}
-		{{range .StructDetails.Properties}}
-		res.{{.Name}} = {{.Name}}
-		handler.Parent.GetLog().LogDebugf("ParseRows","Set '%v' for {{.Name}}",{{.Name}})
-		{{end}}
+			results = append(results, res)
+		}
 
-		results = append(results, res)
 	}
 	return SQLL.NewDataQueryResult(true,results)
 }
