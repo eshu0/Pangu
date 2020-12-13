@@ -1,4 +1,4 @@
-package pangu
+package pgenerator
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ func (cg *Handler) () GetFileName string {
 }
 
 
-func Generate(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*Handler {
+func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*Handler {
 	var temps []*Handler
 	//Database Tables
 	for _, tbl := range dbstruct.Tables {

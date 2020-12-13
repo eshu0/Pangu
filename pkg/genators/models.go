@@ -1,5 +1,5 @@
 package pmodels
-package pangu
+package pgenerator
 
 import (
 	"fmt"
@@ -28,7 +28,7 @@ func (cg *Model) () GetFileName string {
 	return name
 }
 
-func Generate(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*Model {
+func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*Model {
 	var temps []*Model
 	//Database Tables
 	for _, tbl := range dbstruct.Tables {

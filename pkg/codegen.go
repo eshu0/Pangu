@@ -141,26 +141,6 @@ func genCG(pkgn string, tbl *anl.Table, database *anl.Database, usetablename boo
 	return &cs
 }
 
-func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*CodeGen {
-	var temps []*CodeGen
-	//Database Tables
-	for _, tbl := range dbstruct.Tables {
-		cg := genCG("handlers", tbl, dbstruct.Database, false, repohost, reponame)
-		temps = append(temps, cg)
-	}
-	return temps
-}
-
-func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*CodeGen {
-	var temps []*CodeGen
-	//Database Tables
-	for _, tbl := range dbstruct.Tables {
-		cg := genCG("models", tbl, dbstruct.Database, true, repohost, reponame)
-		temps = append(temps, cg)
-	}
-	return temps
-}
-
 func (cs *CodeGen) CheckCreatePath(slog sli.ISimpleLogger, path string, panicif bool) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		if panicif {
@@ -169,7 +149,6 @@ func (cs *CodeGen) CheckCreatePath(slog sli.ISimpleLogger, path string, panicif 
 			os.Mkdir(path, 0777)
 			fmt.Println("Created: " + path)
 		}
-
 	} else {
 		fmt.Println("Exists: " + path)
 	}
