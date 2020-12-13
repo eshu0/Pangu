@@ -6,7 +6,6 @@ import (
 
 	ds "github.com/eshu0/Pangu/examples/Autogen/Todos/DataStore"
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"
-	sl "github.com/eshu0/simplelogger/pkg"
 )
 
 func main() {
@@ -15,12 +14,7 @@ func main() {
 
 	flag.Parse()
 
-	slog := sl.NewApplicationLogger()
-
-	// lets open a flie log using the session
-	slog.OpenAllChannels()
-
-	fds := ds.CreateDataStorage(slog, *dbname)
+	fds := ds.CreateDataStorage(*dbname)
 
 	{{range .}}
 	{{.StorageHandlerName}} := fds.Get{{.StorageHandlerName}}()
