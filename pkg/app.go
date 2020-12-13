@@ -91,10 +91,10 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 
 	dbstruct := fds.GetDatabaseStructure()
 
-	CodeTemplate := pa.CreateTemplate(tdir+"handlers.txt", "code")
-	DataTemplate := pa.CreateTemplate(tdir+"models.txt", "data")
-	DLTemplate := pa.CreateTemplate(tdir+"datastore.txt", "dl")
-	ControllersTemplate := pa.CreateTemplate(tdir+"controllers.txt", "control")
+	handlersTemplate := pa.CreateTemplate(tdir+"handlers.txt", "code")
+	modelsTemplate := pa.CreateTemplate(tdir+"models.txt", "data")
+	datastoreTemplate := pa.CreateTemplate(tdir+"datastore.txt", "dl")
+	controllersTemplate := pa.CreateTemplate(tdir+"controllers.txt", "control")
 
 	MainTemplate := pa.CreateTemplate(tdir+"apps/testapp.txt", "main")
 	RESTServerTemplate := pa.CreateTemplate(tdir+"apps/restserver.txt", "control")
@@ -108,19 +108,19 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	ctemplates := GenerateHandlers(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
-		pa.CreateAndExecute(handlerdir+cs.Filename+".go", CodeTemplate, cs)
-		pa.CreateAndExecute(controllersdir+cs.Filename+".go", ControllersTemplate, cs)
+		pa.CreateAndExecute(handlerdir+cs.Filename+".go", handlersTemplate, cs)
+		pa.CreateAndExecute(controllersdir+cs.Filename+".go", controllersTemplate, cs)
 	}
 
 	ctemplates = GenerateModels(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
-		pa.CreateAndExecute(modelsdir+cs.Filename+".go", DataTemplate, cs)
+		pa.CreateAndExecute(modelsdir+cs.Filename+".go", modelsTemplate, cs)
 	}
 
 	dl := Datats{Database: ctemplates[0].Database, Templates: ctemplates, TargetRepoHost: targetrepohost, RepoName: fullreponame}
 
-	pa.CreateAndExecute(strings.ToLower(datastoredir+dl.Database.FilenameTrimmed)+".go", DLTemplate, dl)
+	pa.CreateAndExecute(strings.ToLower(datastoredir+dl.Database.FilenameTrimmed)+".go", datastoreTemplate, dl)
 	pa.CreateAndExecute(appdir+"main.go", MainTemplate, ctemplates)
 	pa.CreateAndExecute(restdir+"main.go", RESTServerTemplate, ctemplates)
 
