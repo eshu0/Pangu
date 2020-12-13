@@ -105,14 +105,14 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	targetrepohost := "github.com"
 
 	// Execute the template for each recipient.
-	ctemplates := GenerateFile(dbstruct, false, targetrepohost, fullreponame)
+	ctemplates := GenerateHandlers(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.Filename+".go", CodeTemplate, cs)
 		pa.CreateAndExecute(controllersdir+cs.Filename+".go", ControllersTemplate, cs)
 	}
 
-	ctemplates = GenerateFile(dbstruct, true, targetrepohost, fullreponame)
+	ctemplates = GenerateModels(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(modelsdir+cs.Filename+".go", DataTemplate, cs)
