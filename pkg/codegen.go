@@ -142,28 +142,22 @@ func genCG(pkgn string, tbl *anl.Table, database *anl.Database, usetablename boo
 }
 
 func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*CodeGen {
-
 	var temps []*CodeGen
-
+	//Database Tables
 	for _, tbl := range dbstruct.Tables {
 		cg := genCG("handlers", tbl, dbstruct.Database, false, repohost, reponame)
-		temps = append(temps, &cs)
-
+		temps = append(temps, &cg)
 	}
-
 	return temps
 }
 
 func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*CodeGen {
-
 	var temps []*CodeGen
-
+	//Database Tables
 	for _, tbl := range dbstruct.Tables {
 		cg := genCG("models", tbl, dbstruct.Database, true, repohost, reponame)
-		temps = append(temps, &cs)
-
+		temps = append(temps, &cg)
 	}
-
 	return temps
 }
 
