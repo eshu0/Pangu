@@ -87,7 +87,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
-	fds.Create(pa.Log)
+	fds.Create()
 
 	dbstruct := fds.GetDatabaseStructure()
 
