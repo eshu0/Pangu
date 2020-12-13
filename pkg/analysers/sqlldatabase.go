@@ -2,19 +2,18 @@ package sqllite
 
 import (
 	"database/sql"
-	"fmt"
 	"path/filepath"
 	"strconv"
 	"strings"
 
-	sli "github.com/eshu0/simplelogger/pkg/interfaces"
+	sl "github.com/eshu0/simplelogger/pkg"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 type DatabaseAnalyser struct {
 	database *sql.DB
 	Filename string
-	Log      sli.ISimpleLogger
+	sl.AppLogger
 }
 
 type Column struct {
@@ -53,9 +52,11 @@ type DatabaseStructure struct {
 	Database *Database
 }
 
-func (daa *DatabaseAnalyser) Create(log sli.ISimpleLogger) {
-	daa.database, _ = sql.Open("sqlite3", daa.Filename)
-	daa.Log = log
+func (daa *DatabaseAnalyser) Create() {
+	daa.database, err = sql.Open("sqlite3", daa.Filename)
+	if err != nil {
+		daa.LogErrorEf("Create", "Create %s ", err)
+	}
 }
 
 func (daa *DatabaseAnalyser) GetDatabaseStructure() *DatabaseStructure {
@@ -96,7 +97,7 @@ func (daa *DatabaseAnalyser) parseDBRows(rows *sql.Rows) *Database {
 
 		rows.Scan(&cId, &name, &filename)
 
-		fmt.Println("READ: id: " + strconv.Itoa(cId) + "-  name: " + name + " - filename: " + filename)
+		daa.LogDebug("parseDBRows", "READ: id: "+strconv.Itoa(cId)+"-  name: "+name+" - filename: "+filename)
 
 		db.Name = name
 		db.Filename = strings.Title(filepath.Base(filename))
@@ -122,7 +123,7 @@ func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName str
 	for rows.Next() {
 
 		rows.Scan(&cId, &name, &cType, &notNull, &dftvalue, &primaryKey)
-		fmt.Println("READ: id: " + strconv.Itoa(cId) + "- type:" + cType + "- notnull:" + strconv.Itoa(notNull) + "- default: name: " + name + "- primaryKey: " + strconv.Itoa(primaryKey))
+		daa.LogDebug("parseTableColumsRows", "READ: id: "+strconv.Itoa(cId)+"- type:"+cType+"- notnull:"+strconv.Itoa(notNull)+"- default: name: "+name+"- primaryKey: "+strconv.Itoa(primaryKey))
 
 		col := Column{}
 
