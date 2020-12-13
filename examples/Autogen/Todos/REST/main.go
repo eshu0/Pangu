@@ -7,7 +7,7 @@ import (
 	data "github.com/eshu0/Pangu/examples/Autogen/Todos/Models"	
 	Controllers "github.com/eshu0/Pangu/examples/Autogen/Todos/REST/Controllers"	
 	
-	"github.com/eshu0/RESTServer/pkg/commands"	
+	RESTCommands "github.com/eshu0/RESTServer/pkg/commands"
 	RSConfig "github.com/eshu0/RESTServer/pkg/config"
 	RSServer "github.com/eshu0/RESTServer/pkg/server"
 )
@@ -23,16 +23,13 @@ func main() {
 	// Create a new REST Server
 	server := RSServer.NewRServer(conf)
 
-	//defer the close till the server has closed
-	defer server.Log.CloseAllChannels()
-
 	// load this first
 	server.ConfigFilePath = "./config.json"
 
 	ok := server.LoadConfig()
 
 	if !ok {
-		server.Log.LogErrorf("Main", "Error : %s","Failed to load configuration server not started")
+		server.LogErrorf("Main", "Error : %s","Failed to load configuration server not started")
 		return
 	}
 	
@@ -40,7 +37,7 @@ func main() {
 	RESTCommands.AddDefaults(server)
 	RESTCommands.SetDefaultFunctionalMap(server)
 
-	fds := ds.CreateDataStorage(server.Log, *dbname)
+	fds := ds.CreateDataStorage(*dbname)
 
 	
 
