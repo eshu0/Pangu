@@ -1,4 +1,3 @@
-package pmodels
 package pgenerator
 
 import (
@@ -9,12 +8,11 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	pangudata "github.com/eshu0/pangu/pkg/structures"
-	sli "github.com/eshu0/simplelogger/pkg/interfaces"
+	"github.com/eshu0/pangu/pkg/"
 )
 
 type Model struct {
-	CodeGen
+	*pangu.CodeGen
 }
 
 func (cg *Model) () GetFileName string {

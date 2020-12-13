@@ -8,12 +8,11 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	pangudata "github.com/eshu0/pangu/pkg/structures"
-	sli "github.com/eshu0/simplelogger/pkg/interfaces"
+	"github.com/eshu0/pangu/pkg/"
 )
 
 type Handler struct {
-	CodeGen
+	*pangu.CodeGen
 }
 
 func (cg *Handler) () GetFileName string {
