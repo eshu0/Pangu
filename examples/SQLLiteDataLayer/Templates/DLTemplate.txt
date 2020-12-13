@@ -16,8 +16,10 @@ type {{.Database.FilenameTrimmed}}Datastore struct {
 	//{{end}}
 }
 
-func CreateDataStorage(log sli.ISimpleLogger,filename string) *{{.Database.FilenameTrimmed}}Datastore {
-	ds := SQLL.CreateOpenSQLLiteDatastore(log, filename)
+func CreateDataStorage(filename string) *{{.Database.FilenameTrimmed}}Datastore {
+	res := {{.Database.FilenameTrimmed}}Datastore{}
+
+	ds := SQLL.CreateOpenSQLLiteDatastore(filename)
 	
 	// tests the example
 	ds.SetStorageHander("Generic",SQLL.NewSQLLiteTableHandler(ds)) 
@@ -28,7 +30,6 @@ func CreateDataStorage(log sli.ISimpleLogger,filename string) *{{.Database.Filen
 
 	ds.CreateStructures()
 
-	res := {{.Database.FilenameTrimmed}}Datastore{}
 	res.Datastore = ds
 	
 	return &res
