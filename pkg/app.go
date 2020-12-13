@@ -87,7 +87,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
-	fds.Create(slog)
+	fds.Create(pa.Log)
 
 	dbstruct := fds.GetDatabaseStructure()
 
@@ -105,14 +105,14 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	targetrepohost := "github.com"
 
 	// Execute the template for each recipient.
-	ctemplates := pa.GenerateFile(dbstruct, false, targetrepohost, fullreponame)
+	ctemplates := GenerateFile(dbstruct, false, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.Filename+".go", CodeTemplate, cs)
 		pa.CreateAndExecute(controllersdir+cs.Filename+".go", ControllersTemplate, cs)
 	}
 
-	ctemplates = pa.GenerateFile(dbstruct, true, targetrepohost, fullreponame)
+	ctemplates = GenerateFile(dbstruct, true, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(modelsdir+cs.Filename+".go", DataTemplate, cs)

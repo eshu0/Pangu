@@ -58,7 +58,7 @@ func (cs *CodeGen) getDataName() string {
 	return name
 }
 
-func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger, usetablename bool, repohost string, reponame string) []*CodeGen {
+func GenerateFile(dbstruct *anl.DatabaseStructure, usetablename bool, repohost string, reponame string) []*CodeGen {
 
 	var temps []*CodeGen
 
