@@ -8,11 +8,12 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	"github.com/eshu0/pangu/pkg"
+	pinterface "github.com/eshu0/pangu/pkg/interfaces"
+
 )
 
 type Model struct {
-	*pangu.CodeGen
+	pinterface.ICodeGen
 }
 
 func (cg *Model) () GetFileName string {
