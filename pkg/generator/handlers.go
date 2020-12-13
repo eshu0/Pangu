@@ -1,4 +1,4 @@
-package pgenerator
+package generator
 
 import (
 	"fmt"
