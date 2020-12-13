@@ -58,9 +58,9 @@ func (cs *CodeGen) getDataName() string {
 	return name
 }
 
-func genCG(pkgn string, dbstruct *anl.DatabaseStructure, usetablename bool, repohost string, reponame string) *CodeGen {
+func genCG(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) *CodeGen {
 
-	cs := CodeGen{PackageName: pkgn, Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: dbstruct.Database, TargetRepoHost: repohost, RepoName: reponame}
+	cs := CodeGen{PackageName: pkgn, Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: database, TargetRepoHost: repohost, RepoName: reponame}
 	cs.StructDetails = tbl.CreateStructDetails()
 	consts, idconst := tbl.CreateConstants()
 	if !usetablename {
@@ -146,7 +146,7 @@ func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame
 	var temps []*CodeGen
 
 	for _, tbl := range dbstruct.Tables {
-		cg := genCG("handlers", dbstruct, false, repohost, reponame)
+		cg := genCG("handlers", tbl, dbstruct.Database, false, repohost, reponame)
 		temps = append(temps, &cs)
 
 	}
@@ -159,7 +159,7 @@ func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame s
 	var temps []*CodeGen
 
 	for _, tbl := range dbstruct.Tables {
-		cg := genCG("models", dbstruct, true, repohost, reponame)
+		cg := genCG("models", tbl, dbstruct.Database, true, repohost, reponame)
 		temps = append(temps, &cs)
 
 	}
