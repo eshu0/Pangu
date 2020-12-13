@@ -14,8 +14,10 @@ import (
 
 // solution to having data changes
 type Datats struct {
-	Templates []*CodeGen
-	Database  *anl.Database
+	Templates      []*CodeGen
+	Database       *anl.Database
+	TargetRepoHost string
+	RepoName       string
 }
 
 type CodeGen struct {
@@ -36,6 +38,9 @@ type CodeGen struct {
 	CreateTableSQL        string
 	ScanRow               string
 	Database              *anl.Database
+	TargetRepoHost        string
+	RepoName              string
+	Filename              string
 }
 
 func (cs *CodeGen) GetHandlersName() string {
