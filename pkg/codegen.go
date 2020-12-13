@@ -21,6 +21,7 @@ type Datats struct {
 }
 
 type CodeGen struct {
+	pinterface.ICodeGen
 	PackageName           string
 	StorageHandlerName    string
 	StorageControllerName string
@@ -43,19 +44,8 @@ type CodeGen struct {
 	Filename              string
 }
 
-func (cs *CodeGen) getHandlersName() string {
-	return strings.ToLower(cs.Table.Name)
-}
-
-func (cs *CodeGen) getDataName() string {
-	name := strings.ToLower(cs.Table.Name)
-
-	// crude way to take items and make it singular
-	if last := len(name) - 1; last >= 0 && name[last] == 's' {
-		name = name[:last]
-	}
-
-	return name
+func (cs *CodeGen) GetFileName string {
+	return ""
 }
 
 func genCG(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) *CodeGen {
