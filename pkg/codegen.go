@@ -43,12 +43,14 @@ type CodeGen struct {
 	Filename              string
 }
 
-func (cs *CodeGen) GetHandlersName() string {
-	return strings.Title(cs.Table.Name)
+func (cs *CodeGen) getHandlersName() string {
+	return strings.ToLower(cs.Table.Name)
 }
 
-func (cs *CodeGen) GetDataName() string {
-	name := strings.Title(cs.Table.Name)
+func (cs *CodeGen) getDataName() string {
+	name := strings.ToLower(cs.Table.Name)
+
+	// crude way to take items and make it singular
 	if last := len(name) - 1; last >= 0 && name[last] == 's' {
 		name = name[:last]
 	}
