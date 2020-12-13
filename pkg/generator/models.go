@@ -8,7 +8,7 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	"github.com/eshu0/pangu/pkg/"
+	"github.com/eshu0/pangu/pkg"
 )
 
 type Model struct {
