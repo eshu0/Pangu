@@ -45,57 +45,84 @@ func (pa *PanguApp) CreateAndExecute(filename string, templ *template.Template, 
 	file.Close()
 }
 
-func (pa *PanguApp) Parse(dbname string, odir string) {
+func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
+
+	if tdir == "" {
+		tdir = "./templates/"
+	}
 
 	dbfolder := strings.Replace(filepath.Base(dbname), filepath.Ext(dbname), "", -1)
 
-	outputdir := odir + strings.Title(dbfolder)
+	outputdir := odir + strings.ToLower(dbfolder) //strings.Title(dbfolder)
 	fmt.Println("Outputting to: " + outputdir)
 
-	datastoredir := outputdir + "/Datastore/"
-	handlerdir := outputdir + "/Handlers/"
-	modelsdir := outputdir + "/Models/"
-	appdir := outputdir + "/TestApp/"
-	restdir := outputdir + "/REST/"
-	controllersdir := restdir + "/Controllers/"
+	pkgdir := outputdir + "/pkg"
+	fmt.Println("Package directory is: " + outputdir)
 
-	pa.CheckCreatePath(dbname, true)
-	pa.CheckCreatePath(odir, false)
-	pa.CheckCreatePath(outputdir, false)
-	pa.CheckCreatePath(datastoredir, false)
-	pa.CheckCreatePath(handlerdir, false)
-	pa.CheckCreatePath(modelsdir, false)
-	pa.CheckCreatePath(appdir, false)
-	pa.CheckCreatePath(controllersdir, false)
-	pa.CheckCreatePath(restdir, false)
+	// packages
+	datastoredir := pkgdir + "/datastore/"
+	handlerdir := pkgdir + "/handlers/"
+	modelsdir := pkgdir + "/models/"
+	pkgrestdir := pkgdir + "/REST/"
+	controllersdir := pkgrestdir + "controllers/"
+
+	// apps
+	cmddir := outputdir + "/cmd/"
+	appdir := cmddir + "testapp/"
+	restdir := cmddir + "restserver/"
+
+	CheckCreatePath(slog, dbname, true)
+	CheckCreatePath(slog, odir, false)
+	CheckCreatePath(slog, pkgdir, false)
+	CheckCreatePath(slog, cmddir, false)
+
+	CheckCreatePath(slog, pkgrestdir, false)
+	CheckCreatePath(slog, outputdir, false)
+	CheckCreatePath(slog, datastoredir, false)
+	CheckCreatePath(slog, handlerdir, false)
+	CheckCreatePath(slog, modelsdir, false)
+	CheckCreatePath(slog, appdir, false)
+	CheckCreatePath(slog, controllersdir, false)
+	CheckCreatePath(slog, restdir, false)
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
-	fds.Create(pa.Log)
+	fds.Create(slog)
 
 	dbstruct := fds.GetDatabaseStructure()
 
-	CodeTemplate := pa.CreateTemplate("./Templates/CodeTemplate.txt", "code")
-	DataTemplate := pa.CreateTemplate("./Templates/DataTemplate.txt", "data")
-	DLTemplate := pa.CreateTemplate("./Templates/DLTemplate.txt", "dl")
-	MainTemplate := pa.CreateTemplate("./Templates/MainTemplate.txt", "main")
-	ControllersTemplate := pa.CreateTemplate("./Templates/Controllers.txt", "control")
-	RESTServerTemplate := pa.CreateTemplate("./Templates/RESTServer.txt", "control")
+	CodeTemplate := CreateTemplate(tdir+"handlers.txt", "code")
+	DataTemplate := CreateTemplate(tdir+"models.txt", "data")
+	DLTemplate := CreateTemplate(tdir+"datastore.txt", "dl")
+	ControllersTemplate := CreateTemplate(tdir+"controllers.txt", "control")
+
+	MainTemplate := CreateTemplate(tdir+"apps/testapp.txt", "main")
+	RESTServerTemplate := CreateTemplate(tdir+"apps/restserver.txt", "control")
+
+	rpfolder := strings.Replace(filepath.Base(dbstruct.Database.Filename), filepath.Ext(dbstruct.Database.Filename), "", -1)
+	reponame := strings.ToLower(rpfolder)
+	fullreponame := "eshu0/" + reponame
+	targetrepohost := "github.com"
 
 	// Execute the template for each recipient.
-	ctemplates := GenerateFile(dbstruct, pa.Log)
+	ctemplates := GenerateFile(dbstruct, slog, false, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
-		pa.CreateAndExecute(handlerdir+cs.GetHandlersName()+".go", CodeTemplate, cs)
-		pa.CreateAndExecute(controllersdir+cs.GetHandlersName()+".go", ControllersTemplate, cs)
-		pa.CreateAndExecute(modelsdir+cs.GetDataName()+".go", DataTemplate, cs)
+		CreateAndExecute(slog, handlerdir+cs.Filename+".go", CodeTemplate, cs)
+		CreateAndExecute(slog, controllersdir+cs.Filename+".go", ControllersTemplate, cs)
 	}
 
-	dl := Datats{Database: ctemplates[0].Database, Templates: ctemplates}
+	ctemplates = GenerateFile(dbstruct, slog, true, targetrepohost, fullreponame)
 
-	pa.CreateAndExecute(datastoredir+dl.Database.FilenameTrimmed+".go", DLTemplate, dl)
-	pa.CreateAndExecute(appdir+"main.go", MainTemplate, ctemplates)
-	pa.CreateAndExecute(restdir+"main.go", RESTServerTemplate, ctemplates)
+	for _, cs := range ctemplates {
+		CreateAndExecute(slog, modelsdir+cs.Filename+".go", DataTemplate, cs)
+	}
+
+	dl := Datats{Database: ctemplates[0].Database, Templates: ctemplates, TargetRepoHost: targetrepohost, RepoName: fullreponame}
+
+	CreateAndExecute(slog, strings.ToLower(datastoredir+dl.Database.FilenameTrimmed)+".go", DLTemplate, dl)
+	CreateAndExecute(slog, appdir+"main.go", MainTemplate, ctemplates)
+	CreateAndExecute(slog, restdir+"main.go", RESTServerTemplate, ctemplates)
 
 }
 
