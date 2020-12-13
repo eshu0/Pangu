@@ -53,9 +53,12 @@ type DatabaseStructure struct {
 }
 
 func (daa *DatabaseAnalyser) Create() {
-	daa.database, err = sql.Open("sqlite3", daa.Filename)
+	db, err := sql.Open("sqlite3", daa.Filename)
 	if err != nil {
 		daa.LogErrorEf("Create", "Create %s ", err)
+		daa.database = nil
+	} else {
+		daa.database = db
 	}
 }
 
