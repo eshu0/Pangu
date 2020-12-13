@@ -8,6 +8,8 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
+	"github.com/eshu0/pangu/pkg/interfaces"
+
 	pangudata "github.com/eshu0/pangu/pkg/structures"
 	sli "github.com/eshu0/simplelogger/pkg/interfaces"
 )
