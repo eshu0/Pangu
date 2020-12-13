@@ -1,25 +1,19 @@
 package generator
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
 	"strings"
-	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
 	pinterface "github.com/eshu0/pangu/pkg/interfaces"
-
 )
 
 type Handler struct {
 	pinterface.ICodeGen
 }
 
-func (cg *Handler) () GetFileName string {
+func (cg *Handler) GetFileName() string {
 	return strings.ToLower(cg.Table.Name)
 }
-
 
 func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame string) []*Handler {
 	var temps []*Handler

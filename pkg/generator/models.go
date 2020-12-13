@@ -1,22 +1,17 @@
 package generator
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
 	"strings"
-	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
 	pinterface "github.com/eshu0/pangu/pkg/interfaces"
-
 )
 
 type Model struct {
 	pinterface.ICodeGen
 }
 
-func (cg *Model) () GetFileName string {
+func (cg *Model) GetFileName() string {
 	name := strings.ToLower(cs.Table.Name)
 
 	// crude way to take items and make it singular
