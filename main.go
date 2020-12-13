@@ -13,13 +13,20 @@ func main() {
 
 	dbname := flag.String("db", "", "Database defaults to searching the current working directoyr for .db files")
 	outdir := flag.String("out", "", "output is ../Autogen/<Database>")
+	tdir := flag.String("tdir", "", "Template directory is ./template/")
+
 	flag.Parse()
 
 	App := pangu.PanguApp{}
-	outputdir := "../Autogen/"
+	outputdir := "./Autogen/"
+	templatedir := "./templates"
 
 	if outdir != nil && *outdir != "" {
 		outputdir = *outdir
+	}
+
+	if tdir != nil && *tdir != "" {
+		templatedir = *tdir
 	}
 
 	if dbname == nil || (dbname != nil && *dbname == "") {
@@ -30,13 +37,13 @@ func main() {
 			}
 			if !info.IsDir() && filepath.Ext(path) == ".db" {
 				fmt.Printf("Parsing database: %+v \n", info.Name())
-				App.Parse(path, outputdir)
+				App.Parse(path, outputdir, templatedir)
 				return nil
 			}
 			fmt.Printf("visited file or dir: %q\n", path)
 			return nil
 		})
 	} else {
-		App.Parse(*dbname, outputdir)
+		App.Parse(*dbname, outputdir, templatedir)
 	}
 }
