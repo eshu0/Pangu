@@ -9,7 +9,7 @@ import (
 	"text/template"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	"github.com/eshu0/pkg/generator"
+	"github.com/eshu0/pangu/pkg/generator"
 
 	sl "github.com/eshu0/simplelogger/pkg"
 )
