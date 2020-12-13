@@ -58,16 +58,20 @@ func (cs *CodeGen) getDataName() string {
 	return name
 }
 
-func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger) []*CodeGen {
+func GenerateFile(dbstruct *anl.DatabaseStructure, slog sli.ISimpleLogger, usetablename bool, repohost string, reponame string) []*CodeGen {
 
 	var temps []*CodeGen
 
 	for _, tbl := range dbstruct.Tables {
 
-		cs := CodeGen{PackageName: "pguhandlers", Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: dbstruct.Database}
+		cs := CodeGen{PackageName: "handlers", Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: dbstruct.Database, TargetRepoHost: repohost, RepoName: reponame}
 		cs.StructDetails = tbl.CreateStructDetails()
 		consts, idconst := tbl.CreateConstants()
-
+		if !usetablename {
+			cs.Filename = cs.getHandlersName()
+		} else {
+			cs.Filename = cs.getDataName()
+		}
 		cs.Constants = consts
 		cs.IdConstant = idconst
 		cs.CreateTableSQL = strings.Replace(tbl.Sql, "CREATE TABLE", "CREATE TABLE IF NOT EXISTS", -1)
