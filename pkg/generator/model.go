@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	anl "github.com/eshu0/pangu/pkg/analysers"
+	pinterface "github.com/eshu0/pangu/pkg/interfaces"
 )
 
 type Model struct {
