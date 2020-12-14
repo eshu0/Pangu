@@ -16,7 +16,7 @@ import (
 
 // solution to having data changes
 type Datats struct {
-	Templates      []*CodeGen
+	Templates      []*Model
 	Database       *anl.Database
 	TargetRepoHost string
 	RepoName       string
@@ -46,11 +46,7 @@ type CodeGen struct {
 	Filename              string
 }
 
-func (cs *CodeGen) GetFileName() string {
-	return ""
-}
-
-func Create(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) *CodeGen {
+func create(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) *CodeGen {
 	cs := CodeGen{PackageName: pkgn, Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: database, TargetRepoHost: repohost, RepoName: reponame}
 	cs.StructDetails = tbl.CreateStructDetails()
 	consts, idconst := tbl.CreateConstants()
@@ -135,6 +131,10 @@ func Create(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bo
 	cs.ParametersColumns = parameterscolumns
 	cs.ScanRow = goselect
 	return &cs
+}
+
+func (cs *CodeGen) GetFileName() string {
+	return ""
 }
 
 func (cs *CodeGen) CheckCreatePath(slog sli.ISimpleLogger, path string, panicif bool) {
