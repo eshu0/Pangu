@@ -11,6 +11,8 @@ func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame s
 		cg := create("models", tbl, dbstruct.Database, true, repohost, reponame)
 		mod := Model{} //cg.(*Model)
 		mod.CodeGen = cg
+		mod.Filename = mod.GetFileName()
+
 		temps = append(temps, &mod)
 	}
 	return temps

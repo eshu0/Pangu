@@ -11,7 +11,7 @@ func GenerateHandlers(dbstruct *anl.DatabaseStructure, repohost string, reponame
 		cg := create("handlers", tbl, dbstruct.Database, false, repohost, reponame)
 		hndl := Handler{} //cg.(*Handler)
 		hndl.CodeGen = cg
-
+		hndl.Filename = hndl.GetFileName()
 		temps = append(temps, &hndl)
 	}
 	return temps
