@@ -114,18 +114,18 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 		pa.CreateAndExecute(controllersdir+cs.Filename+".go", controllersTemplate, cs)
 	}
 
-	models = generator.GenerateModels(dbstruct, targetrepohost, fullreponame)
+	models := generator.GenerateModels(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range models {
 		pa.CreateAndExecute(modelsdir+cs.Filename+".go", modelsTemplate, cs)
 	}
 
-	dl := generator.Datats{Database: ctemplates[0].Database, Templates: ctemplates, TargetRepoHost: targetrepohost, RepoName: fullreponame}
+	dl := generator.Datats{Database: models[0].Database, Templates: models, TargetRepoHost: targetrepohost, RepoName: fullreponame}
 	pa.CreateAndExecute(strings.ToLower(datastoredir+dl.Database.FilenameTrimmed)+".go", datastoreTemplate, dl)
 
 	// Examples:
-	pa.CreateAndExecute(appdir+"main.go", MainTemplate, ctemplates)
-	pa.CreateAndExecute(restdir+"main.go", RESTServerTemplate, ctemplates)
+	pa.CreateAndExecute(appdir+"main.go", MainTemplate, models)
+	pa.CreateAndExecute(restdir+"main.go", RESTServerTemplate, models)
 
 }
 
