@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/eshu0/Pangu/pkg/generator"
 	anl "github.com/eshu0/pangu/pkg/analysers"
 
 	sl "github.com/eshu0/simplelogger/pkg"
@@ -106,14 +107,16 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	targetrepohost := "github.com"
 
 	// Execute the template for each recipient.
-	ctemplates := GenerateHandlers(dbstruct, targetrepohost, fullreponame)
+	//hndlr := Handler{}
+	ctemplates := generator.GenerateHandlers(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(handlerdir+cs.Filename+".go", handlersTemplate, cs)
 		pa.CreateAndExecute(controllersdir+cs.Filename+".go", controllersTemplate, cs)
 	}
 
-	ctemplates = GenerateModels(dbstruct, targetrepohost, fullreponame)
+	//models :=  []*Model
+	ctemplates = generator.GenerateModels(dbstruct, targetrepohost, fullreponame)
 
 	for _, cs := range ctemplates {
 		pa.CreateAndExecute(modelsdir+cs.Filename+".go", modelsTemplate, cs)
