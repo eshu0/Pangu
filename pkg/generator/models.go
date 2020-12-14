@@ -9,8 +9,9 @@ func GenerateModels(dbstruct *anl.DatabaseStructure, repohost string, reponame s
 	//Database Tables
 	for _, tbl := range dbstruct.Tables {
 		cg := Create("models", tbl, dbstruct.Database, true, repohost, reponame)
-		mod := cg.(*Model)
-		temps = append(temps, mod)
+		mod := Model{} //cg.(*Model)
+		mod.CodeGen = cg
+		temps = append(temps, &mod)
 	}
 	return temps
 }
