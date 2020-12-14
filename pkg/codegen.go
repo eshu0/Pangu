@@ -54,11 +54,16 @@ func Create(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bo
 	cs := CodeGen{PackageName: pkgn, Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: database, TargetRepoHost: repohost, RepoName: reponame}
 	cs.StructDetails = tbl.CreateStructDetails()
 	consts, idconst := tbl.CreateConstants()
-	if !usetablename {
-		cs.Filename = cs.getHandlersName()
-	} else {
-		cs.Filename = cs.getDataName()
-	}
+	cs.Filename = GetFileName()
+
+	/*
+		if !usetablename {
+			cs.Filename = cs.getHandlersName()
+		} else {
+			cs.Filename = cs.getDataName()
+		}
+	*/
+
 	cs.Constants = consts
 	cs.IdConstant = idconst
 	cs.CreateTableSQL = strings.Replace(tbl.Sql, "CREATE TABLE", "CREATE TABLE IF NOT EXISTS", -1)
