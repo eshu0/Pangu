@@ -107,22 +107,20 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	targetrepohost := "github.com"
 
 	// Execute the template for each recipient.
-	//hndlr := Handler{}
-	ctemplates := generator.GenerateHandlers(dbstruct, targetrepohost, fullreponame)
+	handlers := generator.GenerateHandlers(dbstruct, targetrepohost, fullreponame)
 
-	for _, cs := range ctemplates {
+	for _, cs := range handlers {
 		pa.CreateAndExecute(handlerdir+cs.Filename+".go", handlersTemplate, cs)
 		pa.CreateAndExecute(controllersdir+cs.Filename+".go", controllersTemplate, cs)
 	}
 
-	//models :=  []*Model
-	ctemplates = generator.GenerateModels(dbstruct, targetrepohost, fullreponame)
+	models = generator.GenerateModels(dbstruct, targetrepohost, fullreponame)
 
-	for _, cs := range ctemplates {
+	for _, cs := range models {
 		pa.CreateAndExecute(modelsdir+cs.Filename+".go", modelsTemplate, cs)
 	}
 
-	dl := Datats{Database: ctemplates[0].Database, Templates: ctemplates, TargetRepoHost: targetrepohost, RepoName: fullreponame}
+	dl := generator.Datats{Database: ctemplates[0].Database, Templates: ctemplates, TargetRepoHost: targetrepohost, RepoName: fullreponame}
 	pa.CreateAndExecute(strings.ToLower(datastoredir+dl.Database.FilenameTrimmed)+".go", datastoreTemplate, dl)
 
 	// Examples:
