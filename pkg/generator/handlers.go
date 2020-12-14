@@ -3,12 +3,12 @@ package generator
 import (
 	"strings"
 
+	pangu "github.com/eshu0/pangu/pkg"
 	anl "github.com/eshu0/pangu/pkg/analysers"
-	pinterface "github.com/eshu0/pangu/pkg/interfaces"
 )
 
 type Handler struct {
-	pinterface.ICodeGen
+	pangu.CodeGen
 }
 
 func (cg *Handler) GetFileName() string {

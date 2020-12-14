@@ -50,8 +50,7 @@ func (cs *CodeGen) GetFileName() string {
 	return ""
 }
 
-func genCG(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) *CodeGen {
-
+func Create(pkgn string, tbl *anl.Table, database *anl.Database, usetablename bool, repohost string, reponame string) ICodeGen {
 	cs := CodeGen{PackageName: pkgn, Table: tbl, StorageHandlerName: strings.Title(tbl.Name + "Handler"), StorageControllerName: strings.Title(tbl.Name + "Controller"), Database: database, TargetRepoHost: repohost, RepoName: reponame}
 	cs.StructDetails = tbl.CreateStructDetails()
 	consts, idconst := tbl.CreateConstants()
