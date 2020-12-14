@@ -3,13 +3,14 @@ package generator
 import (
 	"strings"
 
-	pangu "github.com/eshu0/pangu/pkg"
+	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
 type Handler struct {
-	pangu.CodeGen
+	pinterface.ICodeGen
+	Table *anl.Table
 }
 
-func (cg *Handler) GetFileName() string {
-	return strings.ToLower(cg.Table.Name)
+func (hndlr *Handler) GetFileName() string {
+	return strings.ToLower(hndlr.Table.Name)
 }

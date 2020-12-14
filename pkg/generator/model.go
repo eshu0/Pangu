@@ -3,11 +3,12 @@ package generator
 import (
 	"strings"
 
-	pangu "github.com/eshu0/pangu/pkg"
+	anl "github.com/eshu0/pangu/pkg/analysers"
 )
 
 type Model struct {
-	pangu.CodeGen
+	pinterface.ICodeGen
+	Table *anl.Table
 }
 
 func (cg *Model) GetFileName() string {
