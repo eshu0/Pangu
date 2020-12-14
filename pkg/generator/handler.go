@@ -7,7 +7,7 @@ import (
 type Handler struct {
 	//pinterface.ICodeGen
 	//Table *anl.Table
-	CodeGen
+	*CodeGen
 }
 
 func (hndlr *Handler) GetFileName() string {

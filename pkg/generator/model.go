@@ -5,7 +5,7 @@ import (
 )
 
 type Model struct {
-	CodeGen
+	*CodeGen
 	//pinterface.ICodeGen
 	//Table *anl.Table
 }
