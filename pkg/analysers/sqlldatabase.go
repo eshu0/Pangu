@@ -17,12 +17,13 @@ type DatabaseAnalyser struct {
 }
 
 type Column struct {
-	PTableName string
-	Name       string
-	CType      string
-	NotNull    int
-	Default    string
-	PrimaryKey int
+	PTableName   string
+	Name         string
+	CType        string
+	NotNull      int
+	Default      string
+	PrimaryKey   int
+	DefaultValue []byte
 }
 
 type Database struct {
@@ -134,6 +135,7 @@ func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName str
 		col.Name = name
 		col.CType = cType
 		col.NotNull = notNull
+		col.DefaultValue = dftvalue
 		col.PrimaryKey = primaryKey
 
 		//

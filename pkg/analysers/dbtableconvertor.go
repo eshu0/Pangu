@@ -55,46 +55,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	props = append(props, prop)
 
 	for _, col := range table.Columns {
-		prop := &pangu.Property{}
-		prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)", col.Name, col.CType)
-		prop.Name = strings.Title(col.Name)
-		if col.NotNull == 1 {
-			prop.Json = "`json:\"" + strings.ToLower(col.Name) + "\"`"
-		} else {
-			prop.Json = "`json:\"" + strings.ToLower(col.Name) + ",omitempty\"`"
-		}
-		prop.IsIdentifier = false
-		prop.Constant = table.CreateConstant(col)
-
-		if strings.Contains(col.CType, "VARCHAR") {
-			prop.GType = "string"
-			prop.UpdateValue = "\"Updated\""
-			props = append(props, prop)
-		} else {
-			switch col.CType {
-			case "INTEGER":
-				prop.GType = "int64"
-				prop.UpdateValue = "11"
-				props = append(props, prop)
-				break
-			case "TEXT":
-				prop.GType = "string"
-				prop.UpdateValue = "\"Updated\""
-				props = append(props, prop)
-				break
-			case "VARCHAR":
-				prop.GType = "string"
-				prop.UpdateValue = "\"Updated\""
-				props = append(props, prop)
-				break
-			case "NUMERIC":
-				prop.GType = "float64"
-				prop.UpdateValue = "1.11"
-				props = append(props, prop)
-				break
-			}
-		}
-
+		props = append(props, ColumnToProperty(col))
 	}
 
 	stru.Properties = props
@@ -132,4 +93,56 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	functions = append(functions, &String)
 	stru.Functions = functions
 	return &stru
+}
+
+func (table *Table) ColumnToProperty(col Column) *pangu.Property {
+
+	prop := pangu.Property{}
+
+	// Comment for the proptyer
+	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)", col.Name, col.CType)
+
+	// property name
+	prop.Name = strings.Title(col.Name)
+
+	// if column is not null we cwill always return a json reponse
+	if col.NotNull == 1 {
+		prop.Json = "`json:\"" + strings.ToLower(col.Name) + "\"`"
+	} else {
+		prop.Json = "`json:\"" + strings.ToLower(col.Name) + ",omitempty\"`"
+	}
+
+	// this is not an identifier
+	prop.IsIdentifier = false
+	prop.Constant = table.CreateConstant(col)
+
+	if strings.Contains(col.CType, "VARCHAR") {
+		prop.GType = "string"
+		prop.UpdateValue = "\"Updated\""
+	} else {
+		switch col.CType {
+		case "INTEGER":
+			prop.GType = "int64"
+			prop.UpdateValue = "11"
+			props = append(props, prop)
+			break
+		case "TEXT":
+			prop.GType = "string"
+			prop.UpdateValue = "\"Updated\""
+			props = append(props, prop)
+			break
+		case "VARCHAR":
+			prop.GType = "string"
+			prop.UpdateValue = "\"Updated\""
+			props = append(props, prop)
+			break
+		case "NUMERIC":
+			prop.GType = "float64"
+			prop.UpdateValue = "1.11"
+			props = append(props, prop)
+			break
+		}
+	}
+
+	return &prop
 }
