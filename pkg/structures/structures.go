@@ -14,10 +14,6 @@ type StructDetails struct {
 	Properties []*Property
 	Comment    string
 
-	// These indicate what properties can be updated
-	// optimisation for my use case might - remove if not needed in general
-	UpdateProperties []*Property
-
 	// The property that is an Identifier for the struct
 	// this might need to be handled differently
 	Id *Property
@@ -44,7 +40,7 @@ type Property struct {
 	// so if a constant should set this etc
 	Constant *Constant
 
-	FmtSprintf string
+	UpdateValue string
 }
 
 //Function A Go lang struct function

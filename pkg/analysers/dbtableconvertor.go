@@ -42,7 +42,6 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	stru.Comment = fmt.Sprintf("Built from: %s", table.Name)
 
 	var props []*pangu.Property
-	var uprops []*pangu.Property
 	var functions []*pangu.Function
 
 	prop := &pangu.Property{}
@@ -75,22 +74,23 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 			switch col.CType {
 			case "INTEGER":
 				prop.GType = "int64"
+				prop.UpdateValue = "11"
 				props = append(props, prop)
 				break
 			case "TEXT":
 				prop.GType = "string"
+				prop.UpdateValue = "\"Updated\""
 				props = append(props, prop)
-				uprops = append(uprops, prop)
 				break
 			case "VARCHAR":
 				prop.GType = "string"
+				prop.UpdateValue = "\"Updated\""
 				props = append(props, prop)
-				uprops = append(uprops, prop)
 				break
 			case "NUMERIC":
 				prop.GType = "float64"
+				prop.UpdateValue = "1.11"
 				props = append(props, prop)
-				uprops = append(uprops, prop)
 				break
 			}
 		}
@@ -98,7 +98,6 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	}
 
 	stru.Properties = props
-	stru.UpdateProperties = uprops
 
 	ConvertFromIDataItem := pangu.Function{}
 	ConvertFromIDataItem.Data = fmt.Sprintf("func (data *%s) ConvertFromIDataItem(input per.IDataItem) %s { \n\tres := input.(%s) \n\treturn res \n}", stru.Name, stru.Name, stru.Name)
