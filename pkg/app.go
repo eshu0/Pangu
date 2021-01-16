@@ -66,6 +66,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 
 	outputdir := odir + strings.ToLower(dbfolder) //strings.Title(dbfolder)
 	fmt.Println("Outputting to: " + outputdir)
+	pa.CheckCreatePath(outputdir, true)
 
 	pkgdir := outputdir + "/pkg"
 	fmt.Println("Package directory is: " + outputdir)
