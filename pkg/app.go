@@ -24,11 +24,16 @@ func (pa *PanguApp) CheckCreatePath(path string, panicif bool) {
 			panic(path + " not found!")
 		} else {
 			err1 := os.Mkdir(path, 0777)
-			if panicif {
-				panic(err1)
+			if err1 != nil {
+				if panicif {
+					panic(err1)
+				} else {
+					pa.LogErrorEf("CheckCreatePath", "Failed to make dir  ", err1)
+				}
 			} else {
-				pa.LogErrorEf("CheckCreatePath", "Failed to make dir  ", err1)
+				pa.LogDebug("CheckCreatePath", "Created: "+path)
 			}
+
 		}
 
 	} else {
