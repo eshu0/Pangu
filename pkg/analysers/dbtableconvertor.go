@@ -104,7 +104,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	ConvertFromIDataItem.Data = fmt.Sprintf("func (data *%s) ConvertFromIDataItem(input per.IDataItem) %s { \n\tres := input.(%s) \n\treturn res \n}", stru.Name, stru.Name, stru.Name)
 
 	Print := pangu.Function{}
-	Print.Data = "func (data *" + stru.Name + ") Print() string { \n\t return fmt.Sprintf(\"%s\",data) \n}"
+	Print.Data = "func (data " + stru.Name + ") Print() string { \n\t return fmt.Sprintf(\"%s\",data) \n}"
 
 	String := pangu.Function{}
 	String.Data = "func (data *" + stru.Name + ") String() string {\n\t str := \"\""
@@ -116,6 +116,9 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 			String.Data += "\n\tstr += fmt.Sprintf(\" %d \",data." + p.Name + ")"
 		case "string":
 			String.Data += "\n\tstr += fmt.Sprintf(\" %s \",data." + p.Name + ")"
+			break
+		case "float64":
+			String.Data += "\n\tstr += fmt.Sprintf(\" %f \",data." + p.Name + ")"
 			break
 		default:
 			String.Data += "\n\tstr += fmt.Sprintf(\" %v \",data." + p.Name + ")"
