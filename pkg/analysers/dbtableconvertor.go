@@ -44,14 +44,11 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	var props []*pangu.Property
 	var functions []*pangu.Function
 
-	prop := &pangu.Property{}
-	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)", table.PKColumn.Name, table.PKColumn.CType)
-	prop.Name = strings.Title(table.PKColumn.Name)
-	prop.Json = "`json:\"" + strings.ToLower(table.PKColumn.Name) + "\"`"
-	prop.GType = "int64"
+	prop := ColumnToProperty(table.PKColumn)
 	prop.IsIdentifier = true
-	prop.Constant = table.CreateConstant(table.PKColumn)
+
 	stru.Id = prop
+
 	props = append(props, prop)
 
 	for _, col := range table.Columns {
