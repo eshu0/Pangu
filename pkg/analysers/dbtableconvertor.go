@@ -91,7 +91,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 				prop.GType = "float"
 				props = append(props, prop)
 				uprops = append(uprops, prop)
-				break				
+				break
 			}
 		}
 
@@ -108,23 +108,22 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 
 	String := pangu.Function{}
 	String.Data = "func (data *" + stru.Name + ") String() string {\n\t str := \"\""
-	
-			for _, p := range stru.Properties){
-				String.Data +=  "\n// "+p.Comment
-				switch p.GType {
-					case "int64":
-						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %d \",data."+p.Name+")"
-					case "string":
-						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %s \",data."+p.Name+")"
-						break	
-					default:
-						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %v \",data."+p.Name+")"
-						break												
-				}
-			}
-			
-			
-	String.Data +="\n\treturn str //fmt.Sprintf(\" %v, \",data) \n}"
+
+	for _, p := range stru.Properties {
+		String.Data += "\n// " + p.Comment
+		switch p.GType {
+		case "int64":
+			String.Data += "\n\tstr = str + fmt.Sprintf(\" %d \",data." + p.Name + ")"
+		case "string":
+			String.Data += "\n\tstr = str + fmt.Sprintf(\" %s \",data." + p.Name + ")"
+			break
+		default:
+			String.Data += "\n\tstr = str + fmt.Sprintf(\" %v \",data." + p.Name + ")"
+			break
+		}
+	}
+
+	String.Data += "\n\treturn str //fmt.Sprintf(\" %v, \",data) \n}"
 
 	functions = append(functions, &ConvertFromIDataItem)
 	functions = append(functions, &Print)
