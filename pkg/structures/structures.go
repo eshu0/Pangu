@@ -22,6 +22,7 @@ type StructDetails struct {
 	// this might need to be handled differently
 	Id *Property
 
+	//Functions for the structure
 	Functions []*Function
 }
 
