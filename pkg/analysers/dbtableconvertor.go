@@ -132,7 +132,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 			}
 			
 			
-	String.Data +="treturn str //fmt.Sprintf(\" %v, \",data) \n}"
+	String.Data +="\treturn str //fmt.Sprintf(\" %v, \",data) \n}"
 
 	functions = append(functions, &ConvertFromIDataItem)
 	functions = append(functions, &Print)
