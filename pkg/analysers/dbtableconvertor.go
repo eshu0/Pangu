@@ -68,8 +68,8 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 
 		if strings.Contains(col.CType, "VARCHAR") {
 			prop.GType = "string"
+			prop.UpdateValue = "\"Updated\""
 			props = append(props, prop)
-			uprops = append(uprops, prop)
 		} else {
 			switch col.CType {
 			case "INTEGER":
