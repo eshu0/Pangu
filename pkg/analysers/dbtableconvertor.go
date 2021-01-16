@@ -101,38 +101,30 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	stru.UpdateProperties = uprops
 
 	ConvertFromIDataItem := pangu.Function{}
-	ConvertFromIDataItem.Data =
-		fmt.Sprintf(`func (data *%s) ConvertFromIDataItem(input per.IDataItem) %s { 
-		res := input.(%s)
-		return res
-	 }`, stru.Name)
+	ConvertFromIDataItem.Data = fmt.Sprintf("func (data *%s) ConvertFromIDataItem(input per.IDataItem) %s { \n\tres := input.(%s) \n\treturn res \n}", stru.Name, stru.Name, stru.Name)
 
 	Print := pangu.Function{}
-	Print.Data =
-		`func (data *` + stru.Name + `) Print() string {
-		return fmt.Sprintf("%s",data) 
-	}`
+	Print.Data = "func (data *" + stru.Name + ") Print() string { \n\t return fmt.Sprintf(\"%s\",data) \n}"
 
 	String := pangu.Function{}
-	String.Data ="func (data *" + stru.Name + ") String() string {\n\t str := \"\""
+	String.Data = "func (data *" + stru.Name + ") String() string {\n\t str := \"\""
 	
 			for _, p := range stru.Properties){
-				String.Data +=  "// "+p.Comment+"\n"
+				String.Data +=  "\n// "+p.Comment
 				switch p.GType {
 					case "int64":
-						String.Data +=  "\tstr = str + fmt.Sprintf(\" %d \",data."+p.Name+") "+p.Comment+"\n"
-						break
+						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %d \",data."+p.Name+")"
 					case "string":
-						String.Data +=  "\tstr = str + fmt.Sprintf(\" %s \",data."+p.Name+") "+p.Comment+"\n"
+						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %s \",data."+p.Name+")"
 						break	
 					default:
-						String.Data +=  "\tstr = str + fmt.Sprintf(\" %v \",data."+p.Name+") "p.Comment+"\n"
+						String.Data +=  "\n\tstr = str + fmt.Sprintf(\" %v \",data."+p.Name+")"
 						break												
 				}
 			}
 			
 			
-	String.Data +="\treturn str //fmt.Sprintf(\" %v, \",data) \n}"
+	String.Data +="\n\treturn str //fmt.Sprintf(\" %v, \",data) \n}"
 
 	functions = append(functions, &ConvertFromIDataItem)
 	functions = append(functions, &Print)
