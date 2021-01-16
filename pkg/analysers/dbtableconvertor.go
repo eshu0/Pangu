@@ -44,7 +44,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	var props []*pangu.Property
 	var functions []*pangu.Function
 
-	prop := ColumnToProperty(table.PKColumn)
+	prop := table.ColumnToProperty(table.PKColumn)
 	prop.IsIdentifier = true
 
 	stru.Id = prop
@@ -52,7 +52,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	props = append(props, prop)
 
 	for _, col := range table.Columns {
-		props = append(props, ColumnToProperty(col))
+		props = append(props, table.ColumnToProperty(col))
 	}
 
 	stru.Properties = props
@@ -92,7 +92,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	return &stru
 }
 
-func (table *Table) ColumnToProperty(col Column) *pangu.Property {
+func (table *Table) ColumnToProperty(col *Column) *pangu.Property {
 
 	prop := pangu.Property{}
 
@@ -121,22 +121,18 @@ func (table *Table) ColumnToProperty(col Column) *pangu.Property {
 		case "INTEGER":
 			prop.GType = "int64"
 			prop.UpdateValue = "11"
-			props = append(props, prop)
 			break
 		case "TEXT":
 			prop.GType = "string"
 			prop.UpdateValue = "\"Updated\""
-			props = append(props, prop)
 			break
 		case "VARCHAR":
 			prop.GType = "string"
 			prop.UpdateValue = "\"Updated\""
-			props = append(props, prop)
 			break
 		case "NUMERIC":
 			prop.GType = "float64"
 			prop.UpdateValue = "1.11"
-			props = append(props, prop)
 			break
 		}
 	}
