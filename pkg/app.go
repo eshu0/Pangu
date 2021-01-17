@@ -82,6 +82,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	cmddir := outputdir + "/cmd/"
 	appdir := cmddir + "testapp/"
 	restdir := cmddir + "restserver/"
+	pmdir := cmddir + "pmgen/"
 
 	pa.CheckCreatePath(dbname, true)
 	pa.CheckCreatePath(odir, false)
@@ -96,6 +97,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	pa.CheckCreatePath(appdir, false)
 	pa.CheckCreatePath(controllersdir, false)
 	pa.CheckCreatePath(restdir, false)
+	pa.CheckCreatePath(pmdir, false)
 
 	fds := &anl.DatabaseAnalyser{}
 	fds.Filename = dbname
@@ -110,6 +112,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 
 	MainTemplate := pa.CreateTemplate(tdir+"apps/testapp.txt", "main")
 	RESTServerTemplate := pa.CreateTemplate(tdir+"apps/restserver.txt", "control")
+	pmTemplate := pa.CreateTemplate(tdir+"apps/pmcollection.txt", "control")
 
 	rpfolder := strings.Replace(filepath.Base(dbstruct.Database.Filename), filepath.Ext(dbstruct.Database.Filename), "", -1)
 	reponame := strings.ToLower(rpfolder)
@@ -136,6 +139,7 @@ func (pa *PanguApp) Parse(dbname string, odir string, tdir string) {
 	// Examples:
 	pa.CreateAndExecute(appdir+"main.go", MainTemplate, models)
 	pa.CreateAndExecute(restdir+"main.go", RESTServerTemplate, models)
+	pa.CreateAndExecute(pmdir+"main.go", pmTemplate, models)
 
 }
 
