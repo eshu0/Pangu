@@ -3,10 +3,10 @@ package pangudata
 type GType int
 
 const (
-	gtunknown GType = iota
-	gtint64
-	gtstring
-	gtfloat64
+	GTunknown GType = iota
+	GTint64
+	GTstring
+	GTfloat64
 )
 
 func (d GType) String() string {
