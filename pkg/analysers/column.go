@@ -110,19 +110,19 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 func (col *Column) SetTypeFromCType(prop *pangu.Property) {
 	switch col.CType {
 	case Integer:
-		prop.GType = pangu.gtint64
+		prop.GType = pangu.GTint64
 		prop.UpdateValue = "11"
 		break
 	case Text:
-		prop.GType = pangu.gtstring
+		prop.GType = pangu.GTstring
 		prop.UpdateValue = "\"Updated\""
 		break
 	case VarChar:
-		prop.GType = pangu.gtstring
+		prop.GType = pangu.GTstring
 		prop.UpdateValue = "\"Updated\""
 		break
 	case Numeric:
-		prop.GType = pangu.gtfloat64
+		prop.GType = pangu.GTfloat64
 		prop.UpdateValue = "1.11"
 		break
 	}
