@@ -77,7 +77,7 @@ func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName str
 
 		//
 		col.Name = name
-		col.CType = cType
+		col.CType = CTypeFromString(cType)
 		col.NotNull = notNull
 		col.DefaultValue = dftvalue
 		col.PrimaryKey = primaryKey
