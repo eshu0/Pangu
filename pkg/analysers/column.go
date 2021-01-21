@@ -76,25 +76,7 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 	// this is not an identifier
 	prop.IsIdentifier = false
 	prop.Constant = table.CreateConstant(col)
-
-	switch col.CType {
-	case Integer:
-		prop.GType = gtint64
-		prop.UpdateValue = "11"
-		break
-	case Text:
-		prop.GType = gtstring
-		prop.UpdateValue = "\"Updated\""
-		break
-	case VarChar:
-		prop.GType = gtstring
-		prop.UpdateValue = "\"Updated\""
-		break
-	case Numeric:
-		prop.GType = gtfloat64
-		prop.UpdateValue = "1.11"
-		break
-	}
+	prop.SetTypeFromCType(col.CType)
 
 	/*
 		if strings.Contains(col.CType, "VARCHAR") {

@@ -53,7 +53,7 @@ func (daa *DatabaseAnalyser) GetColumns(tablename string) ([]*Column, *Column) {
 func (daa *DatabaseAnalyser) GetDatabase() *Database {
 	statement, _ := daa.database.Prepare("PRAGMA database_list")
 	rows, _ := statement.Query()
-	return ParseDBRows(rows)
+	return ParseDBRows(daa, rows)
 }
 
 func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName string) ([]*Column, *Column) {
