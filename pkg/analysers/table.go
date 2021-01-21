@@ -7,8 +7,6 @@ import (
 	pangu "github.com/eshu0/pangu/pkg/structures"
 )
 
-}
-
 type Table struct {
 	Name      string
 	TableName string
@@ -17,7 +15,6 @@ type Table struct {
 	HasPK     bool
 	PKColumn  *Column
 }
-
 
 func (table *Table) CreateConstants() ([]*pangu.Constant, *pangu.Constant) {
 	var cnsts []*pangu.Constant
