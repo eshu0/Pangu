@@ -3,12 +3,12 @@ package pangudata
 type GType int
 
 const (
-	North GType = iota
-	East
-	South
-	West
+	gtunknown GType = iota
+	gtint64
+	gtstring
+	gtfloat64
 )
 
 func (d GType) String() string {
-	return [...]string{"North", "East", "South", "West"}[d]
+	return [...]string{"unknown", "int64", "string", "float64"}[d]
 }

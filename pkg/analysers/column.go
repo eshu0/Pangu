@@ -18,9 +18,11 @@ const (
 	VarChar
 )
 
+/*
 func (d CType) String() string {
 	return [...]string{"INTEGER", "TEXT", "NUMERIC", "VARCHAR"}[d]
 }
+*/
 
 func CTypeFromString(typestring string) CType {
 
@@ -77,19 +79,19 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 
 	switch col.CType {
 	case Integer:
-		prop.GType = "int64"
+		prop.GType = gtnt64
 		prop.UpdateValue = "11"
 		break
 	case Text:
-		prop.GType = "string"
+		prop.GType = gtstring
 		prop.UpdateValue = "\"Updated\""
 		break
 	case VarChar:
-		prop.GType = "string"
+		prop.GType = gtstring
 		prop.UpdateValue = "\"Updated\""
 		break
 	case Numeric:
-		prop.GType = "float64"
+		prop.GType = gtfloat64
 		prop.UpdateValue = "1.11"
 		break
 	}

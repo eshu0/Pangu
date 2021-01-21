@@ -53,15 +53,15 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	var props []*pangu.Property
 	var functions []*pangu.Function
 
-	prop := table.ColumnToProperty(table.PKColumn)
+	prop := table.PKColumn.ToProperty(table)
 	prop.IsIdentifier = true
 
-	stru.Id = prop
+	stru.ID = prop
 
 	props = append(props, prop)
 
 	for _, col := range table.Columns {
-		props = append(props, col.ColumnToProperty(table))
+		props = append(props, col.ToProperty(table))
 	}
 
 	stru.Properties = props
@@ -78,12 +78,12 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 	for _, p := range stru.Properties {
 		String.Data += "\n\t// " + p.Comment
 		switch p.GType {
-		case "int64":
+		case gtint64:
 			String.Data += "\n\tstr += fmt.Sprintf(\" %d \",data." + p.Name + ")"
-		case "string":
+		case gtstring:
 			String.Data += "\n\tstr += fmt.Sprintf(\" %s \",data." + p.Name + ")"
 			break
-		case "float64":
+		case gtfloat64:
 			String.Data += "\n\tstr += fmt.Sprintf(\" %f \",data." + p.Name + ")"
 			break
 		default:
