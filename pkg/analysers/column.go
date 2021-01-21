@@ -76,7 +76,7 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 	// this is not an identifier
 	prop.IsIdentifier = false
 	prop.Constant = table.CreateConstant(col)
-	prop.SetTypeFromCType(col.CType)
+	col.SetTypeFromCType(&prop)
 
 	/*
 		if strings.Contains(col.CType, "VARCHAR") {
@@ -105,4 +105,25 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 	*/
 
 	return &prop
+}
+
+func (col *Column) SetTypeFromCType(prop *pangu.Property) {
+	switch col.CType {
+	case Integer:
+		prop.GType = pangu.gtint64
+		prop.UpdateValue = "11"
+		break
+	case Text:
+		prop.GType = pangu.gtstring
+		prop.UpdateValue = "\"Updated\""
+		break
+	case VarChar:
+		prop.GType = pangu.gtstring
+		prop.UpdateValue = "\"Updated\""
+		break
+	case Numeric:
+		prop.GType = pangu.gtfloat64
+		prop.UpdateValue = "1.11"
+		break
+	}
 }

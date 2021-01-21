@@ -33,24 +33,3 @@ func (p *Property) PrintString() string {
 		return "\n\tstr += fmt.Sprintf(\" %v \",data." + p.Name + ")"
 	}
 }
-
-func (prop *Property) SetTypeFromCType(ctype CType) {
-	switch ctype {
-	case Integer:
-		prop.GType = gtint64
-		prop.UpdateValue = "11"
-		break
-	case Text:
-		prop.GType = gtstring
-		prop.UpdateValue = "\"Updated\""
-		break
-	case VarChar:
-		prop.GType = gtstring
-		prop.UpdateValue = "\"Updated\""
-		break
-	case Numeric:
-		prop.GType = gtfloat64
-		prop.UpdateValue = "1.11"
-		break
-	}
-}
