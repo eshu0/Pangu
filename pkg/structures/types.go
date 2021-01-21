@@ -3,7 +3,7 @@ package pangudata
 type GType int
 
 const (
-	North Direction = iota
+	North GType = iota
 	East
 	South
 	West

@@ -7,7 +7,7 @@ import (
 type CType int
 
 const (
-	Integer Direction = iota
+	Integer CType = iota
 	Text
 	Numeric
 )
