@@ -2,9 +2,7 @@ package sqllite
 
 import (
 	"database/sql"
-	"path/filepath"
 	"strconv"
-	"strings"
 
 	sl "github.com/eshu0/simplelogger/pkg"
 	_ "github.com/mattn/go-sqlite3"
@@ -16,41 +14,10 @@ type DatabaseAnalyser struct {
 	sl.AppLogger
 }
 
-type Column struct {
-	PTableName   string
-	Name         string
-	CType        string
-	NotNull      int
-	Default      string
-	PrimaryKey   int
-	DefaultValue []byte
-}
-
-type Database struct {
-	Name            string
-	Filename        string
-	FilenameTrimmed string
-}
-
-type Table struct {
-	Name      string
-	TableName string
-	Sql       string
-	Columns   []*Column
-	HasPK     bool
-	PKColumn  *Column
-}
-
 type View struct {
 	Name      string
 	TableName string
 	Sql       string
-}
-
-type DatabaseStructure struct {
-	Tables   []*Table
-	Views    []*View
-	Database *Database
 }
 
 func (daa *DatabaseAnalyser) Create() {
@@ -66,7 +33,7 @@ func (daa *DatabaseAnalyser) Create() {
 func (daa *DatabaseAnalyser) GetDatabaseStructure() *DatabaseStructure {
 	statement, _ := daa.database.Prepare("SELECT name,type,tbl_name,sql FROM sqlite_master")
 	rows, _ := statement.Query()
-	dbs := daa.parseStructureRows(rows)
+	dbs := ParseStructureRows(rows)
 	for _, tbl := range dbs.Tables {
 		cols, pk := daa.GetColumns(tbl.TableName)
 		tbl.Columns = cols
@@ -86,30 +53,7 @@ func (daa *DatabaseAnalyser) GetColumns(tablename string) ([]*Column, *Column) {
 func (daa *DatabaseAnalyser) GetDatabase() *Database {
 	statement, _ := daa.database.Prepare("PRAGMA database_list")
 	rows, _ := statement.Query()
-	return daa.parseDBRows(rows)
-}
-
-func (daa *DatabaseAnalyser) parseDBRows(rows *sql.Rows) *Database {
-
-	var cId int
-	var name string
-	var filename string
-
-	db := Database{}
-
-	for rows.Next() {
-
-		rows.Scan(&cId, &name, &filename)
-
-		daa.LogDebug("parseDBRows", "READ: id: "+strconv.Itoa(cId)+"-  name: "+name+" - filename: "+filename)
-
-		db.Name = name
-		db.Filename = strings.Title(filepath.Base(filename))
-		db.FilenameTrimmed = strings.TrimSuffix(db.Filename, filepath.Ext(db.Filename))
-	}
-
-	return &db
-
+	return ParseDBRows(rows)
 }
 
 func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName string) ([]*Column, *Column) {
@@ -148,45 +92,4 @@ func (daa *DatabaseAnalyser) parseTableColumsRows(rows *sql.Rows, PTableName str
 	}
 
 	return cols, pk
-}
-
-func (daa *DatabaseAnalyser) parseStructureRows(rows *sql.Rows) *DatabaseStructure {
-
-	var name string
-	var tblname string
-	var sql string
-	var ttype string
-
-	var tables []*Table
-	var views []*View
-	dbs := &DatabaseStructure{}
-
-	for rows.Next() {
-
-		rows.Scan(&name, &ttype, &tblname, &sql)
-		if name != "sqlite_sequence" {
-
-			if ttype == "table" {
-				tbl := Table{}
-				tbl.Name = name
-				tbl.TableName = tblname
-				tbl.Sql = sql
-				tables = append(tables, &tbl)
-			}
-
-			if ttype == "view" {
-				viw := View{}
-				viw.Name = name
-				viw.TableName = tblname
-				viw.Sql = sql
-				views = append(views, &viw)
-			}
-		}
-
-	}
-
-	dbs.Tables = tables
-	dbs.Views = views
-
-	return dbs
 }

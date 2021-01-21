@@ -7,6 +7,18 @@ import (
 	pangu "github.com/eshu0/pangu/pkg/structures"
 )
 
+}
+
+type Table struct {
+	Name      string
+	TableName string
+	Sql       string
+	Columns   []*Column
+	HasPK     bool
+	PKColumn  *Column
+}
+
+
 func (table *Table) CreateConstants() ([]*pangu.Constant, *pangu.Constant) {
 	var cnsts []*pangu.Constant
 	//pk := &Constant{}
