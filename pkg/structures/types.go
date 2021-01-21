@@ -9,6 +9,6 @@ const (
 	West
 )
 
-func (d Direction) String() string {
+func (d GType) String() string {
 	return [...]string{"North", "East", "South", "West"}[d]
 }
