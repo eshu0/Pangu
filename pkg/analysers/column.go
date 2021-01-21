@@ -79,7 +79,7 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 
 	switch col.CType {
 	case Integer:
-		prop.GType = gtnt64
+		prop.GType = gtint64
 		prop.UpdateValue = "11"
 		break
 	case Text:

@@ -77,19 +77,7 @@ func (table *Table) CreateStructDetails() *pangu.StructDetails {
 
 	for _, p := range stru.Properties {
 		String.Data += "\n\t// " + p.Comment
-		switch p.GType {
-		case gtint64:
-			String.Data += "\n\tstr += fmt.Sprintf(\" %d \",data." + p.Name + ")"
-		case gtstring:
-			String.Data += "\n\tstr += fmt.Sprintf(\" %s \",data." + p.Name + ")"
-			break
-		case gtfloat64:
-			String.Data += "\n\tstr += fmt.Sprintf(\" %f \",data." + p.Name + ")"
-			break
-		default:
-			String.Data += "\n\tstr += fmt.Sprintf(\" %v \",data." + p.Name + ")"
-			break
-		}
+		String.Data += p.PrintString()
 	}
 
 	String.Data += "\n\treturn str //fmt.Sprintf(\" %v, \",data) \n}"

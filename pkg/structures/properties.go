@@ -20,3 +20,16 @@ type Property struct {
 
 	UpdateValue string
 }
+
+func (p Property) PrintString() string {
+	switch p.GType {
+	case gtint64:
+		return "\n\tstr += fmt.Sprintf(\" %d \",data." + p.Name + ")"
+	case gtstring:
+		return "\n\tstr += fmt.Sprintf(\" %s \",data." + p.Name + ")"
+	case gtfloat64:
+		return "\n\tstr += fmt.Sprintf(\" %f \",data." + p.Name + ")"
+	default:
+		return "\n\tstr += fmt.Sprintf(\" %v \",data." + p.Name + ")"
+	}
+}
