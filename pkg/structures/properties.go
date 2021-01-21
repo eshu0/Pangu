@@ -23,11 +23,11 @@ type Property struct {
 
 func (p *Property) PrintString() string {
 	switch p.GType {
-	case gtint64:
+	case GTint64:
 		return "\n\tstr += fmt.Sprintf(\" %d \",data." + p.Name + ")"
-	case gtstring:
+	case GTstring:
 		return "\n\tstr += fmt.Sprintf(\" %s \",data." + p.Name + ")"
-	case gtfloat64:
+	case GTfloat64:
 		return "\n\tstr += fmt.Sprintf(\" %f \",data." + p.Name + ")"
 	default:
 		return "\n\tstr += fmt.Sprintf(\" %v \",data." + p.Name + ")"
