@@ -38,7 +38,6 @@ func CTypeFromString(typestring string) CType {
 			return VarChar
 		case "NUMERIC":
 			return Numeric
-
 		}
 	}
 
@@ -58,7 +57,7 @@ type Column struct {
 
 func (col *Column) ToProperty(table *Table) *pangu.Property {
 
-	prop := pangu.Property{}
+	prop := &pangu.Property{}
 
 	// Comment for the proptyer
 	prop.Comment = fmt.Sprintf("%s (SQL TYPE: %s)", col.Name, col.CType)
@@ -78,33 +77,7 @@ func (col *Column) ToProperty(table *Table) *pangu.Property {
 	prop.Constant = table.CreateConstant(col)
 	col.SetTypeFromCType(&prop)
 
-	/*
-		if strings.Contains(col.CType, "VARCHAR") {
-			prop.GType = "string"
-			prop.UpdateValue = "\"Updated\""
-		} else {
-			switch col.CType {
-			case "INTEGER":
-				prop.GType = "int64"
-				prop.UpdateValue = "11"
-				break
-			case "TEXT":
-				prop.GType = "string"
-				prop.UpdateValue = "\"Updated\""
-				break
-			case "VARCHAR":
-				prop.GType = "string"
-				prop.UpdateValue = "\"Updated\""
-				break
-			case "NUMERIC":
-				prop.GType = "float64"
-				prop.UpdateValue = "1.11"
-				break
-			}
-		}
-	*/
-
-	return &prop
+	return prop
 }
 
 func (col *Column) SetTypeFromCType(prop *pangu.Property) {
